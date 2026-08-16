@@ -94,6 +94,30 @@ L'utilisateur a fourni une version optimisée pour Smart TV et demandé 3 correc
 - Push GitHub → GitHub Pages + Vercel auto-déployés. `wrangler deploy` → version `8aa4cc32-e069-490e-b9d0-0bdec5b4b610`.
 - **Vérifications post-déploiement :** les 3 plateformes servent 23 796 octets, titre « Winamp Quran Player - TV Gold Edition », contrôleur D-Pad (`VK_ENTER`) présent, `clamp(32px,4vw,44px)` présent, récitateur Shuraim corrigé présent.
 
+## 6ter. Correction 3 bugs TV (16 août 2026)
+
+L'utilisateur a identifié 3 bugs distincts et fourni une version complète corrigée (même pattern modal sombre que l'app Walkman) :
+
+### Bug 1 — Playlist ne défile pas à la télécommande
+- Avant : les `.playlist-item` n'avaient qu'un listener Enter/Space ; aucun Up/Down ne déplaçait le focus entre les items (dépendance à la spatial-navigation OS, peu fiable).
+- Après : listener `keydown` sur `#playlist` (container) → Up/Down (flèches + `keyCode` 38/40) déplace le focus item par item et `scrollIntoView`. Fonction `normalizeDirection(e)` centralise la normalisation `e.key` + `keyCode` (40/38/37/39/13/32/27/10009/461 = Back) pour les anciens firmwares TV.
+
+### Bug 2 — Popup récitateur blanc en mode sombre
+- Avant : `<select>` natif — la liste d'options est rendue par l'OS/le navigateur et ignore `--panel-bg`/`--text-main`.
+- Après : converti en **picker modal sombre personnalisé** (`.reciter-trigger` + `.reciter-modal` fixe avec overlay + `<ul class="reciter-list">` de `<li>`). Le `<select id="reciter-select">` natif est conservé **caché** (`style="display:none"`) uniquement pour l'état/valeur (`reciterSelect.value` et l'événement `change` inchangés — `selectReciter()` met à jour `selectedIndex` puis `dispatchEvent(new Event('change'))`). Thème sombre/clair respecté, sélection marquée ✓ via `.selected`.
+
+### Bug 3 — Focus « reste en arrière » près du panneau récitateur (RTL)
+- Avant : spatial-nav OS sur `<select>` natif = piège connu (focus derrière le panneau).
+- Après : le picker étant du DOM `<div>`/`<li>` sous notre contrôle, Up/Down/Enter/Back sont gérés par notre JS (listener `keydown` sur `#reciter-list`), et le handler global D-Pad s'efface quand le modal est ouvert (`if (!reciterModal.classList.contains('hidden')) return;`) ou quand le focus est sur un `.reciter-item`/`.playlist-item` (évite les doubles déclenchements).
+
+### Test demandé par l'utilisateur
+- Ouvrir le picker récitateur à la télécommande : Up/Down scroll + surlignage dans les deux thèmes, Enter sélectionne, Back/Escape ferme.
+
+### Déploiement v3
+- **Commit :** `828aef7` « TV fixes: custom dark reciter modal (was white popup), playlist Up/Down remote nav, normalizeDirection keycode fallback » (après `726705f`).
+- `worker.js` régénéré (34 996 octets), vérifié (`node --check` + fetch 200/404 + contenu). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `e1cc620c-cf2c-4110-ab7a-0b6e40075d7d`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent 33 253 octets ; titre TV Gold, `normalizeDirection`, `reciter-trigger`, `<select>` caché, récitateur Shuraim corrigé — tous présents. Portail intact.
+
 ## 6. Liens (validation) — tous HTTP 200 vérifiés
 
 | Élément | Lien |
@@ -109,10 +133,10 @@ L'utilisateur a fourni une version optimisée pour Smart TV et demandé 3 correc
 ## 7. Vérification finale
 
 - Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
-- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé) et la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft).
+- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft) **et** la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL).
 
 ## 8. Étapes suivantes
 
 - Tout futur changement : `git add -A && git commit -m "..." && git push origin main` (Vercel auto-déploie via le repo connecté).
 - Cloudflare : reconstruire `worker.js` si `index.html` change puis `wrangler deploy`.
-- Vérifier sur mobile/TV : défilement playlist, spectre, lecture enchaînée des versets, OK/Enter D-Pad sur webOS/Tizen.
+- Vérifier sur mobile/TV : défilement playlist, spectre, lecture enchaînée des versets, OK/Enter D-Pad sur webOS/Tizen, picker récitateur (Up/Down/Enter/Back dans les deux thèmes).
