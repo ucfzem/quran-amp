@@ -539,7 +539,7 @@
 
 
     <div class="lcd-screen">
-      <canvas id="spectrum" width="100" height="40" tabindex="0" title="انقر لتغيير النمط"></canvas>
+      <canvas id="spectrum" width="100" height="40"></canvas>
       <div class="lcd-info">
         <div class="lcd-ticker" id="lcd-title">اضغط تشغيل للبدء</div>
         <div class="lcd-timer" id="lcd-time">00:00</div>
@@ -648,7 +648,7 @@
     let audioCtx, analyser, source, canvasCtx;
     let isAudioInitialized = false;
     let isBasmalahPlaying = false;
-    let vizMode = 0;
+    let idlePhase = 0;
 
 
 
@@ -701,6 +701,7 @@
 
     async function init() {
       setupTouchUnlock();
+      drawSpectrum();
       renderReciterList();
       await fetchSurahs();
       setupEventListeners();
@@ -753,7 +754,6 @@
           source = audioCtx.createMediaElementSource(audio);
           source.connect(analyser);
           analyser.connect(audioCtx.destination);
-          drawSpectrum();
         }
       } catch (e) {
         console.warn("AudioContext init warning.");
@@ -771,51 +771,91 @@
 
 
 
-      if (!analyser) return;
+      const isActive = analyser && audio.src && !audio.paused;
+
+
+      if (isActive) {
+        drawActiveSpectrum();
+      } else {
+        drawIdleWave();
+      }
+    }
 
 
 
 
+    function drawActiveSpectrum() {
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
       analyser.getByteFrequencyData(dataArray);
 
 
+      const barWidth = (canvas.width / bufferLength) * 1.5;
+      let x = 0;
 
 
-      const color = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim();
-      canvasCtx.fillStyle = color;
-      canvasCtx.strokeStyle = color;
+      const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#d4af37';
+      const lcdText = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim() || '#ffd700';
 
 
+      for (let i = 0; i < bufferLength; i++) {
+        const barHeight = Math.max(2, (dataArray[i] / 255) * canvas.height);
 
 
-      if (vizMode === 0) {
-        const barWidth = (canvas.width / bufferLength) * 1.5;
-        let x = 0;
-        for (let i = 0; i < bufferLength; i++) {
-          const barHeight = (dataArray[i] / 255) * canvas.height;
-          canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
-          x += barWidth;
-        }
-      } else if (vizMode === 1) {
-        canvasCtx.beginPath();
-        canvasCtx.lineWidth = 2;
-        const sliceWidth = canvas.width / bufferLength;
-        let x = 0;
-        for (let i = 0; i < bufferLength; i++) {
-          const v = dataArray[i] / 255.0;
-          const y = canvas.height - (v * canvas.height);
-          if (i === 0) canvasCtx.moveTo(x, y);
-          else canvasCtx.lineTo(x, y);
-          x += sliceWidth;
-        }
-        canvasCtx.stroke();
-      } else {
-        const avg = dataArray.reduce((a, b) => a + b, 0) / bufferLength;
-        const h = (avg / 255) * canvas.height;
-        canvasCtx.fillRect(0, canvas.height / 2 - h / 2, canvas.width, Math.max(2, h));
+        const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
+        gradient.addColorStop(0, accent);
+        gradient.addColorStop(1, lcdText);
+
+
+        canvasCtx.save();
+        canvasCtx.shadowColor = lcdText;
+        canvasCtx.shadowBlur = 6;
+        canvasCtx.fillStyle = gradient;
+        canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+        canvasCtx.restore();
+
+
+        // Bright peak cap for a hi-fi "LED meter" look
+        canvasCtx.save();
+        canvasCtx.shadowColor = '#ffffff';
+        canvasCtx.shadowBlur = 4;
+        canvasCtx.fillStyle = '#fff8dc';
+        canvasCtx.fillRect(x, Math.max(0, canvas.height - barHeight - 2), barWidth - 1, 2);
+        canvasCtx.restore();
+
+
+        x += barWidth;
       }
+    }
+
+
+
+
+    function drawIdleWave() {
+      idlePhase += 0.1;
+      const lcdText = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim() || '#ffd700';
+      const midY = canvas.height / 2;
+
+
+      canvasCtx.save();
+      canvasCtx.shadowColor = lcdText;
+      canvasCtx.shadowBlur = 6;
+      canvasCtx.strokeStyle = lcdText;
+      canvasCtx.lineWidth = 2;
+      canvasCtx.globalAlpha = 0.75;
+      canvasCtx.beginPath();
+
+
+      for (let x = 0; x <= canvas.width; x += 2) {
+        const envelope = 0.4 + 0.6 * Math.abs(Math.sin(idlePhase * 0.35));
+        const y = midY + Math.sin((x * 0.16) + idlePhase) * (midY * 0.7) * envelope;
+        if (x === 0) canvasCtx.moveTo(x, y);
+        else canvasCtx.lineTo(x, y);
+      }
+
+
+      canvasCtx.stroke();
+      canvasCtx.restore();
     }
 
 
@@ -1168,13 +1208,6 @@
 
 
     function setupEventListeners() {
-      canvas.addEventListener('click', () => {
-        vizMode = (vizMode + 1) % 3;
-      });
-
-
-
-
       reciterBtn.addEventListener('click', openReciterModal);
       modalCloseBtn.addEventListener('click', closeReciterModal);
       reciterModal.addEventListener('click', (e) => {
