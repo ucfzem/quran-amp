@@ -221,7 +221,28 @@ Suite à la revue de l'utilisateur, son snippet pour `seekBar.addEventListener('
 - `worker.js` régénéré (31 320 octets), vérifié (`node --check` + fetch 200/404 + garde présent + `basmalaAudio` absent). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `3b03c6b9-6ec2-447a-acc7-303e6f58422a`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent le code v6.1 (CF instantané, Vercel + Pages au 1er poll ~20 s) ; texte tel quel conservé (pas de strip/préfixe Basmalah).
 
+## 6octies. Version v7 — finale : chronomètre continu + seek optimisé `{ once: true }` (16 août 2026)
+
+Version finale complète fournie par l'utilisateur, intégrée et déployée après validation.
+
+### Chronomètre continu sur toute la sourate
+- Nouvelle variable `totalElapsedBeforeCurrentAyah` qui cumule la durée des versets terminés.
+- Dans `ended` : la durée (Basmala incluse) est ajoutée au cumul avant de passer au verset suivant.
+- Dans `timeupdate` : affichage `totalElapsedBeforeCurrentAyah + audio.currentTime` → plus de retour à 00:00 entre versets ; utilitaire `formatTime(seconds)`.
+- `totalElapsedBeforeCurrentAyah = 0` à chaque `loadSurah()`.
+
+### Seek bar manuel optimisé (recommandation utilisateur intégrée)
+- Le listener `loadedmetadata` utilise désormais **`{ once: true }`** : `audio.addEventListener('loadedmetadata', applySeek, { once: true })` → détruit automatiquement le listener après une exécution, aucune fuite mémoire ni comportement erratique lors d'un défilement rapide.
+- Si le verset cible == verset courant : `applySeek()` immédiat (audio déjà chargé). Sinon `playAyah(targetAyahIndex, true)` + seek au chargement.
+- La Basmala est annulée si l'utilisateur déplace la barre pendant l'intro.
+
+### Déploiement v7
+- **Commit :** `7a0090b` « v7 final: continuous surah chronometer, whole-surah seek with once-only loadedmetadata listener ».
+- `worker.js` régénéré (32 475 octets), vérifié (`node --check` + fetch 200/404 + chronomètre + `{ once: true }` présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `4748824d-5ec2-45e5-8c4e-23811ed9bbee`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent v7 (CF vérifié contenu, Vercel + Pages 200 avec le chronomètre dès le 1er poll) ; les 14 chemins de récitateurs re-vérifiés HTTP 200.
+
 ## 7. Vérification finale
+
 
 
 
