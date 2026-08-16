@@ -529,6 +529,10 @@
     let vizMode = 0;
 
 
+    // Variables pour le chronomètre continu
+    let totalElapsedBeforeCurrentAyah = 0; // temps cumulé des ayahs déjà terminés
+
+
     const audio = document.getElementById('audio-player');
     const playBtn = document.getElementById('btn-play');
     const pauseBtn = document.getElementById('btn-pause');
@@ -672,6 +676,7 @@
           selectedReciterId = r.id;
           reciterLabel.textContent = r.name;
           closeReciterModal();
+          // Rejouer l'ayah en cours avec le nouveau récitateur
           playAyah(currentAyahIndex, true);
         };
 
@@ -756,6 +761,10 @@
       lcdTitle.textContent = `جاري التحميل... ${surah.name}`;
 
 
+      // Réinitialiser le compteur cumulé pour la nouvelle sourate
+      totalElapsedBeforeCurrentAyah = 0;
+
+
       try {
         const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani`);
         const data = await res.json();
@@ -778,7 +787,7 @@
       const ayahAr = currentAyahsAr[index];
 
 
-      // عرض النص كما هو دون أي تعديل (لا نضيف بسملة ولا نحذفها)
+      // Affichage du texte tel quel (sans ajout ni retrait)
       arTextEl.textContent = ayahAr.text;
       textContainer.scrollTop = 0;
 
@@ -788,7 +797,7 @@
       const formattedAyah = pad3(index + 1);
 
 
-      // تشغيل البسملة الصوتية فقط للآية الأولى من السور غير 1 و 9
+      // Gestion de la Basmala audio
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
         isBasmalahPlaying = true;
         audio.src = `https://everyayah.com/data/${reciter}/001001.mp3`;
@@ -808,6 +817,15 @@
         initAudioContext();
         audio.play().catch(e => console.log("التشغيل التلقائي يحتاج تفاعل المستخدم."));
       }
+    }
+
+
+    // Fonction utilitaire pour formater le temps (mm:ss)
+    function formatTime(seconds) {
+      if (isNaN(seconds) || seconds < 0) seconds = 0;
+      const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return `${mins}:${secs}`;
     }
 
 
@@ -946,8 +964,13 @@
 
 
       audio.addEventListener('ended', () => {
+        // Si c'était la Basmala, on ajoute sa durée au cumul et on passe au premier ayah
         if (isBasmalahPlaying) {
           isBasmalahPlaying = false;
+          // Ajouter la durée de la Basmala au cumul
+          if (!isNaN(audio.duration)) {
+            totalElapsedBeforeCurrentAyah += audio.duration;
+          }
           const reciter = selectedReciterId;
           const formattedSurah = pad3(surahs[currentSurahIndex].number);
           audio.src = `https://everyayah.com/data/${reciter}/${formattedSurah}001.mp3`;
@@ -957,6 +980,13 @@
         }
 
 
+        // Fin d'un ayah normal : ajouter sa durée au cumul
+        if (!isNaN(audio.duration)) {
+          totalElapsedBeforeCurrentAyah += audio.duration;
+        }
+
+
+        // Passer à l'ayah suivant ou à la sourate suivante
         if (currentAyahIndex < currentAyahsAr.length - 1) {
           playAyah(currentAyahIndex + 1, true);
         } else if (currentSurahIndex < surahs.length - 1) {
@@ -965,33 +995,29 @@
       });
 
 
+      // Mise à jour du chronomètre continu et de la barre de progression
       audio.addEventListener('timeupdate', () => {
-        if (!isNaN(audio.duration) && currentAyahsAr.length > 0) {
+        const current = audio.currentTime || 0;
+        // Temps total écoulé = cumul des ayahs précédents + temps actuel
+        const totalElapsed = totalElapsedBeforeCurrentAyah + current;
+        lcdTime.textContent = formatTime(totalElapsed);
+
+
+        // Mise à jour de la barre de progression (progression globale de la sourate)
+        if (currentAyahsAr.length > 0) {
           const totalAyahs = currentAyahsAr.length;
-          const currentAyahProgress = audio.currentTime / audio.duration;
-          
-          const overallProgress = ((currentAyahIndex + currentAyahProgress) / totalAyahs) * 100;
-          seekBar.value = overallProgress;
-
-
-          const mins = Math.floor(audio.currentTime / 60).toString().padStart(2, '0');
-          const secs = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
-          lcdTime.textContent = `${mins}:${secs}`;
+          const ayahFraction = current / (audio.duration || 1);
+          const overallProgress = ((currentAyahIndex + ayahFraction) / totalAyahs) * 100;
+          seekBar.value = Math.min(100, overallProgress);
         }
       });
 
 
+      // Gestion du déplacement manuel du curseur
       seekBar.addEventListener('input', () => {
-        // Abandonner la Basmala audio (intro) si l'utilisateur déplace le curseur
+        // Annuler la Basmala si elle est en cours
         if (isBasmalahPlaying) {
           isBasmalahPlaying = false;
-          const surahNum = surahs[currentSurahIndex].number;
-          if (surahNum !== 1 && surahNum !== 9) {
-            const reciter = selectedReciterId;
-            audio.src = `https://everyayah.com/data/${reciter}/${pad3(surahNum)}001.mp3`;
-            audio.load();
-            audio.play().catch(() => {});
-          }
         }
 
 
@@ -1007,13 +1033,18 @@
           const ayahFraction = rawIndex - targetAyahIndex;
 
 
+          const applySeek = () => {
+            if (!isNaN(audio.duration) && audio.duration > 0) {
+              audio.currentTime = ayahFraction * audio.duration;
+            }
+          };
+
+
           if (targetAyahIndex !== currentAyahIndex) {
             playAyah(targetAyahIndex, true);
-          }
-
-
-          if (!isNaN(audio.duration)) {
-            audio.currentTime = ayahFraction * audio.duration;
+            audio.addEventListener('loadedmetadata', applySeek, { once: true });
+          } else {
+            applySeek();
           }
         }
       });
