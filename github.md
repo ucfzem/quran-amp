@@ -66,7 +66,8 @@ git push -u origin main
 - `worker.js` généré depuis `index.html` (réponse HTML directe, 20 975 octets).
 - `wrangler deploy` (token `cfut_…`, compte `Azer.tyu199p@gmail.com's Account`).
 - **Version ID (v1 Gold) :** `17661281-8339-469b-a3cd-cb20098f60d1`
-- **Version ID (v2 TV Gold, actuelle) :** `8aa4cc32-e069-490e-b9d0-0bdec5b4b610`
+- **Version ID (v2 TV Gold) :** `8aa4cc32-e069-490e-b9d0-0bdec5b4b610`
+- **Historique des versions CF :** v3 `e1cc620c-cf2c-4110-ab7a-0b6e40075d7d` → v4 `8ee8a327-435f-4e7b-9d14-f8fa3d636c54` → v5 `1a3b988e-41c0-4f44-911d-4046bafbc10c` → v6.1 `3b03c6b9-6ec2-447a-acc7-303e6f58422a` → v6 `cf5aa498-40c2-429e-a09b-cfd49d610a84` → v7 `4748824d-5ec2-45e5-8c4e-23811ed9bbee` → v8 `98244359-9a23-467c-addd-8d83af0f37db` → v9 `7cff0905-620d-4681-9e8c-f840a7090cd4` → v10 `00b7206e-05b2-438a-b756-b45405350b60` → v11 `c708d58e-fb36-4007-8ed2-da75b42daa06` → **v12 `94ad1228-17cc-4dcf-921a-aa7f95973162`**
 - URL : `https://quran-amp.azer-tyu199p.workers.dev/`
 
 ## 6bis. Mise à jour « TV Gold Edition » (16 août 2026)
@@ -338,15 +339,37 @@ L'utilisateur a fourni un `index.html` complet contenant un **nouveau visualiseu
 - `worker.js` régénéré (34 437 octets), vérifié (`node --check` + fetch 200/404 + isActive/idleWave/peak-cap/écoulé-restant présents, `vizMode`/`ARABIC_INDIC_DIGITS`/`currentLang` absents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `c708d58e-fb36-4007-8ed2-da75b42daa06`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent v11 (CF + Vercel instantanés, Pages au 5ᵉ poll) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ.
 
+## 6terdecies. Version v12 — visualiseur 5 modes (Barres/Courbe/Remplissage/Cercles/Vagues) (16 août 2026)
+
+L'utilisateur a fourni un `index.html` complet intégrant le **visualiseur multi-modes** sur la base v10/v11 (tout-arabe, 14 récitateurs, écoulé/restant HH:MM:SS, seek par verset, marqueurs en chiffres simples, compteur LCD). Cette fois aucun conflit de lignée : les fonctionnalités v8–v11 sont toutes conservées.
+
+### Visualiseur 5 modes (nouveau)
+- `vizMode` restauré + `const VIZ_MODES = ['Barres', 'Courbe', 'Remplissage', 'Cercles', 'Vagues']` (0–4).
+- **Clic sur le canvas** : `vizMode = (vizMode + 1) % VIZ_MODES.length` (+ `console.log` du nom du mode) ; canvas `tabindex="0"` + `title="انقر لتغيير النمط"`.
+- `drawActiveSpectrum(dataArray, accent, lcdText)` dispatche par `switch (vizMode)` :
+  - `0` `drawBars` (barres FFT + dégradé accent→lcd-text + peak caps #fff8dc, code original v11 extrait en fonction),
+  - `1` `drawCurve` (courbe de ligne lcd-text, `lineWidth:2`, ombre 8),
+  - `2` `drawFill` (vague pleine : moyenne des amplitudes → rect centré avec gradient lcd-text→accent, ombre 10),
+  - `3` `drawCircles` (cercles concentriques : rayon ∝ amplitude moyenne, ombre 8, point central),
+  - `4` `drawWaveform` (vague sinusoïdale animée : `phase = x*0.2 + t*0.12`, enveloppe, amplitude ∝ moyenne).
+- Idle conservé : `drawIdleWave()` (vague dorée, `idlePhase += 0.1`), boucle rAF unique dans `init()`.
+
+### Vérifications v12 (avant déploiement)
+- `node --check` OK (script extrait lignes 518–1239). IDs/canvas/VIZ_MODES/5 fonctions `draw*`/switch/clic présents ; **aucune régression** : pas de `ARABIC_INDIC_DIGITS`, ni `currentLang`, ni `btn-lang`, ni `basmalaAudio` ; `lang="ar" dir="rtl"`, `clamp(18px,2.5vw,26px)`, hauteur fixe 150px, `formatTime` HH:MM:SS, `lcdTime` écoulé/restant, marqueur `﴿${numberInSurah}﴾`, `seekBar.value = 0` par verset, `loadSurah(0, true)`.
+- **Diff v11→v12** : uniquement visualiseur + suppression/édition de commentaires (et lignes vides) ; aucune logique retirée (les lignes `-` non-commentaires sont : fusion balise html sur une ligne, canvas avec tabindex/title, commentaire enlevé, boucle de `drawBars` extraite en fonction, `if (isBasmalahPlaying) return;` conservé sans commentaire).
+- **14 récitateurs = source de vérité**, tous HTTP 200 sur `https://everyayah.com/data/<reciter>/001001.mp3` (7 + 7, individuellement, GET n'a pas été utilisé — HEAD OK). Chemins multi-chiffres vérifiés : `002001`, `002255`, `114006`, `097001` → 200. API `api.alquran.cloud/v1/surah` et `/2/editions/quran-uthmani` → 200.
+
+### Déploiement v12
+- **Commit :** `476b755` « v12: 5-mode visualizer (Barres/Courbe/Remplissage/Cercles/Vagues), canvas click cycles mode ».
+- `worker.js` régénéré via `/tmp/opencode/_gen-worker.js` (37 685 octets) ; `node --check` OK ; smoke test (import ESM → `worker.default.fetch`) : `/` 200 + 16/16 probes PASS, `/x` 404. Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `94ad1228-17cc-4dcf-921a-aa7f95973162`**.
+- **Vérifications post-déploiement :** CF, Vercel et Pages servent v12 (200 + 6/6 probes chacun, instantanés) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ (parse statique : 15 cartes publiques, index 2).
+
 ## 7. Vérification finale
 
 
 
-
-
-
 - Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
-- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft) **et** la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL) **et** la v4 (boutons SVG métalliques, texte arabe uniquement résizé, auto-scroll playlist).
+- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft), la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL), la v4 (boutons SVG métalliques, texte arabe uniquement résizé, auto-scroll playlist) **et la v12** (visualiseur 5 modes, click sur canvas pour changer de style).
 
 ## 8. Étapes suivantes
 
