@@ -313,6 +313,31 @@ Nouvelle version fournie par l'utilisateur, testée et déployée.
 ### Vérification finale de la session (16 août 2026)
 - Un script de vérification jsdom (avec `url`) semblait **bloquer** (« Still hanging there ») : c'était le chargement réseau de jsdom, pas l'application — les 4 URL répondent 200. Vérification re-faite par **parse statique** du script `works/index.html` (sans réseau) : ordre = `["Quran Majeed v3","Quran Reader","Quran Amp","Tanger d'Antan",…]`, **Quran Amp index 2 (3ᵉ carte)** — intact depuis v1. Aucune modification du portail dans v9/v10 (seuls les backups ont été commités).
 
+## 6duodecies. Version v11 — visualiseur idle/actif fusionné (16 août 2026)
+
+L'utilisateur a fourni un `index.html` complet contenant un **nouveau visualiseur** (mode actif + mode veille), mais basé sur une lignée plus ancienne qui faisait régresser des fonctionnalités v8/v9/v10. Décision utilisateur : **fusionner** — garder la base v10 et n'intégrer que le visualiseur.
+
+### Visualiseur intégré (nouveau)
+- `drawSpectrum()` bascule désormais selon `const isActive = analyser && audio.src && !audio.paused;` :
+  - **Actif** → `drawActiveSpectrum()` : barres FFT avec **dégradé** (`accent` → `lcd-text`), ombre lumineuse, **peak caps** blancs (#fff8dc) façon « LED meter ».
+  - **Idle** (pause/stop/pas de lecture) → `drawIdleWave()` : **vague dorée animée** (sinusoïde avec enveloppe `0.4 + 0.6*|sin(idlePhase*0.35)|`, `idlePhase += 0.1`, ombre `lcd-text`).
+- Boucle démarrée une seule fois dans `init()` (`drawSpectrum();`) — plus d'appel dans `initAudioContext()` (évite une double boucle rAF).
+- `vizMode` et le clic sur le canvas (cycle 3 modes) **supprimés** (remplacés par le design unifié actif/idle).
+
+### Vérifications du fichier utilisateur (avant fusion)
+- Syntaxe OK, 24 IDs présents.
+- Les **13 récitateurs de son fichier** vérifiés HTTP 200 (dont les 3 nouveaux : `Hudhaify_128kbps`, `Hani_Rifai_192kbps`, `Ahmed_ibn_Ali_al-Ajamy_64kbps_QuranExplorer.Com`).
+- Logique Basmalah (strip + injection) testée contre l'API live : surahs 2/3/5/7/10/29 — strip OK.
+- Réversions de son fichier (chiffres arabo-indiens, seek sur toute la sourate, `fr.hamidullah`/bouton FR, 13 récitateurs) **non retenues** — base v10 conservée.
+
+### Base v10 conservée intégralement
+- `formatTime` (HH:MM:SS), affichage **écoulé / restant**, chronomètre continu (`totalElapsedBeforeCurrentAyah`), barre de progression **par verset** (garde `if (isBasmalahPlaying) return;`), marqueur `﴿${numberInSurah}﴾` en chiffres simples, texte clampé, hauteur fixe 150px + `gap: 14px`, compteur LCD `آية X / Y`, tout-arabe, **14 récitateurs** (re-vérifiés HTTP 200).
+
+### Déploiement v11
+- **Commit :** `223de3c` « v11: idle/active visualizer (golden idle wave + gradient bars with peak caps), keep v10 features ».
+- `worker.js` régénéré (34 437 octets), vérifié (`node --check` + fetch 200/404 + isActive/idleWave/peak-cap/écoulé-restant présents, `vizMode`/`ARABIC_INDIC_DIGITS`/`currentLang` absents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `c708d58e-fb36-4007-8ed2-da75b42daa06`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent v11 (CF + Vercel instantanés, Pages au 5ᵉ poll) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ.
+
 ## 7. Vérification finale
 
 
