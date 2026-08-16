@@ -982,9 +982,16 @@
 
 
       seekBar.addEventListener('input', () => {
-        // تحسين صغير: إلغاء حالة البسملة إذا كان المستخدم يحرك الشريط أثناء تشغيلها
+        // Abandonner la Basmala audio (intro) si l'utilisateur déplace le curseur
         if (isBasmalahPlaying) {
           isBasmalahPlaying = false;
+          const surahNum = surahs[currentSurahIndex].number;
+          if (surahNum !== 1 && surahNum !== 9) {
+            const reciter = selectedReciterId;
+            audio.src = `https://everyayah.com/data/${reciter}/${pad3(surahNum)}001.mp3`;
+            audio.load();
+            audio.play().catch(() => {});
+          }
         }
 
 
