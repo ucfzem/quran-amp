@@ -428,6 +428,66 @@ Le build GitHub Actions échouait sur le plugin `@srikarthiks/capacitor-media-se
 - Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft), la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL), la v4 (boutons SVG métalliques, texte arabe uniquement résizé, auto-scroll playlist) **et la v12** (visualiseur 5 modes, click sur canvas pour changer de style).
 - **Android :** build CI **SUCCESS** (commit `57b3edc` + run `31962360579`), APK debug + AAB release produits.
 
+## 9. Backup final — clôture de la journée (16 août 2026, soir)
+
+### Vérifications de l'ultime session
+- **Aucun build ne « tourne depuis 1 h »** : les 5 derniers runs ont duré 36–135 s, tous SUCCESS. Durée réelle d'un build complet : ~2 min.
+- **Artifacts `quran-amp-android`** : 3 exemplaires valides (expiration 2026-11-14), chacun contient `app-debug.apk` (installable, signé debug — aucune clé ni mot de passe requis) et `app-release.aab` (non signé, pour plus tard).
+- **Token GitHub** : vérifié absent du dépôt et de l'historique git (aucune fuite commitée).
+- **Aucun keystore `.p12` n'existe** (ni mot de passe/alias) : rien n'a été « donné » ; la clé Play Store sera générée proprement quand l'utilisateur voudra publier.
+- **Warning retenu** : un workflow « allégé » proposé à l'utilisateur a été **rejeté** — il référençait `lecteur_quran.p12` (inexistant), des `secrets` non créés et Java 17 (incompatible Capacitor 7 qui exige Java 21). Ne pas réutiliser tel quel.
+- L'utilisateur a **annulé** un run (déjà terminé) par prudence → aucun impact ; les builds restent verts.
+
+### Mode opératoire pour reprendre demain
+1. Télécharger l'APK : `https://github.com/ucfzem/quran-amp/actions` → run vert → Artifacts → `quran-amp-android` → dézipper → installer `app-debug.apk`.
+2. Si besoin de relancer un build : onglet Actions → workflow « Build Android (APK + AAB) » → **Run workflow** (ou tout push dans `mobile/` le déclenche).
+3. Prochaine étape (Play Store) : générer un keystore → stocker mot de passe/alias en **secrets GitHub** → signer l'AAB → télécharger depuis la console Play.
+
+### Liens
+| Élément | Lien |
+|---|---|
+| Projet web | https://ucfzem.github.io/quran-amp/ |
+| Vercel | https://quran-amp.vercel.app/ |
+| Cloudflare | https://quran-amp.azer-tyu199p.workers.dev/ |
+| Portail (3ᵉ position) | https://ucfzem.github.io/works/ |
+| Repo + Actions | https://github.com/ucfzem/quran-amp |
+| Ce backup | github.md (même dépôt) |
+
+## 10. Backup de la conversation — session finale (16 août 2026, soir)
+
+Retranscription fidèle de l'échange entre l'utilisateur et l'assistant (début = suite de la session Android « 6quattuordecies »).
+
+### Message utilisateur — « Qu'est-ce qu'on a fait jusqu'ici ? »
+→ Rappel de l'état : build Android cassé par le plugin `@srikarthiks/capacitor-media-session` (dépendances media3 inexistantes), plan : corriger → pousser → vérifier le workflow.
+
+### Message utilisateur — « Alors ça veut dire que tu n'as rien créé comme vrais apps ? »
+→ Réponse rassurante : l'app web est réelle et en ligne (3 plateformes), le projet Android est créé et commité ; c'est le **build** du plugin lock-screen qui échouait, pas l'app. Correction en cours.
+
+### Actions effectuées par l'assistant
+1. `patch-package` installé (devDependency), `postinstall: patch-package` ajouté à `mobile/package.json`.
+2. Patch du plugin : suppression des ~24 artefacts `androidx.media3:*:1.2.1` fantômes dans `android/build.gradle` (code Java n'en importe aucun).
+3. Patch des bugs Java : import `CapacitorContext` obsolète retiré (`MediaSessionPlugin.java:26`) ; appel `setupNotification()` inexistant retiré (`MediaSessionService.java:88`).
+4. Patch généré : `mobile/patches/@srikarthiks+capacitor-media-session+0.0.8.patch` ; validé localement par `npm ci` (le postinstall ré-applique le patch).
+5. Commits : `afe7835`, `57b3edc`, `6586a6b` poussés sur `ucfzem/quran-amp` → workflows re-triggerés.
+6. **Run `31962360579` → SUCCESS** (135 s) : APK debug + AAB produits, artifact `quran-amp-android` (8,1 MB).
+7. URL `/api/pwa.json` → 404 : **n'a jamais existé** (création fantasmée d'une session antérieure) → supprimée des vérifications.
+8. Vérif token : **absent du dépôt et de l'historique git** (aucune fuite).
+
+### Message utilisateur — « Je m'embrouille toujours avec cette apk qui ne veut pas être créé »
+→ Clarification : l'APK **existe** et s'installe sans clé ni mot de passe. Instructions simples données : Actions → run vert → Artifacts → `quran-amp-android` → dézipper → `app-debug.apk`.
+
+### Message utilisateur — « 1 heure, c'est anormal… voici le workflow allégé (AAB seulement) »
+→ Vérification : **aucun build ne durait 1 h** (36–135 s, tous SUCCESS). Le workflow proposé a été **rejeté** pour 3 erreurs bloquantes : `lecteur_quran.p12` inexistant, `secrets.KEYSTORE_PASSWORD`/`KEY_ALIAS` jamais créés, Java 17 incompatible avec Capacitor 7 (exige Java 21). Tableau objectif/clé fourni (test = APK debug prêt ; Play Store = keystore à générer plus tard).
+
+### Message utilisateur — « Je l'ai déjà cancelled »
+→ Contrôle : aucun run annulé endommagé ; les 5 derniers runs sont SUCCESS, artifacts intacts (expiration 2026-11-14). Rien à faire.
+
+### Message utilisateur — « Je laisse tout ça comme il est pour aujourd'hui. Demain inchaAllah. Je retenterai »
+→ Réponse : tout est prêt, rien ne tourne, rien n'est bloqué ; reprise facile (étapes du §9). Aucune modification effectuée.
+
+### Message utilisateur — « Un backup de cette ultime conversation github.md » puis « Conversation je voulais dire »
+→ Demande de backup de la conversation elle-même (pas seulement du résumé technique). Ce §10 documente l'échange ; le fichier est commité et poussé.
+
 ## 8. Étapes suivantes
 
 - Tout futur changement : `git add -A && git commit -m "..." && git push origin main` (Vercel auto-déploie via le repo connecté).
