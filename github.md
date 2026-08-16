@@ -58,17 +58,34 @@ git push -u origin main
 - Commit `works/index.html` dans `ucfzem/ucfzem.github.io` (main) → push.
 - Pages se met à jour automatiquement → `https://ucfzem.github.io/works/`
 
-## 6. Liens (validation)
+### Déploiement Vercel
+- `vercel --prod --yes` (token `vcp_…`) → projet `ucfzem-s-projects/quran-amp`, repo GitHub connecté (push = auto-deploy).
+- Production : `https://quran-amp.vercel.app/`
+
+### Déploiement Cloudflare Workers
+- `worker.js` généré depuis `index.html` (réponse HTML directe, 20 975 octets).
+- `wrangler deploy` (token `cfut_…`, compte `Azer.tyu199p@gmail.com's Account`).
+- **Version ID :** `17661281-8339-469b-a3cd-cb20098f60d1` → `https://quran-amp.azer-tyu199p.workers.dev/`
+
+## 6. Liens (validation) — tous HTTP 200 vérifiés
 
 | Élément | Lien |
 |---|---|
-| Projet Quran Amp | https://ucfzem.github.io/quran-amp/ |
+| Projet Quran Amp (GitHub Pages) | https://ucfzem.github.io/quran-amp/ |
+| Projet Quran Amp (Vercel) | https://quran-amp.vercel.app/ |
+| Projet Quran Amp (Cloudflare) | https://quran-amp.azer-tyu199p.workers.dev/ |
 | Portail Works (3ᵉ position) | https://ucfzem.github.io/works/ |
 | Repo quran-amp | https://github.com/ucfzem/quran-amp |
 | Source du portail | https://github.com/ucfzem/ucfzem.github.io/blob/main/works/index.html |
 | Ce backup | github.md + `backups/` du portail |
 
-## 7. Étapes suivantes
+## 7. Vérification finale
 
-- Tout futur changement : `git add -A && git commit -m "..." && git push origin main`.
+- Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
+- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé).
+
+## 8. Étapes suivantes
+
+- Tout futur changement : `git add -A && git commit -m "..." && git push origin main` (Vercel auto-déploie via le repo connecté).
+- Cloudflare : reconstruire `worker.js` si `index.html` change puis `wrangler deploy`.
 - Vérifier sur mobile/TV : défilement playlist, spectre, lecture enchaînée des versets.
