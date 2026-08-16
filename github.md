@@ -241,7 +241,24 @@ Version finale complète fournie par l'utilisateur, intégrée et déployée apr
 - `worker.js` régénéré (32 475 octets), vérifié (`node --check` + fetch 200/404 + chronomètre + `{ once: true }` présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `4748824d-5ec2-45e5-8c4e-23811ed9bbee`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent v7 (CF vérifié contenu, Vercel + Pages 200 avec le chronomètre dès le 1er poll) ; les 14 chemins de récitateurs re-vérifiés HTTP 200.
 
+## 6novies. Version v8 — marqueurs de verset + compteur LCD + barre de progression par verset (16 août 2026)
+
+Nouvelle version fournie par l'utilisateur, testée et déployée.
+
+### Nouveautés v8
+- **Marqueur de verset** dans le texte : `arTextEl.innerHTML = \`${ayahAr.text} <span class="ayah-marker">﴿${toArabicIndicNumber(ayahAr.numberInSurah)}﴾</span>\`` avec chiffres **arabo-indiens** (٠١٢٣…) via `ARABIC_INDIC_DIGITS` + `toArabicIndicNumber`.
+- **Compteur LCD** : nouvelle ligne `.lcd-ayah-count` → `آية ${numberInSurah} / ${total}`.
+- **Barre de progression par verset** (décision utilisateur, remplace le seek sur toute la sourate de v5/v7) : `seekBar.value = 0` à chaque `playAyah`/`loadSurah` ; `timeupdate` → `(current / audio.duration) * 100` (ignorée pendant la Basmalah) ; `input` → `audio.currentTime = (value/100) * audio.duration` avec garde `if (isBasmalahPlaying) return;`.
+- **Tailles fixes** : `.ar-text` `font-size: 26px` (fini le clamp), `.quran-text-container` `height: 150px` fixe (pas de saut de layout), `.winamp-container` `gap: 14px`.
+- Chronomètre continu v7 conservé (`totalElapsedBeforeCurrentAyah` + `formatTime`, Basmalah exclue du temps courant mais ajoutée au cumul à la fin).
+
+### Déploiement v8
+- **Commit :** `8b641e7` « v8: ayah markers (Arabic-Indic digits) + LCD ayah counter + per-ayah seek bar, fixed text/container sizes ».
+- `worker.js` régénéré (31 541 octets), vérifié (`node --check` + fetch 200/404 + marqueur/chiffres/par-verset présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `98244359-9a23-467c-addd-8d83af0f37db`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent v8 (CF vérifié, Vercel + Pages 200 dès le 1er poll) ; les 14 chemins de récitateurs re-vérifiés HTTP 200.
+
 ## 7. Vérification finale
+
 
 
 
