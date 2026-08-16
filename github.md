@@ -257,6 +257,26 @@ Nouvelle version fournie par l'utilisateur, testée et déployée.
 - `worker.js` régénéré (31 541 octets), vérifié (`node --check` + fetch 200/404 + marqueur/chiffres/par-verset présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `98244359-9a23-467c-addd-8d83af0f37db`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent v8 (CF vérifié, Vercel + Pages 200 dès le 1er poll) ; les 14 chemins de récitateurs re-vérifiés HTTP 200.
 
+## 6decies. Version v9 — marqueurs en chiffres simples, texte clampé (16 août 2026)
+
+Nouvelle version fournie par l'utilisateur, testée et déployée.
+
+### Changements v9 (par rapport à v8)
+- **Marqueur de verset en chiffres simples** : `arTextEl.innerHTML = \`${ayahAr.text} <span class="ayah-marker">﴿${ayahAr.numberInSurah}﴾</span>\`` — les chiffres **arabo-indiens** sont supprimés (`ARABIC_INDIC_DIGITS` et `toArabicIndicNumber` retirés).
+- **Texte re-clampé** : `.ar-text` revient à `font-size: clamp(18px, 2.5vw, 26px)` (le 26px fixe de v8 est supprimé).
+- **Conservés de v8 :** hauteur fixe `.quran-text-container` 150px, `gap: 14px`, barre de progression **par verset** (`seekBar.value = 0` par ayah, garde `if (isBasmalahPlaying) return;`), compteur LCD `آية X / Y`, chronomètre continu (`totalElapsedBeforeCurrentAyah` + `formatTime`, durée de la Basmalah ajoutée au cumul à la fin).
+- **Aucun `basmalaAudio`** (aucune référence à un élément inexistant).
+
+### Vérifications avant déploiement
+- Syntaxe JS validée (`node --check` sur le script extrait).
+- Checklist v9 : marqueur `﴿${ayahAr.numberInSurah}﴾`, `clamp(18px, 2.5vw, 26px)`, absence de `ARABIC_INDIC_DIGITS`/`toArabicIndicNumber`, seek par verset, chronomètre continu, Basmalah gérée, 14 récitateurs.
+- Les **14 chemins de récitateurs** re-vérifiés HTTP 200 (Sudais `Abdurrahmaan_As-Sudais_192kbps` confirmé, Qahtani `Khaalid_Abdullaah_al-Qahtaanee_192kbps`).
+
+### Déploiement v9
+- **Commit :** `faf49e1` « v9: plain-digit ayah markers, clamp text size, per-ayah seek, continuous timer ».
+- `worker.js` régénéré (33 054 octets), vérifié (`node --check` + fetch 200/404 + marqueur/clamp/par-verset présents, `ARABIC_INDIC_DIGITS` absent). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `7cff0905-620d-4681-9e8c-f840a7090cd4`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent v9 (CF + Vercel + Pages 200 avec le marqueur simple et le clamp) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ.
+
 ## 7. Vérification finale
 
 
