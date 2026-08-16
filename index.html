@@ -1040,12 +1040,17 @@
 
 
 
-    // Fonction utilitaire pour formater le temps (mm:ss)
-    function formatTime(seconds) {
-      if (isNaN(seconds) || seconds < 0) seconds = 0;
-      const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-      const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-      return `${mins}:${secs}`;
+    // Fonction utilitaire pour formater le temps (MM:SS ou HH:MM:SS)
+    function formatTime(totalSeconds) {
+      if (isNaN(totalSeconds) || totalSeconds < 0) totalSeconds = 0;
+      const h = Math.floor(totalSeconds / 3600);
+      const m = Math.floor((totalSeconds % 3600) / 60);
+      const s = Math.floor(totalSeconds % 60);
+
+      if (h > 0) {
+        return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }
+      return `${m}:${String(s).padStart(2, '0')}`;
     }
 
 
@@ -1251,12 +1256,21 @@
 
 
 
-      // Mise à jour du chronomètre continu et de la barre de progression
+      // Mise à jour du chronomètre continu, du temps restant et de la barre de progression
       audio.addEventListener('timeupdate', () => {
-        // Ignorer les mises à jour pendant la lecture de la Basmala pour ne pas fausser le cumul de l'ayah 1
         const current = audio.currentTime || 0;
+        const duration = audio.duration || 0;
+
+        // Temps écoulé cumulé sur la sourate (Basmala exclue du temps courant)
         const totalElapsed = totalElapsedBeforeCurrentAyah + (isBasmalahPlaying ? 0 : current);
-        lcdTime.textContent = formatTime(totalElapsed);
+        const elapsedStr = formatTime(totalElapsed);
+
+        // Temps restant pour le fichier audio en cours
+        const remaining = Math.max(0, duration - current);
+        const remainingStr = formatTime(remaining);
+
+        // Affichage : "écoulé / restant"
+        lcdTime.textContent = `${elapsedStr} / ${remainingStr}`;
 
 
 
