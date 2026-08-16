@@ -210,7 +210,19 @@ Nouvelle version finale fournie par l'utilisateur avec deux changements de compo
 - `worker.js` régénéré (30 987 octets), vérifié (`node --check` + fetch 200/404 + contenu : garde + commentaire présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `cf5aa498-40c2-429e-a09b-cfd49d610a84`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent le code v6 (CF instantané, Vercel + Pages après ~20 s) ; les 14 chemins de récitateurs re-vérifiés HTTP 200.
 
+## 6septies. Version v6.1 — garde Basmalah corrigée sur la barre de progression (16 août 2026)
+
+Suite à la revue de l'utilisateur, son snippet pour `seekBar.addEventListener('input')` présentait **deux bugs** corrigés avant déploiement :
+- `basmalaAudio.pause()` faisait référence à un élément **inexistant** (un seul `<audio id="audio-player">`) → `ReferenceError` au moment où le garde devait agir. Corrigé : abandon propre sur `audio` seul (swap vers `.../SSS001.mp3`, `load()`, `play()`).
+- `(seekBar.value / 100) * audio.duration` cassait le **seek sur toute la sourate** (Fix 5) : `seekBar.value` = progression globale 0–100 sur toute la sourate, mais `audio.duration` = durée du seul verset courant. Corrigé : mapping `targetPercentage * totalAyahs` conservé (`playAyah(targetAyahIndex, true)` si changement de verset, `audio.currentTime = ayahFraction * audio.duration` sinon).
+
+### Déploiement v6.1
+- **Commit :** `d45e4fa` « v6.1: safe Basmalah abandonment on seek (no basmalaAudio ref), keep whole-surah seek ».
+- `worker.js` régénéré (31 320 octets), vérifié (`node --check` + fetch 200/404 + garde présent + `basmalaAudio` absent). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `3b03c6b9-6ec2-447a-acc7-303e6f58422a`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent le code v6.1 (CF instantané, Vercel + Pages au 1er poll ~20 s) ; texte tel quel conservé (pas de strip/préfixe Basmalah).
+
 ## 7. Vérification finale
+
 
 
 
