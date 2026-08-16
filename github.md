@@ -277,6 +277,39 @@ Nouvelle version fournie par l'utilisateur, testée et déployée.
 - `worker.js` régénéré (33 054 octets), vérifié (`node --check` + fetch 200/404 + marqueur/clamp/par-verset présents, `ARABIC_INDIC_DIGITS` absent). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `7cff0905-620d-4681-9e8c-f840a7090cd4`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent v9 (CF + Vercel + Pages 200 avec le marqueur simple et le clamp) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ.
 
+## 6undecies. Version v10 — temps écoulé / restant (HH:MM:SS) (16 août 2026)
+
+Nouvelle version fournie par l'utilisateur, testée et déployée.
+
+### Changements v10 (par rapport à v9)
+- **`formatTime` étendue au format heures** : la fonction gère désormais `HH:MM:SS` quand `h > 0`, sinon `MM:SS` :
+  ```javascript
+  function formatTime(totalSeconds) {
+    if (isNaN(totalSeconds) || totalSeconds < 0) totalSeconds = 0;
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = Math.floor(totalSeconds % 60);
+    if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    return `${m}:${String(s).padStart(2, '0')}`;
+  }
+  ```
+- **Affichage « écoulé / restant »** dans `#lcd-time` :
+  - **Temps écoulé cumulé sur la sourate** : `totalElapsedBeforeCurrentAyah + (isBasmalahPlaying ? 0 : current)` (la Basmala reste exclue du temps courant, ajoutée au cumul à la fin).
+  - **Temps restant du fichier en cours** : `Math.max(0, duration - current)` avec `duration = audio.duration || 0` (robuste avant chargement : `NaN`/`0` → `0:00`).
+  - `lcdTime.textContent = \`${elapsedStr} / ${remainingStr}\`;`
+- **Conservés :** barre de progression **par verset** (`timeupdate` inchangé pour le seek), marqueur `﴿${numberInSurah}﴾` en chiffres simples, texte clampé `clamp(18px, 2.5vw, 26px)`, hauteur fixe 150px + `gap: 14px`, compteur LCD, 14 récitateurs.
+- Unit tests `formatTime` : `6525 → 1:48:45`, `7 → 0:07`, `3599 → 59:59`, `3600 → 1:00:00`, `-5/NaN → 0:00` — 8/8 OK.
+
+### Vérifications avant déploiement
+- Syntaxe JS validée (`node --check` sur le script extrait).
+- Checklist v10 : branche heures dans `formatTime`, affichage écoulé/restant, `Math.max(0, duration - current)`, exclusion Basmala, seek par verset, marqueur simple, clamp, absence `ARABIC_INDIC_DIGITS`.
+- Les **14 chemins de récitateurs** re-vérifiés HTTP 200 (Ghamadi confirmé).
+
+### Déploiement v10
+- **Commit :** `fa30773` « v10: elapsed/remaining time display (HH:MM:SS), cumulative elapsed + current-ayah remaining ».
+- `worker.js` régénéré (33 546 octets), vérifié (`node --check` + fetch 200/404 + écoulé/restant + branche heures présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `00b7206e-05b2-438a-b756-b45405350b60`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent v10 (CF + Vercel instantanés, Pages au 5ᵉ poll ~25 s) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ.
+
 ## 7. Vérification finale
 
 
