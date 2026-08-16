@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="fr" data-theme="dark" dir="ltr">
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,28 +9,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=VT323&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 
 
-
-
   <style>
     :root {
-      --bg-color: #1a1410;
-      --chassis-bg: linear-gradient(145deg, #3d2b1f, #241810);
-      --chassis-border: #8b6b3e;
-      --lcd-bg: #110e05;
+      --bg-color: #120e0b;
+      --chassis-bg: linear-gradient(145deg, #322319, #1c130d);
+      --chassis-border: #7a5c32;
+      --lcd-bg: #0b0904;
       --lcd-text: #ffd700;
       --lcd-glow: rgba(255, 215, 0, 0.25);
-      --btn-bg: linear-gradient(145deg, #5c432d, #3a281a);
-      --btn-border: #a88448;
+      --btn-bg: linear-gradient(180deg, #4d3826 0%, #2b1d12 100%);
+      --btn-border: #96733e;
       --btn-text: #f5e6c8;
       --btn-active: #ffe600;
       --text-main: #f5e6c8;
-      --panel-bg: #22170f;
+      --panel-bg: #1a120b;
       --accent: #d4af37;
-      --gold-gradient: linear-gradient(90deg, #8b6b3e, #d4af37, #8b6b3e);
+      --gold-gradient: linear-gradient(90deg, #7a5c32, #d4af37, #7a5c32);
       --focus-ring: #ffe600;
+      --modal-overlay: rgba(0, 0, 0, 0.85);
     }
-
-
 
 
     [data-theme="light"] {
@@ -39,7 +37,7 @@
       --lcd-bg: #2a2010;
       --lcd-text: #ffcc00;
       --lcd-glow: rgba(255, 204, 0, 0.3);
-      --btn-bg: linear-gradient(145deg, #ffffff, #dfd3c3);
+      --btn-bg: linear-gradient(180deg, #ffffff 0%, #dfd3c3 100%);
       --btn-border: #b8975a;
       --btn-text: #3d2b1f;
       --btn-active: #d4af37;
@@ -48,9 +46,8 @@
       --accent: #966f2d;
       --gold-gradient: linear-gradient(90deg, #b8975a, #f3e5ab, #b8975a);
       --focus-ring: #d4af37;
+      --modal-overlay: rgba(0, 0, 0, 0.65);
     }
-
-
 
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -68,66 +65,57 @@
     }
 
 
-
-
     /* TV Responsive Winamp Container */
     .winamp-container {
       width: 100%;
-      max-width: min(92vw, 640px);
+      max-width: min(94vw, 680px);
       background: var(--chassis-bg);
-      border: 4px solid var(--chassis-border);
-      border-radius: 8px;
-      box-shadow: 0 16px 45px rgba(0,0,0,0.8), inset 1px 1px 0 rgba(255,230,150,0.3);
+      border: 3px solid var(--chassis-border);
+      border-radius: 10px;
+      box-shadow: 0 16px 45px rgba(0,0,0,0.85), inset 1px 1px 0 rgba(255,230,150,0.25);
       padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 14px;
+      position: relative;
     }
 
 
-
-
-    /* Spatial Navigation Focus Styles */
+    /* High contrast TV Focus Indicators */
     :focus, :focus-visible {
       outline: 3px solid var(--focus-ring) !important;
       outline-offset: 2px !important;
-      box-shadow: 0 0 12px var(--focus-ring) !important;
+      box-shadow: 0 0 16px var(--focus-ring) !important;
     }
-
-
 
 
     /* Title Bar */
     .title-bar {
       background: var(--gold-gradient);
-      color: #1a1410;
-      font-size: 14px;
+      color: #120e0b;
+      font-size: 15px;
       font-weight: bold;
       padding: 6px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-radius: 3px;
+      border-radius: 5px;
       letter-spacing: 1px;
     }
-
-
 
 
     .title-bar-controls { display: flex; gap: 8px; }
     
     .win-btn {
-      min-width: 32px; height: 26px;
+      min-width: 36px; height: 30px;
       background: var(--btn-bg);
       border: 1px solid var(--btn-border);
-      font-size: 12px; line-height: 24px; text-align: center; 
+      font-size: 13px; line-height: 28px; text-align: center; 
       color: var(--btn-text); cursor: pointer;
-      border-radius: 3px;
+      border-radius: 4px;
       font-weight: bold;
-      padding: 0 6px;
+      padding: 0 8px;
     }
-
-
 
 
     /* LCD Screen */
@@ -135,7 +123,7 @@
       background-color: var(--lcd-bg);
       border: 2px inset var(--chassis-border);
       border-radius: 6px;
-      padding: 12px;
+      padding: 10px 14px;
       box-shadow: inset 0 0 12px var(--lcd-glow);
       display: grid;
       grid-template-columns: 1fr 120px;
@@ -144,21 +132,17 @@
     }
 
 
-
-
     .lcd-info { overflow: hidden; }
     
     .lcd-ticker {
       font-family: 'VT323', monospace;
       color: var(--lcd-text);
-      font-size: 22px;
+      font-size: 24px;
       white-space: nowrap;
       text-shadow: 0 0 6px var(--lcd-text);
       animation: ticker 12s linear infinite;
       display: inline-block;
     }
-
-
 
 
     @keyframes ticker {
@@ -167,13 +151,9 @@
     }
 
 
-
-
     [dir="rtl"] .lcd-ticker {
       animation: ticker-rtl 12s linear infinite;
     }
-
-
 
 
     @keyframes ticker-rtl {
@@ -182,17 +162,13 @@
     }
 
 
-
-
     .lcd-timer {
       font-family: 'VT323', monospace;
       color: var(--lcd-text);
       font-size: 28px;
       text-shadow: 0 0 6px var(--lcd-text);
-      margin-top: 4px;
+      margin-top: 2px;
     }
-
-
 
 
     canvas#spectrum {
@@ -204,8 +180,6 @@
     }
 
 
-
-
     /* Controls Panel */
     .controls-panel {
       display: flex;
@@ -214,37 +188,38 @@
     }
 
 
-
-
-    .selectors { display: flex; gap: 8px; }
-
-
-
-
-    select {
-      flex: 1;
-      height: 52px;
-      background-color: var(--panel-bg);
-      color: var(--text-main);
+    /* Reciter Selector Trigger Button */
+    .reciter-trigger-btn {
+      width: 100%;
+      background: var(--btn-bg);
+      color: var(--btn-text);
       border: 1px solid var(--btn-border);
-      padding: 8px 16px;
-      font-size: 18px;
-      border-radius: 4px;
-      outline: none;
+      padding: 10px 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-family: inherit;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
     }
 
 
+    .reciter-trigger-btn::after {
+      content: '▼';
+      font-size: 12px;
+      color: var(--accent);
+    }
 
 
+    /* Redesigned Beautiful Metallic Transport Buttons */
     .transport-buttons {
       display: flex;
       justify-content: space-between;
       gap: 8px;
     }
-
-
 
 
     .btn-winamp {
@@ -253,26 +228,35 @@
       background: var(--btn-bg);
       border: 1px solid var(--btn-border);
       color: var(--btn-text);
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.15), 1px 2px 3px rgba(0,0,0,0.4);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 8px rgba(0,0,0,0.4);
+      transition: all 0.15s ease;
     }
 
 
+    .btn-winamp svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--accent);
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
+      transition: transform 0.1s ease, fill 0.15s ease;
+    }
+
+
+    .btn-winamp:hover svg, .btn-winamp:focus svg {
+      fill: #ffffff;
+      transform: scale(1.1);
+    }
 
 
     .btn-winamp:active {
-      border-style: inset;
-      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.8);
-      color: var(--btn-active);
+      transform: translateY(2px);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
     }
-
-
 
 
     .sliders {
@@ -280,8 +264,6 @@
       gap: 14px;
       align-items: center;
     }
-
-
 
 
     input[type=range] {
@@ -293,51 +275,39 @@
     }
 
 
-
-
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 20px; height: 22px;
       background: var(--accent);
       border: 1px solid #fff;
-      border-radius: 3px;
+      border-radius: 4px;
       cursor: pointer;
     }
-
-
 
 
     .seek-bar { flex: 2; }
     .volume-bar { flex: 1; }
 
 
-
-
-    /* Playlist Window */
+    /* Playlist Window with Smooth Scroll Logic */
     .playlist-window {
       background: var(--panel-bg);
       border: 2px inset var(--chassis-border);
       height: 160px;
       overflow-y: auto;
-      font-size: 15px;
-      border-radius: 4px;
+      font-size: 16px;
+      border-radius: 6px;
       scroll-behavior: smooth;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
     }
 
 
-
-
     .playlist-item {
-      padding: 10px 12px;
+      padding: 10px 14px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     }
-
-
 
 
     .playlist-item:hover, .playlist-item:focus {
@@ -346,194 +316,136 @@
     
     .playlist-item.active {
       background: var(--accent);
-      color: #1a1410;
+      color: #120e0b;
       font-weight: bold;
     }
 
 
-
-
-    /* Quran Text Display Window */
+    /* Quran Text Display Window (Arabic Only, Resized) */
     .quran-text-container {
       background: var(--panel-bg);
       border: 2px inset var(--chassis-border);
       padding: 14px;
       min-height: 120px;
-      max-height: 200px;
+      max-height: 180px;
       overflow-y: auto;
       text-align: center;
       border-radius: 6px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      justify-content: flex-start;
+      justify-content: center;
+      align-items: center;
       scroll-behavior: smooth;
     }
 
 
-
-
     .ar-text {
       font-family: 'Amiri', serif;
-      font-size: 26px;
+      font-size: clamp(20px, 2.8vw, 30px);
       color: var(--accent);
       direction: rtl;
       line-height: 1.6;
       font-weight: bold;
       white-space: pre-line;
+      width: 100%;
     }
 
 
-
-
-    .fr-text {
-      font-size: 15px;
-      opacity: 0.9;
-      line-height: 1.4;
-      white-space: pre-line;
+    /* Custom Dark Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--modal-overlay);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-in-out;
     }
 
 
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+
+    .modal-card {
+      background: var(--panel-bg);
+      border: 3px solid var(--chassis-border);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      overflow: hidden;
+    }
+
+
+    .modal-header {
+      background: var(--gold-gradient);
+      color: #120e0b;
+      padding: 10px 14px;
+      font-weight: bold;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      font-weight: bold;
+      color: #120e0b;
+      cursor: pointer;
+    }
+
+
+    .modal-list {
+      overflow-y: auto;
+      padding: 6px 0;
+      max-height: 60vh;
+    }
+
+
+    .reciter-option {
+      padding: 12px 18px;
+      font-size: 16px;
+      color: var(--text-main);
+      cursor: pointer;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+    .reciter-option:hover, .reciter-option:focus {
+      background: rgba(212, 175, 55, 0.25);
+    }
+
+
+    .reciter-option.selected {
+      background: var(--accent);
+      color: #120e0b;
+      font-weight: bold;
+    }
 
 
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--panel-bg); }
     ::-webkit-scrollbar-thumb { background: var(--chassis-border); border-radius: 4px; }
-
-
-    /* TV Font & Hit Target Adjustments */
-    .ar-text {
-      font-size: clamp(32px, 4vw, 44px) !important;
-      line-height: 1.8;
-    }
-
-
-    .fr-text {
-      font-size: clamp(18px, 2vw, 24px) !important;
-    }
-
-
-    .playlist-item {
-      padding: 14px 16px !important;
-      font-size: 18px !important;
-    }
-
-
-    .btn-winamp {
-      height: 56px !important;
-      font-size: 20px !important;
-    }
-
-
-    /* --- Custom Reciter Picker (replaces native <select> popup) --- */
-    .reciter-picker { flex: 1; position: relative; }
-
-
-    .reciter-trigger {
-      width: 100%;
-      height: 52px;
-      background-color: var(--panel-bg);
-      color: var(--text-main);
-      border: 1px solid var(--btn-border);
-      padding: 8px 16px;
-      font-size: 18px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-
-    .reciter-trigger .arrow { opacity: 0.7; font-size: 14px; }
-
-
-    .reciter-modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-    .reciter-modal:not(.hidden) { opacity: 1; pointer-events: auto; }
-    .reciter-modal.hidden { display: none; }
-
-
-    .reciter-modal-content {
-      background: var(--panel-bg);
-      color: var(--text-main);
-      border: 2px solid var(--chassis-border);
-      border-radius: 8px;
-      width: 88%;
-      max-width: 400px;
-      max-height: 70vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    }
-
-
-    .reciter-modal-header {
-      padding: 12px 16px;
-      background: var(--gold-gradient);
-      color: #1a1410;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-
-    .reciter-modal-close {
-      background: none;
-      border: none;
-      color: #1a1410;
-      font-size: 1.3rem;
-      cursor: pointer;
-    }
-
-
-    .reciter-list {
-      list-style: none;
-      overflow-y: auto;
-      max-height: 55vh;
-      scroll-behavior: smooth;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-    }
-
-
-    .reciter-item {
-      padding: 14px 16px;
-      color: var(--text-main);
-      font-size: 17px;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.12);
-      cursor: pointer;
-      outline: none;
-    }
-
-
-    .reciter-item:hover,
-    .reciter-item:focus,
-    .reciter-item.selected {
-      background: var(--accent) !important;
-      color: #1a1410 !important;
-      outline: 2px solid var(--focus-ring) !important;
-      outline-offset: -2px !important;
-    }
   </style>
 </head>
 <body>
-
-
 
 
   <div class="winamp-container" id="app-container">
@@ -546,8 +458,6 @@
     </div>
 
 
-
-
     <div class="lcd-screen">
       <div class="lcd-info">
         <div class="lcd-ticker" id="lcd-title">Appuyez sur PLAY pour démarrer</div>
@@ -557,54 +467,31 @@
     </div>
 
 
-
-
-    <div class="selectors">
-      <!-- Kept for logic/state only; native popup UI replaced below -->
-      <select id="reciter-select" style="display:none;">
-        <option value="Alafasy_128kbps">Mishary Rashid Alafasy</option>
-        <option value="Abdurrahmaan_As-Sudais_192kbps">Abdul Rahman Al-Sudais</option>
-        <option value="Ghamadi_40kbps">Saad Al-Ghamdi</option>
-        <option value="MaherAlMuaiqly128kbps">Maher Al-Muaiqly</option>
-        <option value="Abdul_Basit_Murattal_192kbps">Abdul Basit Abdul Samad</option>
-        <option value="Abu_Bakr_Ash-Shaatree_128kbps">Abu Bakr Al-Shatri</option>
-        <option value="Husary_128kbps">Mahmoud Khalil Al-Husary</option>
-        <option value="Yasser_Ad-Dussary_128kbps">Yasser Al-Dosari</option>
-        <option value="Saood bin Ibraaheem Ash-Shuraym_128kbps">Saud Al-Shuraim</option>
-        <option value="Nasser_Alqatami_128kbps">Nasser Al-Qatami</option>
-      </select>
-
-
-      <div class="reciter-picker">
-        <button type="button" class="reciter-trigger" id="reciter-trigger" tabindex="0">
-          <span id="reciter-trigger-text">Mishary Rashid Alafasy</span>
-          <span class="arrow">▾</span>
-        </button>
-        <div class="reciter-modal hidden" id="reciter-modal">
-          <div class="reciter-modal-content">
-            <div class="reciter-modal-header">
-              <span id="reciter-modal-title">Récitateur</span>
-              <button type="button" class="reciter-modal-close" id="reciter-modal-close">&times;</button>
-            </div>
-            <ul class="reciter-list" id="reciter-list"></ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
     <div class="controls-panel">
+      <!-- Reciter Modal Button -->
+      <button class="reciter-trigger-btn" id="reciter-btn" tabindex="0">
+        <span id="reciter-label">Mishary Rashid Alafasy</span>
+      </button>
+
+
+      <!-- Beautiful SVG Transport Buttons -->
       <div class="transport-buttons">
-        <button class="btn-winamp" id="btn-prev" tabindex="0">|&lt;&lt;</button>
-        <button class="btn-winamp" id="btn-play" tabindex="0">&gt;</button>
-        <button class="btn-winamp" id="btn-pause" tabindex="0">||</button>
-        <button class="btn-winamp" id="btn-stop" tabindex="0">[]</button>
-        <button class="btn-winamp" id="btn-next" tabindex="0">&gt;&gt;|</button>
+        <button class="btn-winamp" id="btn-prev" tabindex="0" title="Previous">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button class="btn-winamp" id="btn-play" tabindex="0" title="Play">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="btn-winamp" id="btn-pause" tabindex="0" title="Pause">
+          <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button class="btn-winamp" id="btn-stop" tabindex="0" title="Stop">
+          <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+        </button>
+        <button class="btn-winamp" id="btn-next" tabindex="0" title="Next">
+          <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
       </div>
-
-
 
 
       <div class="sliders">
@@ -614,48 +501,60 @@
     </div>
 
 
-
-
-    <div class="playlist-window" id="playlist" tabindex="0"></div>
-
-
+    <div class="playlist-window" id="playlist"></div>
 
 
     <div class="quran-text-container" id="text-container" tabindex="0">
       <div class="ar-text" id="ar-text">اخْتَر سُورَة لِلْبَدْء</div>
-      <div class="fr-text" id="fr-text">Sélectionnez une sourate pour commencer</div>
     </div>
   </div>
 
 
+  <!-- Reciter Modal -->
+  <div class="modal-overlay" id="reciter-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span id="modal-title">Choisir un Récitateur</span>
+        <button class="modal-close-btn" id="modal-close">✕</button>
+      </div>
+      <div class="modal-list" id="reciter-list"></div>
+    </div>
+  </div>
 
 
   <audio id="audio-player" playsinline></audio>
 
 
-
-
   <script>
+    const RECITERS = [
+      { id: "Alafasy_128kbps", name: "Mishary Rashid Alafasy" },
+      { id: "Abdurrahmaan_As-Sudais_192kbps", name: "Abdul Rahman Al-Sudais" },
+      { id: "Ghamadi_40kbps", name: "Saad Al-Ghamdi" },
+      { id: "MaherAlMuaiqly128kbps", name: "Maher Al-Muaiqly" },
+      { id: "Abdul_Basit_Murattal_192kbps", name: "Abdul Basit Abdul Samad" },
+      { id: "Abu_Bakr_Ash-Shaatree_128kbps", name: "Abu Bakr Al-Shatri" },
+      { id: "Husary_128kbps", name: "Mahmoud Khalil Al-Husary" },
+      { id: "Yasser_Ad-Dussary_128kbps", name: "Yasser Al-Dosari" },
+      { id: "Saood bin Ibraaheem Ash-Shuraym_128kbps", name: "Saud Al-Shuraim" },
+      { id: "Nasser_Alqatami_128kbps", name: "Nasser Al-Qatami" }
+    ];
+
+
+    let selectedReciterId = "Alafasy_128kbps";
     let surahs = [];
     let currentSurahIndex = 0;
     let currentAyahIndex = 0;
     let currentAyahsAr = [];
-    let currentAyahsFr = [];
     let currentLang = 'fr';
     let audioCtx, analyser, source, canvasCtx;
     let isAudioInitialized = false;
     let isBasmalahPlaying = false;
-    let isScrollThrottled = false;
-
-
 
 
     const i18n = {
-      fr: { title: "WINAMP - LECTEUR CORAN", loading: "Chargement...", ayah: "Verset", error: "Erreur de connexion", reciter: "Récitateur" },
-      ar: { title: "ويناتمب - مشغل القرآن الكريم", loading: "جاري التحميل...", ayah: "الآية", error: "خطأ في الاتصال", reciter: "القارئ" }
+      fr: { title: "WINAMP - LECTEUR CORAN", loading: "Chargement...", ayah: "Verset", error: "Erreur de connexion", reciterModalTitle: "Choisir un Récitateur" },
+      ar: { title: "ويناتمب - مشغل القرآن الكريم", loading: "جاري التحميل...", ayah: "الآية", error: "خطأ في الاتصال", reciterModalTitle: "اختر القارئ" }
     };
-
-
 
 
     const audio = document.getElementById('audio-player');
@@ -669,61 +568,32 @@
     const lcdTitle = document.getElementById('lcd-title');
     const lcdTime = document.getElementById('lcd-time');
     const playlistEl = document.getElementById('playlist');
-    const reciterSelect = document.getElementById('reciter-select');
     const themeBtn = document.getElementById('btn-theme');
     const langBtn = document.getElementById('btn-lang');
     const arTextEl = document.getElementById('ar-text');
-    const frTextEl = document.getElementById('fr-text');
     const textContainer = document.getElementById('text-container');
     const appTitleEl = document.getElementById('app-title');
     const canvas = document.getElementById('spectrum');
 
 
-    // Custom reciter picker refs
-    const reciterTrigger = document.getElementById('reciter-trigger');
-    const reciterTriggerText = document.getElementById('reciter-trigger-text');
+    const reciterBtn = document.getElementById('reciter-btn');
+    const reciterLabel = document.getElementById('reciter-label');
     const reciterModal = document.getElementById('reciter-modal');
-    const reciterModalClose = document.getElementById('reciter-modal-close');
-    const reciterModalTitle = document.getElementById('reciter-modal-title');
     const reciterList = document.getElementById('reciter-list');
-
-
+    const modalCloseBtn = document.getElementById('modal-close');
+    const modalTitleEl = document.getElementById('modal-title');
 
 
     canvasCtx = canvas.getContext('2d');
 
 
-
-
-    // Normalize a keydown event across old/new TV remote firmwares.
-    // Old WebKit/Tizen/WebOS browsers often don't populate `key` correctly
-    // and only report legacy `keyCode` values (40=Down, 38=Up, 37=Left,
-    // 39=Right, 13=Enter, 27/10009/461=Back).
-    function normalizeDirection(e) {
-      const key = e.key;
-      const code = e.keyCode || e.which;
-      if (key === 'ArrowDown' || code === 40) return 'down';
-      if (key === 'ArrowUp' || code === 38) return 'up';
-      if (key === 'ArrowLeft' || code === 37) return 'left';
-      if (key === 'ArrowRight' || code === 39) return 'right';
-      if (key === 'Enter' || key === ' ' || code === 13 || code === 32) return 'enter';
-      if (key === 'Escape' || key === 'Back' || code === 27 || code === 10009 || code === 461) return 'back';
-      return null;
-    }
-
-
-
-
     async function init() {
       setupTouchUnlock();
+      renderReciterList();
       await fetchSurahs();
       setupEventListeners();
       setupTVNavigation();
-      buildReciterList();
-      updateReciterTriggerText();
     }
-
-
 
 
     function setupTouchUnlock() {
@@ -739,8 +609,6 @@
     }
 
 
-
-
     function initAudioContext() {
       if (isAudioInitialized) {
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -748,13 +616,9 @@
       }
 
 
-
-
       if (window.location.protocol !== 'file:') {
         audio.setAttribute('crossorigin', 'anonymous');
       }
-
-
 
 
       try {
@@ -775,18 +639,12 @@
     }
 
 
-
-
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
 
-
-
       if (!analyser) return;
-
-
 
 
       const bufferLength = analyser.frequencyBinCount;
@@ -794,19 +652,13 @@
       analyser.getByteFrequencyData(dataArray);
 
 
-
-
       const barWidth = (canvas.width / bufferLength) * 1.5;
       let x = 0;
-
-
 
 
       for (let i = 0; i < bufferLength; i++) {
         const barHeight = (dataArray[i] / 255) * canvas.height;
         const color = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim();
-
-
 
 
         canvasCtx.fillStyle = color;
@@ -816,6 +668,43 @@
     }
 
 
+    function renderReciterList() {
+      reciterList.innerHTML = '';
+      RECITERS.forEach((r, idx) => {
+        const item = document.createElement('div');
+        item.className = `reciter-option ${r.id === selectedReciterId ? 'selected' : ''}`;
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('data-id', r.id);
+        item.innerHTML = `<span>${r.name}</span>${r.id === selectedReciterId ? '<span>✓</span>' : ''}`;
+
+
+        const selectHandler = () => {
+          selectedReciterId = r.id;
+          reciterLabel.textContent = r.name;
+          closeReciterModal();
+          playAyah(currentAyahIndex, true);
+        };
+
+
+        item.addEventListener('click', selectHandler);
+        item.addEventListener('focus', () => item.scrollIntoView({ block: 'nearest' }));
+        reciterList.appendChild(item);
+      });
+    }
+
+
+    function openReciterModal() {
+      modalTitleEl.textContent = i18n[currentLang].reciterModalTitle;
+      reciterModal.classList.add('open');
+      const selectedItem = reciterList.querySelector('.reciter-option.selected') || reciterList.firstElementChild;
+      if (selectedItem) selectedItem.focus();
+    }
+
+
+    function closeReciterModal() {
+      reciterModal.classList.remove('open');
+      reciterBtn.focus();
+    }
 
 
     async function fetchSurahs() {
@@ -831,65 +720,28 @@
     }
 
 
-
-
     function renderPlaylist() {
       playlistEl.innerHTML = '';
       surahs.forEach((s, i) => {
         const item = document.createElement('div');
         item.className = `playlist-item ${i === currentSurahIndex ? 'active' : ''}`;
         item.setAttribute('tabindex', '0');
+        item.setAttribute('data-index', i);
         const name = currentLang === 'fr' ? `${s.number}. ${s.englishName}` : `${s.number}. ${s.name}`;
-        item.innerHTML = `<span>${name}</span><span>${s.numberOfAyahs} v</span>`;
+        item.innerHTML = `<span>${name}</span><span>v ${s.numberOfAyahs}</span>`;
         
         const selectHandler = () => loadSurah(i, true);
         item.addEventListener('click', selectHandler);
-        item.addEventListener('keydown', (e) => {
-          const dir = normalizeDirection(e);
-          if (dir === 'enter') {
-            e.preventDefault();
-            selectHandler();
-          }
+        
+        // Auto-scroll playlist item into view on focus
+        item.addEventListener('focus', () => {
+          item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
         });
+
+
         playlistEl.appendChild(item);
       });
     }
-
-
-
-
-    // D-Pad Up/Down navigation between playlist items (was missing entirely
-    // before — TV browsers were relying on unreliable built-in spatial nav).
-    playlistEl.addEventListener('keydown', (e) => {
-      const dir = normalizeDirection(e);
-      if (dir !== 'down' && dir !== 'up') return;
-
-
-      e.preventDefault();
-      e.stopPropagation();
-
-
-      if (isScrollThrottled) return;
-      isScrollThrottled = true;
-      setTimeout(() => { isScrollThrottled = false; }, 60);
-
-
-      const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
-      const currentIndex = items.indexOf(document.activeElement);
-      let targetIndex;
-      if (dir === 'down') {
-        targetIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, items.length - 1);
-      } else {
-        targetIndex = currentIndex < 0 ? 0 : Math.max(currentIndex - 1, 0);
-      }
-      const target = items[targetIndex];
-      if (target) {
-        target.focus();
-        target.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      }
-    });
-
-
 
 
     function scrollPlaylistToActive() {
@@ -900,20 +752,14 @@
     }
 
 
-
-
     function pad3(num) {
       return String(num).padStart(3, '0');
     }
 
 
-
-
     async function loadSurah(index, autoPlay = true) {
       currentSurahIndex = index;
       const surah = surahs[index];
-
-
 
 
       document.querySelectorAll('.playlist-item').forEach((el, i) => {
@@ -922,26 +768,15 @@
       scrollPlaylistToActive();
 
 
-
-
       lcdTitle.textContent = `${i18n[currentLang].loading} ${surah.englishName}`;
 
 
-
-
       try {
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,fr.hamidullah`);
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani`);
         const data = await res.json();
 
 
-
-
         currentAyahsAr = data.data[0].ayahs;
-        currentAyahsFr = data.data[1].ayahs;
-
-
-
-
         playAyah(0, autoPlay);
       } catch (err) {
         lcdTitle.textContent = i18n[currentLang].error;
@@ -949,56 +784,35 @@
     }
 
 
-
-
     function playAyah(index, autoPlay = true) {
       if (!currentAyahsAr || index >= currentAyahsAr.length) return;
-
-
 
 
       currentAyahIndex = index;
       const surahNum = surahs[currentSurahIndex].number;
       const ayahAr = currentAyahsAr[index];
-      const ayahFr = currentAyahsFr[index];
-
-
 
 
       isBasmalahPlaying = false;
 
 
-
-
       let displayAr = ayahAr.text;
-      let displayFr = ayahFr.text;
-
-
 
 
       // Basmalah injection (Exclude Surah 1 & 9)
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
         const bismillahAr = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\n\n";
-        const bismillahFr = "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux\n\n";
         displayAr = bismillahAr + displayAr;
-        displayFr = bismillahFr + displayFr;
       }
 
 
-
-
       arTextEl.textContent = displayAr;
-      frTextEl.textContent = displayFr;
       textContainer.scrollTop = 0;
 
 
-
-
-      const reciter = reciterSelect.value;
+      const reciter = selectedReciterId;
       const formattedSurah = pad3(surahNum);
       const formattedAyah = pad3(index + 1);
-
-
 
 
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
@@ -1009,17 +823,11 @@
       }
 
 
-
-
       audio.load();
-
-
 
 
       const surahName = currentLang === 'fr' ? surahs[currentSurahIndex].englishName : surahs[currentSurahIndex].name;
       lcdTitle.textContent = `${surahName} - ${i18n[currentLang].ayah} ${index + 1}/${currentAyahsAr.length}`;
-
-
 
 
       if (autoPlay) {
@@ -1032,135 +840,86 @@
     }
 
 
-
-
-    // --- Custom Reciter Picker (fixes: white popup in dark mode, and
-    // unreliable TV spatial-nav focus around the native <select>) ---
-    function buildReciterList() {
-      reciterList.innerHTML = '';
-      const options = Array.from(reciterSelect.options);
-      options.forEach((opt, index) => {
-        const li = document.createElement('li');
-        li.className = 'reciter-item';
-        li.setAttribute('tabindex', '0');
-        if (reciterSelect.selectedIndex === index) li.classList.add('selected');
-        li.textContent = opt.text;
-        li.addEventListener('click', () => selectReciter(index));
-        reciterList.appendChild(li);
-      });
-    }
-
-
-    function selectReciter(index) {
-      reciterSelect.selectedIndex = index;
-      updateReciterTriggerText();
-      reciterModal.classList.add('hidden');
-      reciterTrigger.focus();
-      buildReciterList();
-      reciterSelect.dispatchEvent(new Event('change'));
-    }
-
-
-    function updateReciterTriggerText() {
-      const idx = reciterSelect.selectedIndex;
-      reciterTriggerText.textContent = reciterSelect.options[idx] ? reciterSelect.options[idx].text : '';
-    }
-
-
-    function openReciterModal() {
-      reciterModalTitle.textContent = i18n[currentLang].reciter;
-      reciterModal.classList.remove('hidden');
-      const items = reciterList.querySelectorAll('.reciter-item');
-      const selected = reciterList.querySelector('.selected') || items[0];
-      if (selected) {
-        selected.focus();
-        selected.scrollIntoView({ block: 'center' });
-      }
-    }
-
-
-    function closeReciterModal() {
-      reciterModal.classList.add('hidden');
-      reciterTrigger.focus();
-    }
-
-
-    reciterTrigger.addEventListener('click', openReciterModal);
-    reciterModalClose.addEventListener('click', closeReciterModal);
-    reciterModal.addEventListener('click', (e) => {
-      if (e.target === reciterModal) closeReciterModal();
-    });
-
-
-    reciterList.addEventListener('keydown', (e) => {
-      const items = Array.from(reciterList.querySelectorAll('.reciter-item'));
-      const currentIndex = items.indexOf(document.activeElement);
-      const dir = normalizeDirection(e);
-
-
-      if (dir === 'down' || dir === 'up') {
-        e.preventDefault();
-        e.stopPropagation();
-
-
-        if (isScrollThrottled) return;
-        isScrollThrottled = true;
-        setTimeout(() => { isScrollThrottled = false; }, 60);
-
-
-        let targetIndex;
-        if (dir === 'down') {
-          targetIndex = Math.min(currentIndex + 1, items.length - 1);
-        } else {
-          targetIndex = Math.max(currentIndex - 1, 0);
-        }
-        const target = items[targetIndex];
-        target.focus();
-        target.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      } else if (dir === 'enter') {
-        e.preventDefault();
-        e.stopPropagation();
-        if (document.activeElement && document.activeElement.classList.contains('reciter-item')) {
-          document.activeElement.click();
-        }
-      } else if (dir === 'back') {
-        e.preventDefault();
-        e.stopPropagation();
-        closeReciterModal();
-      }
-    });
-
-
-
-
+    /* Unified TV Remote Navigation */
     function setupTVNavigation() {
-      // Global D-Pad listener for older TV remotes
       window.addEventListener('keydown', (e) => {
-        // Let the reciter modal's own handler own Up/Down/Enter/Back while open
-        if (!reciterModal.classList.contains('hidden')) return;
-        if (document.activeElement && document.activeElement.classList.contains('reciter-item')) return;
-        if (document.activeElement && document.activeElement.classList.contains('playlist-item')) return;
-
-
-        const dir = normalizeDirection(e);
+        const key = e.key || e.keyCode;
         const active = document.activeElement;
 
 
-        // Trigger click on 'OK' key on remote
-        if (dir === 'enter') {
-          if (active && active.tagName !== 'BODY') {
+        // Unified OK/Enter trigger
+        if (key === 'Enter' || key === 13 || key === 'OK' || key === 'Select') {
+          if (active && active !== document.body) {
+            e.preventDefault();
             active.click();
           }
+          return;
         }
 
 
-        // Direct Seek / Volume adjustment with Left / Right D-Pad keys
+        // Modal Navigation Trap
+        if (reciterModal.classList.contains('open')) {
+          const options = Array.from(reciterList.querySelectorAll('.reciter-option'));
+          const curIndex = options.indexOf(active);
+
+
+          if (key === 'ArrowUp' || key === 38) {
+            e.preventDefault();
+            if (curIndex > 0) {
+              options[curIndex - 1].focus();
+              options[curIndex - 1].scrollIntoView({ block: 'nearest' });
+            }
+          } else if (key === 'ArrowDown' || key === 40) {
+            e.preventDefault();
+            if (curIndex < options.length - 1) {
+              options[curIndex + 1].focus();
+              options[curIndex + 1].scrollIntoView({ block: 'nearest' });
+            }
+          } else if (key === 'Back' || key === 'Escape' || key === 27) {
+            e.preventDefault();
+            closeReciterModal();
+          }
+          return;
+        }
+
+
+        // Playlist D-Pad Navigation with Scroll-Into-View (Fixes Bug 1)
+        if (active && active.classList.contains('playlist-item')) {
+          const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
+          const curIndex = items.indexOf(active);
+
+
+          if (key === 'ArrowUp' || key === 38) {
+            e.preventDefault();
+            if (curIndex > 0) {
+              const prev = items[curIndex - 1];
+              prev.focus();
+              prev.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            } else {
+              reciterBtn.focus();
+            }
+          } else if (key === 'ArrowDown' || key === 40) {
+            e.preventDefault();
+            if (curIndex < items.length - 1) {
+              const next = items[curIndex + 1];
+              next.focus();
+              next.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            } else {
+              textContainer.focus();
+            }
+          }
+          return;
+        }
+
+
+        // Sliders D-Pad Left/Right Adjustment
         if (active && active.tagName === 'INPUT' && active.type === 'range') {
-          if (dir === 'left') {
+          if (key === 'ArrowLeft' || key === 37) {
+            e.preventDefault();
             active.value = Math.max(0, parseInt(active.value) - 5);
             active.dispatchEvent(new Event('input'));
-          }
-          if (dir === 'right') {
+          } else if (key === 'ArrowRight' || key === 39) {
+            e.preventDefault();
             active.value = Math.min(100, parseInt(active.value) + 5);
             active.dispatchEvent(new Event('input'));
           }
@@ -1168,24 +927,32 @@
       });
 
 
-      // Scroll containers when D-Pad arrows are pressed on focused containers
+      // D-Pad Scroll Quran Text Container
       textContainer.addEventListener('keydown', (e) => {
-        const dir = normalizeDirection(e);
-        if (dir === 'up') { textContainer.scrollTop -= 60; e.preventDefault(); }
-        if (dir === 'down') { textContainer.scrollTop += 60; e.preventDefault(); }
+        const key = e.key || e.keyCode;
+        if (key === 'ArrowUp' || key === 38) {
+          textContainer.scrollTop -= 50;
+          e.preventDefault();
+        } else if (key === 'ArrowDown' || key === 40) {
+          textContainer.scrollTop += 50;
+          e.preventDefault();
+        }
       });
     }
 
 
-
-
     function setupEventListeners() {
+      reciterBtn.addEventListener('click', openReciterModal);
+      modalCloseBtn.addEventListener('click', closeReciterModal);
+      reciterModal.addEventListener('click', (e) => {
+        if (e.target === reciterModal) closeReciterModal();
+      });
+
+
       playBtn.addEventListener('click', () => {
         initAudioContext();
         audio.play();
       });
-
-
 
 
       pauseBtn.addEventListener('click', () => audio.pause());
@@ -1196,14 +963,10 @@
       });
 
 
-
-
       prevBtn.addEventListener('click', () => {
         if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1, true);
         else if (currentSurahIndex > 0) loadSurah(currentSurahIndex - 1, true);
       });
-
-
 
 
       nextBtn.addEventListener('click', () => {
@@ -1212,12 +975,10 @@
       });
 
 
-
-
       audio.addEventListener('ended', () => {
         if (isBasmalahPlaying) {
           isBasmalahPlaying = false;
-          const reciter = reciterSelect.value;
+          const reciter = selectedReciterId;
           const formattedSurah = pad3(surahs[currentSurahIndex].number);
           audio.src = `https://everyayah.com/data/${reciter}/${formattedSurah}001.mp3`;
           audio.load();
@@ -1226,16 +987,12 @@
         }
 
 
-
-
         if (currentAyahIndex < currentAyahsAr.length - 1) {
           playAyah(currentAyahIndex + 1, true);
         } else if (currentSurahIndex < surahs.length - 1) {
           loadSurah(currentSurahIndex + 1, true);
         }
       });
-
-
 
 
       audio.addEventListener('timeupdate', () => {
@@ -1248,8 +1005,6 @@
       });
 
 
-
-
       seekBar.addEventListener('input', () => {
         if (!isNaN(audio.duration)) {
           audio.currentTime = (seekBar.value / 100) * audio.duration;
@@ -1257,18 +1012,9 @@
       });
 
 
-
-
       volumeBar.addEventListener('input', () => {
         audio.volume = volumeBar.value / 100;
       });
-
-
-
-
-      reciterSelect.addEventListener('change', () => playAyah(currentAyahIndex, true));
-
-
 
 
       themeBtn.addEventListener('click', () => {
@@ -1277,19 +1023,16 @@
       });
 
 
-
-
       langBtn.addEventListener('click', () => {
         currentLang = currentLang === 'fr' ? 'ar' : 'fr';
         document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
         langBtn.textContent = currentLang === 'fr' ? 'AR' : 'FR';
         appTitleEl.textContent = i18n[currentLang].title;
         renderPlaylist();
+        renderReciterList();
         if (currentAyahsAr.length > 0) playAyah(currentAyahIndex, !audio.paused);
       });
     }
-
-
 
 
     window.addEventListener('DOMContentLoaded', init);
