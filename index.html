@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=VT323&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 
 
+
+
   <style>
     :root {
       --bg-color: #120e0b;
@@ -27,6 +29,8 @@
       --focus-ring: #ffe600;
       --modal-overlay: rgba(0, 0, 0, 0.85);
     }
+
+
 
 
     [data-theme="light"] {
@@ -48,6 +52,8 @@
     }
 
 
+
+
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
     
     body {
@@ -61,6 +67,8 @@
       padding: 12px;
       transition: background 0.3s, color 0.3s;
     }
+
+
 
 
     .winamp-container {
@@ -78,11 +86,15 @@
     }
 
 
+
+
     :focus, :focus-visible {
       outline: 3px solid var(--focus-ring) !important;
       outline-offset: 2px !important;
       box-shadow: 0 0 12px var(--focus-ring) !important;
     }
+
+
 
 
     .title-bar {
@@ -96,6 +108,8 @@
       align-items: center;
       border-radius: 5px;
     }
+
+
 
 
     .title-bar-controls { display: flex; gap: 6px; }
@@ -112,6 +126,8 @@
     }
 
 
+
+
     .lcd-screen {
       background-color: var(--lcd-bg);
       border: 2px inset var(--chassis-border);
@@ -123,6 +139,8 @@
       gap: 10px;
       align-items: center;
     }
+
+
 
 
     .lcd-info { overflow: hidden; text-align: right; }
@@ -138,10 +156,14 @@
     }
 
 
+
+
     @keyframes ticker-rtl {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
+
+
 
 
     .lcd-timer {
@@ -153,6 +175,8 @@
     }
 
 
+
+
     .lcd-ayah-count {
       font-family: 'VT323', monospace;
       color: var(--lcd-text);
@@ -160,6 +184,8 @@
       opacity: 0.85;
       margin-top: 2px;
     }
+
+
 
 
     canvas#spectrum {
@@ -172,11 +198,15 @@
     }
 
 
+
+
     .controls-panel {
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
+
+
 
 
     .reciter-trigger-btn {
@@ -196,6 +226,8 @@
     }
 
 
+
+
     .reciter-trigger-btn::after {
       content: '▼';
       font-size: 11px;
@@ -203,11 +235,15 @@
     }
 
 
+
+
     .transport-buttons {
       display: flex;
       justify-content: center;
       gap: 10px;
     }
+
+
 
 
     .btn-winamp {
@@ -226,10 +262,14 @@
     }
 
 
+
+
     .btn-winamp.btn-main {
       width: 50px;
       height: 50px;
     }
+
+
 
 
     .btn-winamp svg {
@@ -239,15 +279,21 @@
     }
 
 
+
+
     .btn-winamp.btn-main svg {
       width: 22px;
       height: 22px;
     }
 
 
+
+
     .btn-winamp:hover svg, .btn-winamp:focus svg {
       fill: #ffffff;
     }
+
+
 
 
     .sliders {
@@ -257,6 +303,8 @@
     }
 
 
+
+
     input[type=range] {
       -webkit-appearance: none;
       background: #000;
@@ -264,6 +312,8 @@
       border-radius: 5px;
       border: 1px solid var(--chassis-border);
     }
+
+
 
 
     input[type=range]::-webkit-slider-thumb {
@@ -276,8 +326,12 @@
     }
 
 
+
+
     .seek-bar { flex: 2; }
     .volume-bar { flex: 1; }
+
+
 
 
     .playlist-window {
@@ -291,6 +345,8 @@
     }
 
 
+
+
     .playlist-item {
       padding: 8px 12px;
       cursor: pointer;
@@ -298,6 +354,8 @@
       justify-content: space-between;
       border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     }
+
+
 
 
     .playlist-item:hover, .playlist-item:focus {
@@ -311,11 +369,13 @@
     }
 
 
+
+
     .quran-text-container {
       background: var(--panel-bg);
       border: 2px inset var(--chassis-border);
       padding: 12px;
-      height: 150px; /* Fixed height to prevent layout jumps */
+      height: 150px;
       overflow-y: auto;
       text-align: center;
       border-radius: 6px;
@@ -327,16 +387,20 @@
     }
 
 
+
+
     .ar-text {
       font-family: 'Amiri', serif;
-      font-size: 26px; /* Fixed size for consistency */
+      font-size: clamp(18px, 2.5vw, 26px);
       color: var(--accent);
       direction: rtl;
-      line-height: 1.7;
+      line-height: 1.6;
       font-weight: bold;
       white-space: pre-line;
       width: 100%;
     }
+
+
 
 
     .ayah-marker {
@@ -344,6 +408,8 @@
       font-size: 0.7em;
       font-weight: normal;
     }
+
+
 
 
     .modal-overlay {
@@ -361,10 +427,14 @@
     }
 
 
+
+
     .modal-overlay.open {
       opacity: 1;
       pointer-events: auto;
     }
+
+
 
 
     .modal-card {
@@ -380,6 +450,8 @@
     }
 
 
+
+
     .modal-header {
       background: var(--gold-gradient);
       color: #120e0b;
@@ -392,6 +464,8 @@
     }
 
 
+
+
     .modal-close-btn {
       background: transparent;
       border: none;
@@ -402,11 +476,15 @@
     }
 
 
+
+
     .modal-list {
       overflow-y: auto;
       padding: 6px 0;
       max-height: 60vh;
     }
+
+
 
 
     .reciter-option {
@@ -421,9 +499,13 @@
     }
 
 
+
+
     .reciter-option:hover, .reciter-option:focus {
       background: rgba(212, 175, 55, 0.25);
     }
+
+
 
 
     .reciter-option.selected {
@@ -431,6 +513,8 @@
       color: #120e0b;
       font-weight: bold;
     }
+
+
 
 
     ::-webkit-scrollbar { width: 6px; }
@@ -441,6 +525,8 @@
 <body>
 
 
+
+
   <div class="winamp-container" id="app-container">
     <div class="title-bar">
       <span id="app-title">ويناتمب - مشغل القرآن الكريم</span>
@@ -448,6 +534,8 @@
         <button class="win-btn" id="btn-theme" tabindex="0">☀</button>
       </div>
     </div>
+
+
 
 
     <div class="lcd-screen">
@@ -460,10 +548,14 @@
     </div>
 
 
+
+
     <div class="controls-panel">
       <button class="reciter-trigger-btn" id="reciter-btn" tabindex="0">
         <span id="reciter-label">محمود خليل الحصري</span>
       </button>
+
+
 
 
       <div class="transport-buttons">
@@ -485,6 +577,8 @@
       </div>
 
 
+
+
       <div class="sliders">
         <input type="range" id="seek-bar" class="seek-bar" value="0" min="0" max="100" step="0.1" tabindex="0">
         <input type="range" id="volume-bar" class="volume-bar" value="80" min="0" max="100" tabindex="0">
@@ -492,13 +586,19 @@
     </div>
 
 
+
+
     <div class="playlist-window" id="playlist"></div>
+
+
 
 
     <div class="quran-text-container" id="text-container" tabindex="0">
       <div class="ar-text" id="ar-text">اخْتَر سُورَة لِلْبَدْء</div>
     </div>
   </div>
+
+
 
 
   <div class="modal-overlay" id="reciter-modal">
@@ -512,7 +612,11 @@
   </div>
 
 
+
+
   <audio id="audio-player" playsinline></audio>
+
+
 
 
   <script>
@@ -534,6 +638,8 @@
     ];
 
 
+
+
     let selectedReciterId = "Husary_128kbps";
     let surahs = [];
     let currentSurahIndex = 0;
@@ -545,8 +651,12 @@
     let vizMode = 0;
 
 
-    // Variables for continuous timer
-    let totalElapsedBeforeCurrentAyah = 0;
+
+
+    // Variables pour le chronomètre continu
+    let totalElapsedBeforeCurrentAyah = 0; // temps cumulé des ayahs déjà terminés
+
+
 
 
     const audio = document.getElementById('audio-player');
@@ -567,6 +677,8 @@
     const canvas = document.getElementById('spectrum');
 
 
+
+
     const reciterBtn = document.getElementById('reciter-btn');
     const reciterLabel = document.getElementById('reciter-label');
     const reciterModal = document.getElementById('reciter-modal');
@@ -574,13 +686,17 @@
     const modalCloseBtn = document.getElementById('modal-close');
 
 
+
+
     canvasCtx = canvas.getContext('2d');
 
 
-    const ARABIC_INDIC_DIGITS = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-    function toArabicIndicNumber(num) {
-      return String(num).split('').map(d => ARABIC_INDIC_DIGITS[+d] ?? d).join('');
-    }
+
+
+
+
+
+
 
 
     async function init() {
@@ -590,6 +706,8 @@
       setupEventListeners();
       setupTVNavigation();
     }
+
+
 
 
     function setupTouchUnlock() {
@@ -608,6 +726,8 @@
     }
 
 
+
+
     function initAudioContext() {
       if (isAudioInitialized) {
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -615,9 +735,13 @@
       }
 
 
+
+
       if (window.location.protocol !== 'file:') {
         audio.setAttribute('crossorigin', 'anonymous');
       }
+
+
 
 
       try {
@@ -638,12 +762,18 @@
     }
 
 
+
+
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
 
+
+
       if (!analyser) return;
+
+
 
 
       const bufferLength = analyser.frequencyBinCount;
@@ -651,9 +781,13 @@
       analyser.getByteFrequencyData(dataArray);
 
 
+
+
       const color = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim();
       canvasCtx.fillStyle = color;
       canvasCtx.strokeStyle = color;
+
+
 
 
       if (vizMode === 0) {
@@ -685,6 +819,8 @@
     }
 
 
+
+
     function renderReciterList() {
       reciterList.innerHTML = '';
       RECITERS.forEach((r) => {
@@ -695,12 +831,17 @@
         item.innerHTML = `<span>${r.name}</span>${r.id === selectedReciterId ? '<span>✓</span>' : ''}`;
 
 
+
+
         const selectHandler = () => {
           selectedReciterId = r.id;
           reciterLabel.textContent = r.name;
           closeReciterModal();
+          // Rejouer l'ayah en cours avec le nouveau récitateur
           playAyah(currentAyahIndex, true);
         };
+
+
 
 
         item.addEventListener('click', selectHandler);
@@ -710,6 +851,8 @@
     }
 
 
+
+
     function openReciterModal() {
       reciterModal.classList.add('open');
       const selectedItem = reciterList.querySelector('.reciter-option.selected') || reciterList.firstElementChild;
@@ -717,10 +860,14 @@
     }
 
 
+
+
     function closeReciterModal() {
       reciterModal.classList.remove('open');
       reciterBtn.focus();
     }
+
+
 
 
     async function fetchSurahs() {
@@ -734,6 +881,8 @@
         lcdTitle.textContent = "خطأ في الاتصال";
       }
     }
+
+
 
 
     function renderPlaylist() {
@@ -751,9 +900,13 @@
         });
 
 
+
+
         playlistEl.appendChild(item);
       });
     }
+
+
 
 
     function scrollPlaylistToActive() {
@@ -764,14 +917,20 @@
     }
 
 
+
+
     function pad3(num) {
       return String(num).padStart(3, '0');
     }
 
 
+
+
     async function loadSurah(index, autoPlay = true) {
       currentSurahIndex = index;
       const surah = surahs[index];
+
+
 
 
       document.querySelectorAll('.playlist-item').forEach((el, i) => {
@@ -780,16 +939,25 @@
       scrollPlaylistToActive();
 
 
+
+
       lcdTitle.textContent = `جاري التحميل... ${surah.name}`;
 
 
+
+
+      // Réinitialiser le compteur cumulé pour la nouvelle sourate
       totalElapsedBeforeCurrentAyah = 0;
       seekBar.value = 0;
+
+
 
 
       try {
         const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani`);
         const data = await res.json();
+
+
 
 
         currentAyahsAr = data.data[0].ayahs;
@@ -800,8 +968,12 @@
     }
 
 
+
+
     function playAyah(index, autoPlay = true) {
       if (!currentAyahsAr || index >= currentAyahsAr.length) return;
+
+
 
 
       currentAyahIndex = index;
@@ -809,14 +981,25 @@
       const ayahAr = currentAyahsAr[index];
 
 
-      arTextEl.innerHTML = `${ayahAr.text} <span class="ayah-marker">﴿${toArabicIndicNumber(ayahAr.numberInSurah)}﴾</span>`;
+
+
+      // Affichage du texte avec le numéro de l'ayah (marqueur traditionnel)
+      arTextEl.innerHTML = `${ayahAr.text} <span class="ayah-marker">﴿${ayahAr.numberInSurah}﴾</span>`;
       textContainer.scrollTop = 0;
 
 
+
+
+      // Compteur آية X من Y
       lcdAyahCount.textContent = `آية ${ayahAr.numberInSurah} / ${currentAyahsAr.length}`;
 
 
+
+
+      // Réinitialiser la barre de progression pour le nouvel ayah (elle suit désormais l'ayah en cours, pas la sourate entière)
       seekBar.value = 0;
+
+
 
 
       const reciter = selectedReciterId;
@@ -824,6 +1007,9 @@
       const formattedAyah = pad3(index + 1);
 
 
+
+
+      // Gestion de la Basmala audio
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
         isBasmalahPlaying = true;
         audio.src = `https://everyayah.com/data/${reciter}/001001.mp3`;
@@ -833,10 +1019,16 @@
       }
 
 
+
+
       audio.load();
 
 
+
+
       lcdTitle.textContent = `${surahs[currentSurahIndex].name}`;
+
+
 
 
       if (autoPlay) {
@@ -846,6 +1038,9 @@
     }
 
 
+
+
+    // Fonction utilitaire pour formater le temps (mm:ss)
     function formatTime(seconds) {
       if (isNaN(seconds) || seconds < 0) seconds = 0;
       const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -854,10 +1049,14 @@
     }
 
 
+
+
     function setupTVNavigation() {
       window.addEventListener('keydown', (e) => {
         const key = e.key || e.keyCode;
         const active = document.activeElement;
+
+
 
 
         if (key === 'Enter' || key === 13 || key === 'OK' || key === 'Select') {
@@ -869,9 +1068,13 @@
         }
 
 
+
+
         if (reciterModal.classList.contains('open')) {
           const options = Array.from(reciterList.querySelectorAll('.reciter-option'));
           const curIndex = options.indexOf(active);
+
+
 
 
           if (key === 'ArrowUp' || key === 38) {
@@ -894,9 +1097,13 @@
         }
 
 
+
+
         if (active && active.classList.contains('playlist-item')) {
           const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
           const curIndex = items.indexOf(active);
+
+
 
 
           if (key === 'ArrowUp' || key === 38) {
@@ -922,6 +1129,8 @@
         }
 
 
+
+
         if (active && active.tagName === 'INPUT' && active.type === 'range') {
           if (key === 'ArrowLeft' || key === 37) {
             e.preventDefault();
@@ -934,6 +1143,8 @@
           }
         }
       });
+
+
 
 
       textContainer.addEventListener('keydown', (e) => {
@@ -949,10 +1160,14 @@
     }
 
 
+
+
     function setupEventListeners() {
       canvas.addEventListener('click', () => {
         vizMode = (vizMode + 1) % 3;
       });
+
+
 
 
       reciterBtn.addEventListener('click', openReciterModal);
@@ -962,10 +1177,14 @@
       });
 
 
+
+
       playBtn.addEventListener('click', () => {
         initAudioContext();
         audio.play();
       });
+
+
 
 
       pauseBtn.addEventListener('click', () => audio.pause());
@@ -976,10 +1195,14 @@
       });
 
 
+
+
       prevBtn.addEventListener('click', () => {
         if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1, true);
         else if (currentSurahIndex > 0) loadSurah(currentSurahIndex - 1, true);
       });
+
+
 
 
       nextBtn.addEventListener('click', () => {
@@ -988,9 +1211,13 @@
       });
 
 
+
+
       audio.addEventListener('ended', () => {
+        // Si c'était la Basmala, on ajoute sa durée au cumul et on passe au premier ayah
         if (isBasmalahPlaying) {
           isBasmalahPlaying = false;
+          // Ajouter la durée de la Basmala au cumul
           if (!isNaN(audio.duration)) {
             totalElapsedBeforeCurrentAyah += audio.duration;
           }
@@ -1003,11 +1230,17 @@
         }
 
 
+
+
+        // Fin d'un ayah normal : ajouter sa durée au cumul
         if (!isNaN(audio.duration)) {
           totalElapsedBeforeCurrentAyah += audio.duration;
         }
 
 
+
+
+        // Passer à l'ayah suivant ou à la sourate suivante
         if (currentAyahIndex < currentAyahsAr.length - 1) {
           playAyah(currentAyahIndex + 1, true);
         } else if (currentSurahIndex < surahs.length - 1) {
@@ -1016,24 +1249,38 @@
       });
 
 
+
+
+      // Mise à jour du chronomètre continu et de la barre de progression
       audio.addEventListener('timeupdate', () => {
+        // Ignorer les mises à jour pendant la lecture de la Basmala pour ne pas fausser le cumul de l'ayah 1
         const current = audio.currentTime || 0;
         const totalElapsed = totalElapsedBeforeCurrentAyah + (isBasmalahPlaying ? 0 : current);
         lcdTime.textContent = formatTime(totalElapsed);
 
 
+
+
+        // La barre de progression suit désormais la lecture de l'ayah EN COURS,
+        // donc elle avance en temps réel avec le chronomètre au lieu de bouger
+        // imperceptiblement sur les longues sourates (ex: 286 ayahs).
         if (!isBasmalahPlaying && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
           seekBar.value = Math.min(100, (current / audio.duration) * 100);
         }
       });
 
 
+
+
+      // Gestion du déplacement manuel du curseur (dans l'ayah en cours uniquement)
       seekBar.addEventListener('input', () => {
-        if (isBasmalahPlaying) return;
+        if (isBasmalahPlaying) return; // pas de scrub pendant la Basmala
         if (!isNaN(audio.duration) && audio.duration > 0) {
           audio.currentTime = (parseFloat(seekBar.value) / 100) * audio.duration;
         }
       });
+
+
 
 
       volumeBar.addEventListener('input', () => {
@@ -1041,11 +1288,15 @@
       });
 
 
+
+
       themeBtn.addEventListener('click', () => {
         const html = document.documentElement;
         html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
       });
     }
+
+
 
 
     window.addEventListener('DOMContentLoaded', init);
