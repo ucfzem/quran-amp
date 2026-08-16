@@ -364,6 +364,37 @@ L'utilisateur a fourni un `index.html` complet intégrant le **visualiseur multi
 - `worker.js` régénéré via `/tmp/opencode/_gen-worker.js` (37 685 octets) ; `node --check` OK ; smoke test (import ESM → `worker.default.fetch`) : `/` 200 + 16/16 probes PASS, `/x` 404. Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `94ad1228-17cc-4dcf-921a-aa7f95973162`**.
 - **Vérifications post-déploiement :** CF, Vercel et Pages servent v12 (200 + 6/6 probes chacun, instantanés) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ (parse statique : 15 cartes publiques, index 2).
 
+## 6quattuordecies. Version Android — Capacitor 7 (`mobile/`) (16 août 2026)
+
+Conversion de l'app web en **application Android Google Play** via Capacitor, dans un dossier isolé `mobile/` — **l'original web (`index.html` à la racine) n'est jamais modifié** (copie traitée dans `mobile/www/`).
+
+### Choix validés par l'utilisateur
+- **Option A : copie traitée** (polices locales + bridge natif + cache API + JS obfusqué dans `mobile/www/`), jamais la source.
+- **Dossier `mobile/android/` standard** (nom attendu par Capacitor, zéro renommage).
+- **Capacitor 7** (pas 6) : le plugin `@srikarthiks/capacitor-media-session` exige `>=7` (vérifié : toutes ses versions 0.0.1→0.0.8 demandent Cap ≥ 7) ; Capacitor 7 cible SDK 35, exigence Google Play 2026.
+
+### Contenu généré
+- `mobile/package.json` (Capacitor 7.6.8, `@capacitor/app` 7.1.2, `@capacitor/splash-screen` 7.0.5, `@srikarthiks/capacitor-media-session` 0.0.8, `javascript-obfuscator` 4.2.2), `capacitor.config.json` (appId `com.ucfzem.quranamp`, appName « Quran Amp », webDir `www`, splash #120e0b, `allowMixedContent=false`, `webContentsDebuggingEnabled=false`).
+- Scripts : `scripts/install-fonts.mjs` (TTF Google Fonts → local), `scripts/obfuscate.mjs` (javascript-obfuscator : stringArray base64, identifiants hexadécimaux, vérifié par `node --check` dans le build), `scripts/build.mjs` (fonts + transform + obfuscate → `www/`).
+- `www/` : copie avec `<link css/fonts.css>` local (fini fonts.googleapis.com), `<script src="js/native-bridge.js">` injecté avant le script principal, `overscroll-behavior:none`, JS obfusqué (`_0x…`).
+- Polices locales vérifiées avec fontTools : **Amiri 339 glyphes arabes**, Tajawal 67, VT323 0 (arabe du compteur LCD retombe sur la police système — normal, chiffres OK).
+- `native-bridge.js` : patch `window.fetch` (cache `localStorage` 30 j pour `api.alquran.cloud`), bouton retour (`@capacitor/app`, ferme les modales sinon quitte), **MediaSession** (`Capacitor.Plugins.MediaSession` : setMetadata title=`#lcd-title`/artist=`#reciter-label`, play/pause/position, action handlers play/pause/prev/next/seekto câblés sur les boutons `btn-prev`/`btn-next`).
+- Natif : `MainActivity.java` enregistre `MediaSessionPlugin` (classe `com.goalplay.capacitormediasession.MediaSessionPlugin`) ; manifest `INTERNET` seul + `FOREGROUND_SERVICE_MEDIA_PLAYBACK` (exigé API 34+ ; le plugin ajoute au merge `FOREGROUND_SERVICE` + `WAKE_LOCK`, obligatoires pour l'audio en arrière-plan) ; `hardwareAccelerated=true`, `supportsRtl=true` ; SDK min 23 / compile 35 / target 35 (`variables.gradle`).
+- `README-ANDROID.md` : commandes, **politique de confidentialité** prête à publier, **réponses exactes du formulaire Data Safety** (Non partout), checklist Play.
+
+### Commandes exécutées et validées
+`npm install` (0 vulnérabilité) → `npm run build:web` (6 polices TTF, obfuscation OK) → `npx cap add android` (3 plugins détectés) → `npx cap sync android`. Assets copiés vérifiés dans `android/app/src/main/assets/public` (bridge + fonts + obfusqué).
+
+### Déploiement / CI
+- **Commit `6e3d115`** « feat(mobile): Android app (Capacitor 7) … » poussé sur `ucfzem/quran-amp` (70 fichiers ; `node_modules` et artefacts build exclus par `.gitignore`).
+- **Workflow GitHub Actions** `.github/workflows/build-android.yml` : à chaque push touchant `mobile/` → Java 21 + Node 22, `npm ci`, `npm run build:web && cap sync`, `./gradlew assembleDebug` (APK installable) + `./gradlew bundleRelease` (AAB), artefacts téléchargeables (Actions → artifact).
+
+### Utilisateur : tester / installer
+1. Sur téléphone : mode développeur + débogage USB, puis `npx cap open android` + ▶ Run (test lock-screen audio).
+2. Sans câble : APK debug depuis Actions (artifact `quran-amp-android`) ou `app/build/outputs/apk/debug/app-debug.apk`, activer « sources inconnues ».
+3. En attendant : version web https://ucfzem.github.io/quran-amp/ identique.
+4. Publier : Android Studio → Generate Signed Bundle (keystore) → `app/build/outputs/bundle/release/app-release.aab`.
+
 ## 7. Vérification finale
 
 
@@ -376,3 +407,4 @@ L'utilisateur a fourni un `index.html` complet intégrant le **visualiseur multi
 - Tout futur changement : `git add -A && git commit -m "..." && git push origin main` (Vercel auto-déploie via le repo connecté).
 - Cloudflare : reconstruire `worker.js` si `index.html` change puis `wrangler deploy`.
 - Vérifier sur mobile/TV : défilement playlist, spectre, lecture enchaînée des versets, OK/Enter D-Pad sur webOS/Tizen, picker récitateur (Up/Down/Enter/Back dans les deux thèmes).
+- Android : si `index.html` change → `cd mobile && npm run build:web && npx cap sync android` (l'obfuscation se régénère) ; les builds automatiques arrivent dans GitHub Actions (onglet Actions).
