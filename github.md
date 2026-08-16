@@ -310,6 +310,9 @@ Nouvelle version fournie par l'utilisateur, testée et déployée.
 - `worker.js` régénéré (33 546 octets), vérifié (`node --check` + fetch 200/404 + écoulé/restant + branche heures présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `00b7206e-05b2-438a-b756-b45405350b60`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent v10 (CF + Vercel instantanés, Pages au 5ᵉ poll ~25 s) ; portail `ucfzem.github.io/works` 200, Quran Amp toujours 3ᵉ.
 
+### Vérification finale de la session (16 août 2026)
+- Un script de vérification jsdom (avec `url`) semblait **bloquer** (« Still hanging there ») : c'était le chargement réseau de jsdom, pas l'application — les 4 URL répondent 200. Vérification re-faite par **parse statique** du script `works/index.html` (sans réseau) : ordre = `["Quran Majeed v3","Quran Reader","Quran Amp","Tanger d'Antan",…]`, **Quran Amp index 2 (3ᵉ carte)** — intact depuis v1. Aucune modification du portail dans v9/v10 (seuls les backups ont été commités).
+
 ## 7. Vérification finale
 
 
