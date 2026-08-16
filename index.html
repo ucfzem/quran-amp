@@ -797,6 +797,11 @@
       let displayAr = ayahAr.text;
 
 
+      if (index === 0 && surahNum !== 1) {
+        displayAr = displayAr.replace(/^بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\s*/, '');
+      }
+
+
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
         const bismillahAr = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\n\n";
         displayAr = bismillahAr + displayAr;
