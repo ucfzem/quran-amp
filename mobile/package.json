@@ -1,0 +1,26 @@
+{
+  "name": "quran-amp-mobile",
+  "version": "12.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Quran Amp - version Android (Capacitor 7). L'original web reste dans le dossier parent.",
+  "scripts": {
+    "fonts": "node scripts/install-fonts.mjs",
+    "build:web": "node scripts/build.mjs",
+    "obfuscate": "node scripts/obfuscate.mjs",
+    "sync": "npm run build:web && npx cap sync android",
+    "release": "npm run build:web && npx cap sync android",
+    "open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@srikarthiks/capacitor-media-session": "^0.0.8"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "javascript-obfuscator": "^4.1.1"
+  }
+}

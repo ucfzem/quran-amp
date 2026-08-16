@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Quran Amp</string>
+    <string name="title_activity_main">Quran Amp</string>
+    <string name="package_name">com.ucfzem.quranamp</string>
+    <string name="custom_url_scheme">com.ucfzem.quranamp</string>
+</resources>
