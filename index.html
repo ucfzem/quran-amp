@@ -112,7 +112,6 @@
     }
 
 
-    /* LCD Screen & Interactive Visualizer (Fix 4) */
     .lcd-screen {
       background-color: var(--lcd-bg);
       border: 2px inset var(--chassis-border);
@@ -154,7 +153,6 @@
     }
 
 
-    /* Interactive Spectrum Canvas */
     canvas#spectrum {
       width: 100px;
       height: 40px;
@@ -172,7 +170,6 @@
     }
 
 
-    /* Arabic Reciter Trigger Button */
     .reciter-trigger-btn {
       width: 100%;
       background: var(--btn-bg);
@@ -197,7 +194,6 @@
     }
 
 
-    /* Resized Transport Buttons (Fix 1) */
     .transport-buttons {
       display: flex;
       justify-content: center;
@@ -275,7 +271,6 @@
     .volume-bar { flex: 1; }
 
 
-    /* Playlist Window */
     .playlist-window {
       background: var(--panel-bg);
       border: 2px inset var(--chassis-border);
@@ -307,7 +302,6 @@
     }
 
 
-    /* Quran Text Box */
     .quran-text-container {
       background: var(--panel-bg);
       border: 2px inset var(--chassis-border);
@@ -337,7 +331,6 @@
     }
 
 
-    /* Reciter Modal */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -452,13 +445,11 @@
 
 
     <div class="controls-panel">
-      <!-- Arabic Reciters Dropdown Trigger (Fix 3) -->
       <button class="reciter-trigger-btn" id="reciter-btn" tabindex="0">
-        <span id="reciter-label">مشاري راشد العفاسي</span>
+        <span id="reciter-label">محمود خليل الحصري</span>
       </button>
 
 
-      <!-- Resized Transport Buttons (Fix 1) -->
       <div class="transport-buttons">
         <button class="btn-winamp" id="btn-prev" tabindex="0" title="السابقة">
           <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
@@ -478,7 +469,6 @@
       </div>
 
 
-      <!-- Smooth Surah Progress Bar (Fix 5) -->
       <div class="sliders">
         <input type="range" id="seek-bar" class="seek-bar" value="0" min="0" max="100" step="0.1" tabindex="0">
         <input type="range" id="volume-bar" class="volume-bar" value="80" min="0" max="100" tabindex="0">
@@ -495,7 +485,6 @@
   </div>
 
 
-  <!-- Reciter Selection Modal -->
   <div class="modal-overlay" id="reciter-modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -511,8 +500,8 @@
 
 
   <script>
-    // Expanded Reciters with Arabic Names and Fixed Paths (Fix 3)
     const RECITERS = [
+      { id: "Husary_128kbps", name: "محمود خليل الحصري" },
       { id: "Alafasy_128kbps", name: "مشاري راشد العفاسي" },
       { id: "Abdurrahmaan_As-Sudais_192kbps", name: "عبد الرحمن السديس" },
       { id: "Ghamadi_40kbps", name: "سعد الغامدي" },
@@ -520,7 +509,6 @@
       { id: "Abdul_Basit_Murattal_192kbps", name: "عبد الباسط عبد الصمد" },
       { id: "Saood bin Ibraaheem Ash-Shuraym_128kbps", name: "سعود الشريم" },
       { id: "Abu_Bakr_Ash-Shaatree_128kbps", name: "أبو بكر الشاطري" },
-      { id: "Husary_128kbps", name: "محمود خليل الحصري" },
       { id: "Yasser_Ad-Dussary_128kbps", name: "ياسر الدوسري" },
       { id: "Nasser_Alqatami_128kbps", name: "ناصر القطامي" },
       { id: "Muhammad_Jibreel_128kbps", name: "محمد جبريل" },
@@ -530,7 +518,7 @@
     ];
 
 
-    let selectedReciterId = "Alafasy_128kbps";
+    let selectedReciterId = "Husary_128kbps";
     let surahs = [];
     let currentSurahIndex = 0;
     let currentAyahIndex = 0;
@@ -538,7 +526,7 @@
     let audioCtx, analyser, source, canvasCtx;
     let isAudioInitialized = false;
     let isBasmalahPlaying = false;
-    let vizMode = 0; // Toggleable visualizer modes
+    let vizMode = 0;
 
 
     const audio = document.getElementById('audio-player');
@@ -580,6 +568,9 @@
     function setupTouchUnlock() {
       const unlockHandler = () => {
         initAudioContext();
+        if (!audio.src || audio.paused) {
+          loadSurah(0, true);
+        }
         window.removeEventListener('touchstart', unlockHandler);
         window.removeEventListener('click', unlockHandler);
         window.removeEventListener('keydown', unlockHandler);
@@ -620,7 +611,6 @@
     }
 
 
-    // Canvas Visualizer Toggleable Modes (Fix 4)
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
@@ -640,7 +630,6 @@
 
 
       if (vizMode === 0) {
-        // Bars Visualizer
         const barWidth = (canvas.width / bufferLength) * 1.5;
         let x = 0;
         for (let i = 0; i < bufferLength; i++) {
@@ -649,7 +638,6 @@
           x += barWidth;
         }
       } else if (vizMode === 1) {
-        // Waveform Visualizer
         canvasCtx.beginPath();
         canvasCtx.lineWidth = 2;
         const sliceWidth = canvas.width / bufferLength;
@@ -663,7 +651,6 @@
         }
         canvasCtx.stroke();
       } else {
-        // Oscillating Line Visualizer
         const avg = dataArray.reduce((a, b) => a + b, 0) / bufferLength;
         const h = (avg / 255) * canvas.height;
         canvasCtx.fillRect(0, canvas.height / 2 - h / 2, canvas.width, Math.max(2, h));
@@ -715,7 +702,7 @@
         const data = await res.json();
         surahs = data.data;
         renderPlaylist();
-        await loadSurah(0, false);
+        await loadSurah(0, true);
       } catch (err) {
         lcdTitle.textContent = "خطأ في الاتصال";
       }
@@ -791,25 +778,8 @@
       const ayahAr = currentAyahsAr[index];
 
 
-      isBasmalahPlaying = false;
-
-
-      let displayAr = ayahAr.text;
-
-
-      if (index === 0 && surahNum !== 1) {
-        displayAr = displayAr.replace(/^بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\s*/, '');
-      }
-
-
-      if (index === 0 && surahNum !== 1 && surahNum !== 9) {
-        const bismillahAr = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\n\n";
-        displayAr = bismillahAr + displayAr;
-      }
-
-
-      // Display Arabic Text directly without ayah counter numbers (Fix 2)
-      arTextEl.textContent = displayAr;
+      // عرض النص كما هو دون أي تعديل (لا نضيف بسملة ولا نحذفها)
+      arTextEl.textContent = ayahAr.text;
       textContainer.scrollTop = 0;
 
 
@@ -818,10 +788,12 @@
       const formattedAyah = pad3(index + 1);
 
 
+      // تشغيل البسملة الصوتية فقط للآية الأولى من السور غير 1 و 9
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
         isBasmalahPlaying = true;
         audio.src = `https://everyayah.com/data/${reciter}/001001.mp3`;
       } else {
+        isBasmalahPlaying = false;
         audio.src = `https://everyayah.com/data/${reciter}/${formattedSurah}${formattedAyah}.mp3`;
       }
 
@@ -829,16 +801,12 @@
       audio.load();
 
 
-      // Simplified LCD Title without numbers (Fix 2)
       lcdTitle.textContent = `${surahs[currentSurahIndex].name}`;
 
 
       if (autoPlay) {
         initAudioContext();
-        let promise = audio.play();
-        if (promise !== undefined) {
-          promise.catch(e => console.log("User interaction required."));
-        }
+        audio.play().catch(e => console.log("التشغيل التلقائي يحتاج تفاعل المستخدم."));
       }
     }
 
@@ -939,7 +907,6 @@
 
 
     function setupEventListeners() {
-      // Toggle spectrum mode on click/OK (Fix 4)
       canvas.addEventListener('click', () => {
         vizMode = (vizMode + 1) % 3;
       });
@@ -998,13 +965,11 @@
       });
 
 
-      // Continuous Whole-Surah Progress Bar Gliding (Fix 5)
       audio.addEventListener('timeupdate', () => {
         if (!isNaN(audio.duration) && currentAyahsAr.length > 0) {
           const totalAyahs = currentAyahsAr.length;
           const currentAyahProgress = audio.currentTime / audio.duration;
           
-          // Overall Surah percentage = (Completed Ayahs + Current Ayah Fraction) / Total Ayahs
           const overallProgress = ((currentAyahIndex + currentAyahProgress) / totalAyahs) * 100;
           seekBar.value = overallProgress;
 
@@ -1016,8 +981,13 @@
       });
 
 
-      // Seeking across the whole Surah (Fix 5)
       seekBar.addEventListener('input', () => {
+        // تحسين صغير: إلغاء حالة البسملة إذا كان المستخدم يحرك الشريط أثناء تشغيلها
+        if (isBasmalahPlaying) {
+          isBasmalahPlaying = false;
+        }
+
+
         if (currentAyahsAr.length > 0) {
           const targetPercentage = parseFloat(seekBar.value) / 100;
           const totalAyahs = currentAyahsAr.length;
