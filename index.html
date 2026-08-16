@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr" data-theme="dark" dir="ltr">
+<!DOCTYPE html><html lang="fr" data-theme="dark" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,6 +6,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=VT323&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+
 
 
   <style>
@@ -29,6 +30,8 @@
     }
 
 
+
+
     [data-theme="light"] {
       --bg-color: #f4efe6;
       --chassis-bg: linear-gradient(145deg, #e8dfd1, #cdbfab);
@@ -48,6 +51,8 @@
     }
 
 
+
+
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
     
     body {
@@ -61,6 +66,8 @@
       padding: 16px;
       transition: background 0.3s, color 0.3s;
     }
+
+
 
 
     /* TV Responsive Winamp Container */
@@ -78,12 +85,16 @@
     }
 
 
+
+
     /* Spatial Navigation Focus Styles */
     :focus, :focus-visible {
       outline: 3px solid var(--focus-ring) !important;
       outline-offset: 2px !important;
       box-shadow: 0 0 12px var(--focus-ring) !important;
     }
+
+
 
 
     /* Title Bar */
@@ -101,6 +112,8 @@
     }
 
 
+
+
     .title-bar-controls { display: flex; gap: 8px; }
     
     .win-btn {
@@ -113,6 +126,8 @@
       font-weight: bold;
       padding: 0 6px;
     }
+
+
 
 
     /* LCD Screen */
@@ -129,6 +144,8 @@
     }
 
 
+
+
     .lcd-info { overflow: hidden; }
     
     .lcd-ticker {
@@ -142,10 +159,14 @@
     }
 
 
+
+
     @keyframes ticker {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
+
+
 
 
     [dir="rtl"] .lcd-ticker {
@@ -153,10 +174,14 @@
     }
 
 
+
+
     @keyframes ticker-rtl {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
+
+
 
 
     .lcd-timer {
@@ -168,6 +193,8 @@
     }
 
 
+
+
     canvas#spectrum {
       width: 120px;
       height: 48px;
@@ -175,6 +202,8 @@
       border: 1px solid var(--chassis-border);
       border-radius: 3px;
     }
+
+
 
 
     /* Controls Panel */
@@ -185,7 +214,11 @@
     }
 
 
+
+
     .selectors { display: flex; gap: 8px; }
+
+
 
 
     select {
@@ -203,11 +236,15 @@
     }
 
 
+
+
     .transport-buttons {
       display: flex;
       justify-content: space-between;
       gap: 8px;
     }
+
+
 
 
     .btn-winamp {
@@ -227,11 +264,15 @@
     }
 
 
+
+
     .btn-winamp:active {
       border-style: inset;
       box-shadow: inset 1px 1px 3px rgba(0,0,0,0.8);
       color: var(--btn-active);
     }
+
+
 
 
     .sliders {
@@ -241,6 +282,8 @@
     }
 
 
+
+
     input[type=range] {
       -webkit-appearance: none;
       background: #000;
@@ -248,6 +291,8 @@
       border-radius: 6px;
       border: 1px solid var(--chassis-border);
     }
+
+
 
 
     input[type=range]::-webkit-slider-thumb {
@@ -260,8 +305,12 @@
     }
 
 
+
+
     .seek-bar { flex: 2; }
     .volume-bar { flex: 1; }
+
+
 
 
     /* Playlist Window */
@@ -273,7 +322,11 @@
       font-size: 15px;
       border-radius: 4px;
       scroll-behavior: smooth;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
     }
+
+
 
 
     .playlist-item {
@@ -285,6 +338,8 @@
     }
 
 
+
+
     .playlist-item:hover, .playlist-item:focus {
       background: rgba(212, 175, 55, 0.25);
     }
@@ -294,6 +349,8 @@
       color: #1a1410;
       font-weight: bold;
     }
+
+
 
 
     /* Quran Text Display Window */
@@ -314,6 +371,8 @@
     }
 
 
+
+
     .ar-text {
       font-family: 'Amiri', serif;
       font-size: 26px;
@@ -325,6 +384,8 @@
     }
 
 
+
+
     .fr-text {
       font-size: 15px;
       opacity: 0.9;
@@ -333,9 +394,12 @@
     }
 
 
+
+
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--panel-bg); }
     ::-webkit-scrollbar-thumb { background: var(--chassis-border); border-radius: 4px; }
+
 
     /* TV Font & Hit Target Adjustments */
     .ar-text {
@@ -343,22 +407,133 @@
       line-height: 1.8;
     }
 
+
     .fr-text {
       font-size: clamp(18px, 2vw, 24px) !important;
     }
+
 
     .playlist-item {
       padding: 14px 16px !important;
       font-size: 18px !important;
     }
 
+
     .btn-winamp {
       height: 56px !important;
       font-size: 20px !important;
     }
+
+
+    /* --- Custom Reciter Picker (replaces native <select> popup) --- */
+    .reciter-picker { flex: 1; position: relative; }
+
+
+    .reciter-trigger {
+      width: 100%;
+      height: 52px;
+      background-color: var(--panel-bg);
+      color: var(--text-main);
+      border: 1px solid var(--btn-border);
+      padding: 8px 16px;
+      font-size: 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+
+    .reciter-trigger .arrow { opacity: 0.7; font-size: 14px; }
+
+
+    .reciter-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .reciter-modal:not(.hidden) { opacity: 1; pointer-events: auto; }
+    .reciter-modal.hidden { display: none; }
+
+
+    .reciter-modal-content {
+      background: var(--panel-bg);
+      color: var(--text-main);
+      border: 2px solid var(--chassis-border);
+      border-radius: 8px;
+      width: 88%;
+      max-width: 400px;
+      max-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+
+    .reciter-modal-header {
+      padding: 12px 16px;
+      background: var(--gold-gradient);
+      color: #1a1410;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+    .reciter-modal-close {
+      background: none;
+      border: none;
+      color: #1a1410;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+
+    .reciter-list {
+      list-style: none;
+      overflow-y: auto;
+      max-height: 55vh;
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+
+    .reciter-item {
+      padding: 14px 16px;
+      color: var(--text-main);
+      font-size: 17px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+      cursor: pointer;
+      outline: none;
+    }
+
+
+    .reciter-item:hover,
+    .reciter-item:focus,
+    .reciter-item.selected {
+      background: var(--accent) !important;
+      color: #1a1410 !important;
+      outline: 2px solid var(--focus-ring) !important;
+      outline-offset: -2px !important;
+    }
   </style>
 </head>
 <body>
+
+
 
 
   <div class="winamp-container" id="app-container">
@@ -371,6 +546,8 @@
     </div>
 
 
+
+
     <div class="lcd-screen">
       <div class="lcd-info">
         <div class="lcd-ticker" id="lcd-title">Appuyez sur PLAY pour démarrer</div>
@@ -380,8 +557,11 @@
     </div>
 
 
+
+
     <div class="selectors">
-      <select id="reciter-select" tabindex="0">
+      <!-- Kept for logic/state only; native popup UI replaced below -->
+      <select id="reciter-select" style="display:none;">
         <option value="Alafasy_128kbps">Mishary Rashid Alafasy</option>
         <option value="Abdurrahmaan_As-Sudais_192kbps">Abdul Rahman Al-Sudais</option>
         <option value="Ghamadi_40kbps">Saad Al-Ghamdi</option>
@@ -393,7 +573,26 @@
         <option value="Saood bin Ibraaheem Ash-Shuraym_128kbps">Saud Al-Shuraim</option>
         <option value="Nasser_Alqatami_128kbps">Nasser Al-Qatami</option>
       </select>
+
+
+      <div class="reciter-picker">
+        <button type="button" class="reciter-trigger" id="reciter-trigger" tabindex="0">
+          <span id="reciter-trigger-text">Mishary Rashid Alafasy</span>
+          <span class="arrow">▾</span>
+        </button>
+        <div class="reciter-modal hidden" id="reciter-modal">
+          <div class="reciter-modal-content">
+            <div class="reciter-modal-header">
+              <span id="reciter-modal-title">Récitateur</span>
+              <button type="button" class="reciter-modal-close" id="reciter-modal-close">&times;</button>
+            </div>
+            <ul class="reciter-list" id="reciter-list"></ul>
+          </div>
+        </div>
+      </div>
     </div>
+
+
 
 
     <div class="controls-panel">
@@ -406,6 +605,8 @@
       </div>
 
 
+
+
       <div class="sliders">
         <input type="range" id="seek-bar" class="seek-bar" value="0" min="0" max="100" tabindex="0">
         <input type="range" id="volume-bar" class="volume-bar" value="80" min="0" max="100" tabindex="0">
@@ -413,7 +614,11 @@
     </div>
 
 
+
+
     <div class="playlist-window" id="playlist" tabindex="0"></div>
+
+
 
 
     <div class="quran-text-container" id="text-container" tabindex="0">
@@ -423,7 +628,11 @@
   </div>
 
 
+
+
   <audio id="audio-player" playsinline></audio>
+
+
 
 
   <script>
@@ -436,12 +645,17 @@
     let audioCtx, analyser, source, canvasCtx;
     let isAudioInitialized = false;
     let isBasmalahPlaying = false;
+    let isScrollThrottled = false;
+
+
 
 
     const i18n = {
-      fr: { title: "WINAMP - LECTEUR CORAN", loading: "Chargement...", ayah: "Verset", error: "Erreur de connexion" },
-      ar: { title: "ويناتمب - مشغل القرآن الكريم", loading: "جاري التحميل...", ayah: "الآية", error: "خطأ في الاتصال" }
+      fr: { title: "WINAMP - LECTEUR CORAN", loading: "Chargement...", ayah: "Verset", error: "Erreur de connexion", reciter: "Récitateur" },
+      ar: { title: "ويناتمب - مشغل القرآن الكريم", loading: "جاري التحميل...", ayah: "الآية", error: "خطأ في الاتصال", reciter: "القارئ" }
     };
+
+
 
 
     const audio = document.getElementById('audio-player');
@@ -465,7 +679,39 @@
     const canvas = document.getElementById('spectrum');
 
 
+    // Custom reciter picker refs
+    const reciterTrigger = document.getElementById('reciter-trigger');
+    const reciterTriggerText = document.getElementById('reciter-trigger-text');
+    const reciterModal = document.getElementById('reciter-modal');
+    const reciterModalClose = document.getElementById('reciter-modal-close');
+    const reciterModalTitle = document.getElementById('reciter-modal-title');
+    const reciterList = document.getElementById('reciter-list');
+
+
+
+
     canvasCtx = canvas.getContext('2d');
+
+
+
+
+    // Normalize a keydown event across old/new TV remote firmwares.
+    // Old WebKit/Tizen/WebOS browsers often don't populate `key` correctly
+    // and only report legacy `keyCode` values (40=Down, 38=Up, 37=Left,
+    // 39=Right, 13=Enter, 27/10009/461=Back).
+    function normalizeDirection(e) {
+      const key = e.key;
+      const code = e.keyCode || e.which;
+      if (key === 'ArrowDown' || code === 40) return 'down';
+      if (key === 'ArrowUp' || code === 38) return 'up';
+      if (key === 'ArrowLeft' || code === 37) return 'left';
+      if (key === 'ArrowRight' || code === 39) return 'right';
+      if (key === 'Enter' || key === ' ' || code === 13 || code === 32) return 'enter';
+      if (key === 'Escape' || key === 'Back' || code === 27 || code === 10009 || code === 461) return 'back';
+      return null;
+    }
+
+
 
 
     async function init() {
@@ -473,7 +719,11 @@
       await fetchSurahs();
       setupEventListeners();
       setupTVNavigation();
+      buildReciterList();
+      updateReciterTriggerText();
     }
+
+
 
 
     function setupTouchUnlock() {
@@ -489,6 +739,8 @@
     }
 
 
+
+
     function initAudioContext() {
       if (isAudioInitialized) {
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -496,9 +748,13 @@
       }
 
 
+
+
       if (window.location.protocol !== 'file:') {
         audio.setAttribute('crossorigin', 'anonymous');
       }
+
+
 
 
       try {
@@ -519,12 +775,18 @@
     }
 
 
+
+
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
 
+
+
       if (!analyser) return;
+
+
 
 
       const bufferLength = analyser.frequencyBinCount;
@@ -532,8 +794,12 @@
       analyser.getByteFrequencyData(dataArray);
 
 
+
+
       const barWidth = (canvas.width / bufferLength) * 1.5;
       let x = 0;
+
+
 
 
       for (let i = 0; i < bufferLength; i++) {
@@ -541,11 +807,15 @@
         const color = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim();
 
 
+
+
         canvasCtx.fillStyle = color;
         canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
         x += barWidth;
       }
     }
+
+
 
 
     async function fetchSurahs() {
@@ -561,6 +831,8 @@
     }
 
 
+
+
     function renderPlaylist() {
       playlistEl.innerHTML = '';
       surahs.forEach((s, i) => {
@@ -573,7 +845,8 @@
         const selectHandler = () => loadSurah(i, true);
         item.addEventListener('click', selectHandler);
         item.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          const dir = normalizeDirection(e);
+          if (dir === 'enter') {
             e.preventDefault();
             selectHandler();
           }
@@ -581,6 +854,42 @@
         playlistEl.appendChild(item);
       });
     }
+
+
+
+
+    // D-Pad Up/Down navigation between playlist items (was missing entirely
+    // before — TV browsers were relying on unreliable built-in spatial nav).
+    playlistEl.addEventListener('keydown', (e) => {
+      const dir = normalizeDirection(e);
+      if (dir !== 'down' && dir !== 'up') return;
+
+
+      e.preventDefault();
+      e.stopPropagation();
+
+
+      if (isScrollThrottled) return;
+      isScrollThrottled = true;
+      setTimeout(() => { isScrollThrottled = false; }, 60);
+
+
+      const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
+      const currentIndex = items.indexOf(document.activeElement);
+      let targetIndex;
+      if (dir === 'down') {
+        targetIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, items.length - 1);
+      } else {
+        targetIndex = currentIndex < 0 ? 0 : Math.max(currentIndex - 1, 0);
+      }
+      const target = items[targetIndex];
+      if (target) {
+        target.focus();
+        target.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+
+
 
 
     function scrollPlaylistToActive() {
@@ -591,14 +900,20 @@
     }
 
 
+
+
     function pad3(num) {
       return String(num).padStart(3, '0');
     }
 
 
+
+
     async function loadSurah(index, autoPlay = true) {
       currentSurahIndex = index;
       const surah = surahs[index];
+
+
 
 
       document.querySelectorAll('.playlist-item').forEach((el, i) => {
@@ -607,7 +922,11 @@
       scrollPlaylistToActive();
 
 
+
+
       lcdTitle.textContent = `${i18n[currentLang].loading} ${surah.englishName}`;
+
+
 
 
       try {
@@ -615,8 +934,12 @@
         const data = await res.json();
 
 
+
+
         currentAyahsAr = data.data[0].ayahs;
         currentAyahsFr = data.data[1].ayahs;
+
+
 
 
         playAyah(0, autoPlay);
@@ -626,8 +949,12 @@
     }
 
 
+
+
     function playAyah(index, autoPlay = true) {
       if (!currentAyahsAr || index >= currentAyahsAr.length) return;
+
+
 
 
       currentAyahIndex = index;
@@ -636,11 +963,17 @@
       const ayahFr = currentAyahsFr[index];
 
 
+
+
       isBasmalahPlaying = false;
+
+
 
 
       let displayAr = ayahAr.text;
       let displayFr = ayahFr.text;
+
+
 
 
       // Basmalah injection (Exclude Surah 1 & 9)
@@ -652,14 +985,20 @@
       }
 
 
+
+
       arTextEl.textContent = displayAr;
       frTextEl.textContent = displayFr;
       textContainer.scrollTop = 0;
 
 
+
+
       const reciter = reciterSelect.value;
       const formattedSurah = pad3(surahNum);
       const formattedAyah = pad3(index + 1);
+
+
 
 
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
@@ -670,11 +1009,17 @@
       }
 
 
+
+
       audio.load();
+
+
 
 
       const surahName = currentLang === 'fr' ? surahs[currentSurahIndex].englishName : surahs[currentSurahIndex].name;
       lcdTitle.textContent = `${surahName} - ${i18n[currentLang].ayah} ${index + 1}/${currentAyahsAr.length}`;
+
+
 
 
       if (autoPlay) {
@@ -687,38 +1032,151 @@
     }
 
 
+
+
+    // --- Custom Reciter Picker (fixes: white popup in dark mode, and
+    // unreliable TV spatial-nav focus around the native <select>) ---
+    function buildReciterList() {
+      reciterList.innerHTML = '';
+      const options = Array.from(reciterSelect.options);
+      options.forEach((opt, index) => {
+        const li = document.createElement('li');
+        li.className = 'reciter-item';
+        li.setAttribute('tabindex', '0');
+        if (reciterSelect.selectedIndex === index) li.classList.add('selected');
+        li.textContent = opt.text;
+        li.addEventListener('click', () => selectReciter(index));
+        reciterList.appendChild(li);
+      });
+    }
+
+
+    function selectReciter(index) {
+      reciterSelect.selectedIndex = index;
+      updateReciterTriggerText();
+      reciterModal.classList.add('hidden');
+      reciterTrigger.focus();
+      buildReciterList();
+      reciterSelect.dispatchEvent(new Event('change'));
+    }
+
+
+    function updateReciterTriggerText() {
+      const idx = reciterSelect.selectedIndex;
+      reciterTriggerText.textContent = reciterSelect.options[idx] ? reciterSelect.options[idx].text : '';
+    }
+
+
+    function openReciterModal() {
+      reciterModalTitle.textContent = i18n[currentLang].reciter;
+      reciterModal.classList.remove('hidden');
+      const items = reciterList.querySelectorAll('.reciter-item');
+      const selected = reciterList.querySelector('.selected') || items[0];
+      if (selected) {
+        selected.focus();
+        selected.scrollIntoView({ block: 'center' });
+      }
+    }
+
+
+    function closeReciterModal() {
+      reciterModal.classList.add('hidden');
+      reciterTrigger.focus();
+    }
+
+
+    reciterTrigger.addEventListener('click', openReciterModal);
+    reciterModalClose.addEventListener('click', closeReciterModal);
+    reciterModal.addEventListener('click', (e) => {
+      if (e.target === reciterModal) closeReciterModal();
+    });
+
+
+    reciterList.addEventListener('keydown', (e) => {
+      const items = Array.from(reciterList.querySelectorAll('.reciter-item'));
+      const currentIndex = items.indexOf(document.activeElement);
+      const dir = normalizeDirection(e);
+
+
+      if (dir === 'down' || dir === 'up') {
+        e.preventDefault();
+        e.stopPropagation();
+
+
+        if (isScrollThrottled) return;
+        isScrollThrottled = true;
+        setTimeout(() => { isScrollThrottled = false; }, 60);
+
+
+        let targetIndex;
+        if (dir === 'down') {
+          targetIndex = Math.min(currentIndex + 1, items.length - 1);
+        } else {
+          targetIndex = Math.max(currentIndex - 1, 0);
+        }
+        const target = items[targetIndex];
+        target.focus();
+        target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      } else if (dir === 'enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (document.activeElement && document.activeElement.classList.contains('reciter-item')) {
+          document.activeElement.click();
+        }
+      } else if (dir === 'back') {
+        e.preventDefault();
+        e.stopPropagation();
+        closeReciterModal();
+      }
+    });
+
+
+
+
     function setupTVNavigation() {
       // Global D-Pad listener for older TV remotes
       window.addEventListener('keydown', (e) => {
-        const key = e.key || e.keyCode;
+        // Let the reciter modal's own handler own Up/Down/Enter/Back while open
+        if (!reciterModal.classList.contains('hidden')) return;
+        if (document.activeElement && document.activeElement.classList.contains('reciter-item')) return;
+        if (document.activeElement && document.activeElement.classList.contains('playlist-item')) return;
+
+
+        const dir = normalizeDirection(e);
         const active = document.activeElement;
 
+
         // Trigger click on 'OK' key on remote
-        if (key === 'Enter' || key === 13 || key === 'VK_ENTER' || key === 'Select') {
+        if (dir === 'enter') {
           if (active && active.tagName !== 'BODY') {
             active.click();
           }
         }
 
+
         // Direct Seek / Volume adjustment with Left / Right D-Pad keys
         if (active && active.tagName === 'INPUT' && active.type === 'range') {
-          if (key === 'ArrowLeft' || key === 37) {
+          if (dir === 'left') {
             active.value = Math.max(0, parseInt(active.value) - 5);
             active.dispatchEvent(new Event('input'));
           }
-          if (key === 'ArrowRight' || key === 39) {
+          if (dir === 'right') {
             active.value = Math.min(100, parseInt(active.value) + 5);
             active.dispatchEvent(new Event('input'));
           }
         }
       });
 
+
       // Scroll containers when D-Pad arrows are pressed on focused containers
       textContainer.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp' || e.keyCode === 38) { textContainer.scrollTop -= 60; e.preventDefault(); }
-        if (e.key === 'ArrowDown' || e.keyCode === 40) { textContainer.scrollTop += 60; e.preventDefault(); }
+        const dir = normalizeDirection(e);
+        if (dir === 'up') { textContainer.scrollTop -= 60; e.preventDefault(); }
+        if (dir === 'down') { textContainer.scrollTop += 60; e.preventDefault(); }
       });
     }
+
+
 
 
     function setupEventListeners() {
@@ -726,6 +1184,8 @@
         initAudioContext();
         audio.play();
       });
+
+
 
 
       pauseBtn.addEventListener('click', () => audio.pause());
@@ -736,16 +1196,22 @@
       });
 
 
+
+
       prevBtn.addEventListener('click', () => {
         if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1, true);
         else if (currentSurahIndex > 0) loadSurah(currentSurahIndex - 1, true);
       });
 
 
+
+
       nextBtn.addEventListener('click', () => {
         if (currentAyahIndex < currentAyahsAr.length - 1) playAyah(currentAyahIndex + 1, true);
         else if (currentSurahIndex < surahs.length - 1) loadSurah(currentSurahIndex + 1, true);
       });
+
+
 
 
       audio.addEventListener('ended', () => {
@@ -760,12 +1226,16 @@
         }
 
 
+
+
         if (currentAyahIndex < currentAyahsAr.length - 1) {
           playAyah(currentAyahIndex + 1, true);
         } else if (currentSurahIndex < surahs.length - 1) {
           loadSurah(currentSurahIndex + 1, true);
         }
       });
+
+
 
 
       audio.addEventListener('timeupdate', () => {
@@ -778,6 +1248,8 @@
       });
 
 
+
+
       seekBar.addEventListener('input', () => {
         if (!isNaN(audio.duration)) {
           audio.currentTime = (seekBar.value / 100) * audio.duration;
@@ -785,18 +1257,26 @@
       });
 
 
+
+
       volumeBar.addEventListener('input', () => {
         audio.volume = volumeBar.value / 100;
       });
 
 
+
+
       reciterSelect.addEventListener('change', () => playAyah(currentAyahIndex, true));
+
+
 
 
       themeBtn.addEventListener('click', () => {
         const html = document.documentElement;
         html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
       });
+
+
 
 
       langBtn.addEventListener('click', () => {
@@ -808,6 +1288,8 @@
         if (currentAyahsAr.length > 0) playAyah(currentAyahIndex, !audio.paused);
       });
     }
+
+
 
 
     window.addEventListener('DOMContentLoaded', init);
