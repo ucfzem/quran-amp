@@ -65,7 +65,34 @@ git push -u origin main
 ### Déploiement Cloudflare Workers
 - `worker.js` généré depuis `index.html` (réponse HTML directe, 20 975 octets).
 - `wrangler deploy` (token `cfut_…`, compte `Azer.tyu199p@gmail.com's Account`).
-- **Version ID :** `17661281-8339-469b-a3cd-cb20098f60d1` → `https://quran-amp.azer-tyu199p.workers.dev/`
+- **Version ID (v1 Gold) :** `17661281-8339-469b-a3cd-cb20098f60d1`
+- **Version ID (v2 TV Gold, actuelle) :** `8aa4cc32-e069-490e-b9d0-0bdec5b4b610`
+- URL : `https://quran-amp.azer-tyu199p.workers.dev/`
+
+## 6bis. Mise à jour « TV Gold Edition » (16 août 2026)
+
+L'utilisateur a fourni une version optimisée pour Smart TV et demandé 3 correctifs critiques pour les anciens téléviseurs (webOS legacy, NetCast, Tizen 2.x, Android TV anciens) :
+
+### Fix 1 — Global TV Keydown Controller (OK / Enter D-Pad)
+- Ajout d'un `window.addEventListener('keydown', …)` dans `setupTVNavigation()`.
+- `Enter` / `13` / `VK_ENTER` / `Select` → `active.click()` si un élément (≠ BODY) est focus.
+- Flèches `ArrowLeft/37` et `ArrowRight/39` sur `input[type=range]` focus → ajustement seek/volume ±5 + `dispatchEvent(new Event('input'))`.
+- Scroll `textContainer` en D-Pad haut/bas : ±60px (précédemment ±40px), avec `e.keyCode` comme fallback.
+
+### Fix 2 — Native `<select>` sur télécommande
+- `select` agrandi : `height: 52px`, `font-size: 18px`, `padding: 8px 16px`, `background-color: var(--panel-bg)`, `color: var(--text-main)`.
+
+### Fix 3 — Échelle TV à 10 ft
+- `.ar-text` : `clamp(32px, 4vw, 44px)` + `line-height: 1.8`.
+- `.fr-text` : `clamp(18px, 2vw, 24px)`.
+- `.playlist-item` : `padding: 14px 16px !important`, `font-size: 18px !important`.
+- `.btn-winamp` : `height: 56px !important`, `font-size: 20px !important`.
+
+### Déploiement v2
+- **Commit :** `f7ea366` « TV Gold Edition: legacy remote D-Pad keydown controller, oversized select/controls, 10ft-scaled typography » (après `2966444`).
+- `worker.js` régénéré depuis le nouvel `index.html` (25 031 octets), vérifié (`node --check` + fetch 200/404 via import ES module).
+- Push GitHub → GitHub Pages + Vercel auto-déployés. `wrangler deploy` → version `8aa4cc32-e069-490e-b9d0-0bdec5b4b610`.
+- **Vérifications post-déploiement :** les 3 plateformes servent 23 796 octets, titre « Winamp Quran Player - TV Gold Edition », contrôleur D-Pad (`VK_ENTER`) présent, `clamp(32px,4vw,44px)` présent, récitateur Shuraim corrigé présent.
 
 ## 6. Liens (validation) — tous HTTP 200 vérifiés
 
@@ -82,10 +109,10 @@ git push -u origin main
 ## 7. Vérification finale
 
 - Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
-- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé).
+- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé) et la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft).
 
 ## 8. Étapes suivantes
 
 - Tout futur changement : `git add -A && git commit -m "..." && git push origin main` (Vercel auto-déploie via le repo connecté).
 - Cloudflare : reconstruire `worker.js` si `index.html` change puis `wrangler deploy`.
-- Vérifier sur mobile/TV : défilement playlist, spectre, lecture enchaînée des versets.
+- Vérifier sur mobile/TV : défilement playlist, spectre, lecture enchaînée des versets, OK/Enter D-Pad sur webOS/Tizen.
