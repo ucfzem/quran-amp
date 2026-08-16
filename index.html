@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" data-theme="dark" dir="rtl">
+<!DOCTYPE html><html lang="ar" data-theme="dark" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,8 +6,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=VT323&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-
-
 
 
   <style>
@@ -31,8 +28,6 @@
     }
 
 
-
-
     [data-theme="light"] {
       --bg-color: #f4efe6;
       --chassis-bg: linear-gradient(145deg, #e8dfd1, #cdbfab);
@@ -52,8 +47,6 @@
     }
 
 
-
-
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
     
     body {
@@ -67,8 +60,6 @@
       padding: 12px;
       transition: background 0.3s, color 0.3s;
     }
-
-
 
 
     .winamp-container {
@@ -86,15 +77,11 @@
     }
 
 
-
-
     :focus, :focus-visible {
       outline: 3px solid var(--focus-ring) !important;
       outline-offset: 2px !important;
       box-shadow: 0 0 12px var(--focus-ring) !important;
     }
-
-
 
 
     .title-bar {
@@ -108,8 +95,6 @@
       align-items: center;
       border-radius: 5px;
     }
-
-
 
 
     .title-bar-controls { display: flex; gap: 6px; }
@@ -126,8 +111,6 @@
     }
 
 
-
-
     .lcd-screen {
       background-color: var(--lcd-bg);
       border: 2px inset var(--chassis-border);
@@ -139,8 +122,6 @@
       gap: 10px;
       align-items: center;
     }
-
-
 
 
     .lcd-info { overflow: hidden; text-align: right; }
@@ -156,14 +137,10 @@
     }
 
 
-
-
     @keyframes ticker-rtl {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-
-
 
 
     .lcd-timer {
@@ -175,8 +152,6 @@
     }
 
 
-
-
     .lcd-ayah-count {
       font-family: 'VT323', monospace;
       color: var(--lcd-text);
@@ -184,8 +159,6 @@
       opacity: 0.85;
       margin-top: 2px;
     }
-
-
 
 
     canvas#spectrum {
@@ -198,15 +171,11 @@
     }
 
 
-
-
     .controls-panel {
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
-
-
 
 
     .reciter-trigger-btn {
@@ -226,8 +195,6 @@
     }
 
 
-
-
     .reciter-trigger-btn::after {
       content: '▼';
       font-size: 11px;
@@ -235,15 +202,11 @@
     }
 
 
-
-
     .transport-buttons {
       display: flex;
       justify-content: center;
       gap: 10px;
     }
-
-
 
 
     .btn-winamp {
@@ -262,14 +225,10 @@
     }
 
 
-
-
     .btn-winamp.btn-main {
       width: 50px;
       height: 50px;
     }
-
-
 
 
     .btn-winamp svg {
@@ -279,21 +238,15 @@
     }
 
 
-
-
     .btn-winamp.btn-main svg {
       width: 22px;
       height: 22px;
     }
 
 
-
-
     .btn-winamp:hover svg, .btn-winamp:focus svg {
       fill: #ffffff;
     }
-
-
 
 
     .sliders {
@@ -303,8 +256,6 @@
     }
 
 
-
-
     input[type=range] {
       -webkit-appearance: none;
       background: #000;
@@ -312,8 +263,6 @@
       border-radius: 5px;
       border: 1px solid var(--chassis-border);
     }
-
-
 
 
     input[type=range]::-webkit-slider-thumb {
@@ -326,12 +275,8 @@
     }
 
 
-
-
     .seek-bar { flex: 2; }
     .volume-bar { flex: 1; }
-
-
 
 
     .playlist-window {
@@ -345,8 +290,6 @@
     }
 
 
-
-
     .playlist-item {
       padding: 8px 12px;
       cursor: pointer;
@@ -354,8 +297,6 @@
       justify-content: space-between;
       border-bottom: 1px solid rgba(212, 175, 55, 0.1);
     }
-
-
 
 
     .playlist-item:hover, .playlist-item:focus {
@@ -367,8 +308,6 @@
       color: #120e0b;
       font-weight: bold;
     }
-
-
 
 
     .quran-text-container {
@@ -387,8 +326,6 @@
     }
 
 
-
-
     .ar-text {
       font-family: 'Amiri', serif;
       font-size: clamp(18px, 2.5vw, 26px);
@@ -401,15 +338,11 @@
     }
 
 
-
-
     .ayah-marker {
       color: var(--lcd-text);
       font-size: 0.7em;
       font-weight: normal;
     }
-
-
 
 
     .modal-overlay {
@@ -427,14 +360,10 @@
     }
 
 
-
-
     .modal-overlay.open {
       opacity: 1;
       pointer-events: auto;
     }
-
-
 
 
     .modal-card {
@@ -450,8 +379,6 @@
     }
 
 
-
-
     .modal-header {
       background: var(--gold-gradient);
       color: #120e0b;
@@ -464,8 +391,6 @@
     }
 
 
-
-
     .modal-close-btn {
       background: transparent;
       border: none;
@@ -476,15 +401,11 @@
     }
 
 
-
-
     .modal-list {
       overflow-y: auto;
       padding: 6px 0;
       max-height: 60vh;
     }
-
-
 
 
     .reciter-option {
@@ -499,13 +420,9 @@
     }
 
 
-
-
     .reciter-option:hover, .reciter-option:focus {
       background: rgba(212, 175, 55, 0.25);
     }
-
-
 
 
     .reciter-option.selected {
@@ -515,16 +432,12 @@
     }
 
 
-
-
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--panel-bg); }
     ::-webkit-scrollbar-thumb { background: var(--chassis-border); border-radius: 3px; }
   </style>
 </head>
 <body>
-
-
 
 
   <div class="winamp-container" id="app-container">
@@ -536,10 +449,8 @@
     </div>
 
 
-
-
     <div class="lcd-screen">
-      <canvas id="spectrum" width="100" height="40"></canvas>
+      <canvas id="spectrum" width="100" height="40" tabindex="0" title="انقر لتغيير النمط"></canvas>
       <div class="lcd-info">
         <div class="lcd-ticker" id="lcd-title">اضغط تشغيل للبدء</div>
         <div class="lcd-timer" id="lcd-time">00:00</div>
@@ -548,14 +459,10 @@
     </div>
 
 
-
-
     <div class="controls-panel">
       <button class="reciter-trigger-btn" id="reciter-btn" tabindex="0">
         <span id="reciter-label">محمود خليل الحصري</span>
       </button>
-
-
 
 
       <div class="transport-buttons">
@@ -577,8 +484,6 @@
       </div>
 
 
-
-
       <div class="sliders">
         <input type="range" id="seek-bar" class="seek-bar" value="0" min="0" max="100" step="0.1" tabindex="0">
         <input type="range" id="volume-bar" class="volume-bar" value="80" min="0" max="100" tabindex="0">
@@ -586,19 +491,13 @@
     </div>
 
 
-
-
     <div class="playlist-window" id="playlist"></div>
-
-
 
 
     <div class="quran-text-container" id="text-container" tabindex="0">
       <div class="ar-text" id="ar-text">اخْتَر سُورَة لِلْبَدْء</div>
     </div>
   </div>
-
-
 
 
   <div class="modal-overlay" id="reciter-modal">
@@ -612,11 +511,7 @@
   </div>
 
 
-
-
   <audio id="audio-player" playsinline></audio>
-
-
 
 
   <script>
@@ -638,8 +533,6 @@
     ];
 
 
-
-
     let selectedReciterId = "Husary_128kbps";
     let surahs = [];
     let currentSurahIndex = 0;
@@ -651,12 +544,13 @@
     let idlePhase = 0;
 
 
+    // --- Nouveau : mode de visualisation (0=barres, 1=courbe, 2=remplissage, 3=cercles, 4=vagues) ---
+    let vizMode = 0;
+    const VIZ_MODES = ['Barres', 'Courbe', 'Remplissage', 'Cercles', 'Vagues'];
 
 
     // Variables pour le chronomètre continu
-    let totalElapsedBeforeCurrentAyah = 0; // temps cumulé des ayahs déjà terminés
-
-
+    let totalElapsedBeforeCurrentAyah = 0;
 
 
     const audio = document.getElementById('audio-player');
@@ -677,8 +571,6 @@
     const canvas = document.getElementById('spectrum');
 
 
-
-
     const reciterBtn = document.getElementById('reciter-btn');
     const reciterLabel = document.getElementById('reciter-label');
     const reciterModal = document.getElementById('reciter-modal');
@@ -686,17 +578,15 @@
     const modalCloseBtn = document.getElementById('modal-close');
 
 
-
-
     canvasCtx = canvas.getContext('2d');
 
 
-
-
-
-
-
-
+    // --- Clic sur le canvas pour changer de mode ---
+    canvas.addEventListener('click', () => {
+      vizMode = (vizMode + 1) % VIZ_MODES.length;
+      // Optionnel : afficher le nom du mode dans la console ou un tooltip
+      console.log('Mode visualisation :', VIZ_MODES[vizMode]);
+    });
 
 
     async function init() {
@@ -707,8 +597,6 @@
       setupEventListeners();
       setupTVNavigation();
     }
-
-
 
 
     function setupTouchUnlock() {
@@ -727,8 +615,6 @@
     }
 
 
-
-
     function initAudioContext() {
       if (isAudioInitialized) {
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -736,13 +622,9 @@
       }
 
 
-
-
       if (window.location.protocol !== 'file:') {
         audio.setAttribute('crossorigin', 'anonymous');
       }
-
-
 
 
       try {
@@ -762,13 +644,9 @@
     }
 
 
-
-
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
-
 
 
       const isActive = analyser && audio.src && !audio.paused;
@@ -782,26 +660,48 @@
     }
 
 
-
-
+    // --- NOUVEAU : dessin actif selon le mode ---
     function drawActiveSpectrum() {
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
       analyser.getByteFrequencyData(dataArray);
 
 
-      const barWidth = (canvas.width / bufferLength) * 1.5;
-      let x = 0;
-
-
       const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#d4af37';
       const lcdText = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim() || '#ffd700';
 
 
+      switch (vizMode) {
+        case 0: // Barres
+          drawBars(dataArray, accent, lcdText);
+          break;
+        case 1: // Courbe
+          drawCurve(dataArray, lcdText);
+          break;
+        case 2: // Remplissage (forme d'onde pleine)
+          drawFill(dataArray, accent, lcdText);
+          break;
+        case 3: // Cercles concentriques
+          drawCircles(dataArray, accent, lcdText);
+          break;
+        case 4: // Vagues animées
+          drawWaveform(dataArray, lcdText);
+          break;
+        default:
+          drawBars(dataArray, accent, lcdText);
+      }
+    }
+
+
+    // --- Mode 0 : Barres (original) ---
+    function drawBars(dataArray, accent, lcdText) {
+      const bufferLength = dataArray.length;
+      const barWidth = (canvas.width / bufferLength) * 1.5;
+      let x = 0;
+
+
       for (let i = 0; i < bufferLength; i++) {
         const barHeight = Math.max(2, (dataArray[i] / 255) * canvas.height);
-
-
         const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
         gradient.addColorStop(0, accent);
         gradient.addColorStop(1, lcdText);
@@ -815,7 +715,7 @@
         canvasCtx.restore();
 
 
-        // Bright peak cap for a hi-fi "LED meter" look
+        // Pic lumineux
         canvasCtx.save();
         canvasCtx.shadowColor = '#ffffff';
         canvasCtx.shadowBlur = 4;
@@ -829,8 +729,121 @@
     }
 
 
+    // --- Mode 1 : Courbe ---
+    function drawCurve(dataArray, lcdText) {
+      canvasCtx.beginPath();
+      canvasCtx.strokeStyle = lcdText;
+      canvasCtx.lineWidth = 2;
+      canvasCtx.shadowColor = lcdText;
+      canvasCtx.shadowBlur = 8;
+      const sliceWidth = canvas.width / dataArray.length;
+      let x = 0;
+      for (let i = 0; i < dataArray.length; i++) {
+        const v = dataArray[i] / 255.0;
+        const y = canvas.height - (v * canvas.height);
+        if (i === 0) canvasCtx.moveTo(x, y);
+        else canvasCtx.lineTo(x, y);
+        x += sliceWidth;
+      }
+      canvasCtx.stroke();
+    }
 
 
+    // --- Mode 2 : Remplissage (vague pleine) ---
+    function drawFill(dataArray, accent, lcdText) {
+      const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+      const h = (avg / 255) * canvas.height;
+      const gradient = canvasCtx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, lcdText);
+      gradient.addColorStop(1, accent);
+      canvasCtx.save();
+      canvasCtx.shadowColor = lcdText;
+      canvasCtx.shadowBlur = 10;
+      canvasCtx.fillStyle = gradient;
+      const rectHeight = Math.max(2, h);
+      canvasCtx.fillRect(0, (canvas.height - rectHeight) / 2, canvas.width, rectHeight);
+      canvasCtx.restore();
+    }
+
+
+    // --- Mode 3 : Cercles concentriques ---
+    function drawCircles(dataArray, accent, lcdText) {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const maxRadius = Math.min(canvas.width, canvas.height) / 2 - 2;
+
+
+      // Calcul de l'amplitude moyenne
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+      const avg = sum / dataArray.length;
+      const ratio = avg / 255; // 0..1
+
+
+      const radius = 2 + ratio * maxRadius;
+      canvasCtx.save();
+      canvasCtx.shadowColor = lcdText;
+      canvasCtx.shadowBlur = 8;
+      canvasCtx.strokeStyle = accent;
+      canvasCtx.lineWidth = 1.5;
+      canvasCtx.beginPath();
+      canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      canvasCtx.stroke();
+
+
+      // Deuxième cercle intérieur
+      const innerRadius = radius * 0.6;
+      canvasCtx.strokeStyle = lcdText;
+      canvasCtx.lineWidth = 1;
+      canvasCtx.beginPath();
+      canvasCtx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+      canvasCtx.stroke();
+
+
+      // Point central
+      canvasCtx.shadowBlur = 4;
+      canvasCtx.fillStyle = lcdText;
+      canvasCtx.beginPath();
+      canvasCtx.arc(centerX, centerY, 2, 0, Math.PI * 2);
+      canvasCtx.fill();
+      canvasCtx.restore();
+    }
+
+
+    // --- Mode 4 : Vagues animées (avec les données audio) ---
+    function drawWaveform(dataArray, lcdText) {
+      // On utilise les données pour moduler une vague sinusoïdale
+      const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+      const amplitude = (avg / 255) * (canvas.height / 2 - 4);
+
+
+      canvasCtx.save();
+      canvasCtx.shadowColor = lcdText;
+      canvasCtx.shadowBlur = 8;
+      canvasCtx.strokeStyle = lcdText;
+      canvasCtx.lineWidth = 2;
+      canvasCtx.globalAlpha = 0.9;
+      canvasCtx.beginPath();
+
+
+      const midY = canvas.height / 2;
+      const speed = 0.12;
+      const frequency = 0.2;
+
+
+      for (let x = 0; x <= canvas.width; x += 2) {
+        const phase = (x * frequency) + (performance.now() / 1000 * speed);
+        const envelope = 0.5 + 0.5 * Math.sin(phase);
+        const y = midY + Math.sin(phase * 1.5) * amplitude * envelope;
+        if (x === 0) canvasCtx.moveTo(x, y);
+        else canvasCtx.lineTo(x, y);
+      }
+      canvasCtx.stroke();
+      canvasCtx.restore();
+    }
+
+
+    // --- Dessin de veille (identique) ---
     function drawIdleWave() {
       idlePhase += 0.1;
       const lcdText = getComputedStyle(document.documentElement).getPropertyValue('--lcd-text').trim() || '#ffd700';
@@ -859,8 +872,6 @@
     }
 
 
-
-
     function renderReciterList() {
       reciterList.innerHTML = '';
       RECITERS.forEach((r) => {
@@ -871,17 +882,12 @@
         item.innerHTML = `<span>${r.name}</span>${r.id === selectedReciterId ? '<span>✓</span>' : ''}`;
 
 
-
-
         const selectHandler = () => {
           selectedReciterId = r.id;
           reciterLabel.textContent = r.name;
           closeReciterModal();
-          // Rejouer l'ayah en cours avec le nouveau récitateur
           playAyah(currentAyahIndex, true);
         };
-
-
 
 
         item.addEventListener('click', selectHandler);
@@ -891,8 +897,6 @@
     }
 
 
-
-
     function openReciterModal() {
       reciterModal.classList.add('open');
       const selectedItem = reciterList.querySelector('.reciter-option.selected') || reciterList.firstElementChild;
@@ -900,14 +904,10 @@
     }
 
 
-
-
     function closeReciterModal() {
       reciterModal.classList.remove('open');
       reciterBtn.focus();
     }
-
-
 
 
     async function fetchSurahs() {
@@ -921,8 +921,6 @@
         lcdTitle.textContent = "خطأ في الاتصال";
       }
     }
-
-
 
 
     function renderPlaylist() {
@@ -940,13 +938,9 @@
         });
 
 
-
-
         playlistEl.appendChild(item);
       });
     }
-
-
 
 
     function scrollPlaylistToActive() {
@@ -957,20 +951,14 @@
     }
 
 
-
-
     function pad3(num) {
       return String(num).padStart(3, '0');
     }
 
 
-
-
     async function loadSurah(index, autoPlay = true) {
       currentSurahIndex = index;
       const surah = surahs[index];
-
-
 
 
       document.querySelectorAll('.playlist-item').forEach((el, i) => {
@@ -979,25 +967,16 @@
       scrollPlaylistToActive();
 
 
-
-
       lcdTitle.textContent = `جاري التحميل... ${surah.name}`;
 
 
-
-
-      // Réinitialiser le compteur cumulé pour la nouvelle sourate
       totalElapsedBeforeCurrentAyah = 0;
       seekBar.value = 0;
-
-
 
 
       try {
         const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani`);
         const data = await res.json();
-
-
 
 
         currentAyahsAr = data.data[0].ayahs;
@@ -1008,12 +987,8 @@
     }
 
 
-
-
     function playAyah(index, autoPlay = true) {
       if (!currentAyahsAr || index >= currentAyahsAr.length) return;
-
-
 
 
       currentAyahIndex = index;
@@ -1021,25 +996,12 @@
       const ayahAr = currentAyahsAr[index];
 
 
-
-
-      // Affichage du texte avec le numéro de l'ayah (marqueur traditionnel)
       arTextEl.innerHTML = `${ayahAr.text} <span class="ayah-marker">﴿${ayahAr.numberInSurah}﴾</span>`;
       textContainer.scrollTop = 0;
 
 
-
-
-      // Compteur آية X من Y
       lcdAyahCount.textContent = `آية ${ayahAr.numberInSurah} / ${currentAyahsAr.length}`;
-
-
-
-
-      // Réinitialiser la barre de progression pour le nouvel ayah (elle suit désormais l'ayah en cours, pas la sourate entière)
       seekBar.value = 0;
-
-
 
 
       const reciter = selectedReciterId;
@@ -1047,9 +1009,6 @@
       const formattedAyah = pad3(index + 1);
 
 
-
-
-      // Gestion de la Basmala audio
       if (index === 0 && surahNum !== 1 && surahNum !== 9) {
         isBasmalahPlaying = true;
         audio.src = `https://everyayah.com/data/${reciter}/001001.mp3`;
@@ -1059,16 +1018,8 @@
       }
 
 
-
-
       audio.load();
-
-
-
-
       lcdTitle.textContent = `${surahs[currentSurahIndex].name}`;
-
-
 
 
       if (autoPlay) {
@@ -1078,15 +1029,11 @@
     }
 
 
-
-
-    // Fonction utilitaire pour formater le temps (MM:SS ou HH:MM:SS)
     function formatTime(totalSeconds) {
       if (isNaN(totalSeconds) || totalSeconds < 0) totalSeconds = 0;
       const h = Math.floor(totalSeconds / 3600);
       const m = Math.floor((totalSeconds % 3600) / 60);
       const s = Math.floor(totalSeconds % 60);
-
       if (h > 0) {
         return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
       }
@@ -1094,14 +1041,10 @@
     }
 
 
-
-
     function setupTVNavigation() {
       window.addEventListener('keydown', (e) => {
         const key = e.key || e.keyCode;
         const active = document.activeElement;
-
-
 
 
         if (key === 'Enter' || key === 13 || key === 'OK' || key === 'Select') {
@@ -1113,13 +1056,9 @@
         }
 
 
-
-
         if (reciterModal.classList.contains('open')) {
           const options = Array.from(reciterList.querySelectorAll('.reciter-option'));
           const curIndex = options.indexOf(active);
-
-
 
 
           if (key === 'ArrowUp' || key === 38) {
@@ -1142,13 +1081,9 @@
         }
 
 
-
-
         if (active && active.classList.contains('playlist-item')) {
           const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
           const curIndex = items.indexOf(active);
-
-
 
 
           if (key === 'ArrowUp' || key === 38) {
@@ -1174,8 +1109,6 @@
         }
 
 
-
-
         if (active && active.tagName === 'INPUT' && active.type === 'range') {
           if (key === 'ArrowLeft' || key === 37) {
             e.preventDefault();
@@ -1188,8 +1121,6 @@
           }
         }
       });
-
-
 
 
       textContainer.addEventListener('keydown', (e) => {
@@ -1205,8 +1136,6 @@
     }
 
 
-
-
     function setupEventListeners() {
       reciterBtn.addEventListener('click', openReciterModal);
       modalCloseBtn.addEventListener('click', closeReciterModal);
@@ -1215,14 +1144,10 @@
       });
 
 
-
-
       playBtn.addEventListener('click', () => {
         initAudioContext();
         audio.play();
       });
-
-
 
 
       pauseBtn.addEventListener('click', () => audio.pause());
@@ -1233,14 +1158,10 @@
       });
 
 
-
-
       prevBtn.addEventListener('click', () => {
         if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1, true);
         else if (currentSurahIndex > 0) loadSurah(currentSurahIndex - 1, true);
       });
-
-
 
 
       nextBtn.addEventListener('click', () => {
@@ -1249,13 +1170,9 @@
       });
 
 
-
-
       audio.addEventListener('ended', () => {
-        // Si c'était la Basmala, on ajoute sa durée au cumul et on passe au premier ayah
         if (isBasmalahPlaying) {
           isBasmalahPlaying = false;
-          // Ajouter la durée de la Basmala au cumul
           if (!isNaN(audio.duration)) {
             totalElapsedBeforeCurrentAyah += audio.duration;
           }
@@ -1268,17 +1185,11 @@
         }
 
 
-
-
-        // Fin d'un ayah normal : ajouter sa durée au cumul
         if (!isNaN(audio.duration)) {
           totalElapsedBeforeCurrentAyah += audio.duration;
         }
 
 
-
-
-        // Passer à l'ayah suivant ou à la sourate suivante
         if (currentAyahIndex < currentAyahsAr.length - 1) {
           playAyah(currentAyahIndex + 1, true);
         } else if (currentSurahIndex < surahs.length - 1) {
@@ -1287,47 +1198,30 @@
       });
 
 
-
-
-      // Mise à jour du chronomètre continu, du temps restant et de la barre de progression
       audio.addEventListener('timeupdate', () => {
         const current = audio.currentTime || 0;
         const duration = audio.duration || 0;
 
-        // Temps écoulé cumulé sur la sourate (Basmala exclue du temps courant)
+
         const totalElapsed = totalElapsedBeforeCurrentAyah + (isBasmalahPlaying ? 0 : current);
         const elapsedStr = formatTime(totalElapsed);
-
-        // Temps restant pour le fichier audio en cours
         const remaining = Math.max(0, duration - current);
         const remainingStr = formatTime(remaining);
-
-        // Affichage : "écoulé / restant"
         lcdTime.textContent = `${elapsedStr} / ${remainingStr}`;
 
 
-
-
-        // La barre de progression suit désormais la lecture de l'ayah EN COURS,
-        // donc elle avance en temps réel avec le chronomètre au lieu de bouger
-        // imperceptiblement sur les longues sourates (ex: 286 ayahs).
         if (!isBasmalahPlaying && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
           seekBar.value = Math.min(100, (current / audio.duration) * 100);
         }
       });
 
 
-
-
-      // Gestion du déplacement manuel du curseur (dans l'ayah en cours uniquement)
       seekBar.addEventListener('input', () => {
-        if (isBasmalahPlaying) return; // pas de scrub pendant la Basmala
+        if (isBasmalahPlaying) return;
         if (!isNaN(audio.duration) && audio.duration > 0) {
           audio.currentTime = (parseFloat(seekBar.value) / 100) * audio.duration;
         }
       });
-
-
 
 
       volumeBar.addEventListener('input', () => {
@@ -1335,15 +1229,11 @@
       });
 
 
-
-
       themeBtn.addEventListener('click', () => {
         const html = document.documentElement;
         html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
       });
     }
-
-
 
 
     window.addEventListener('DOMContentLoaded', init);
