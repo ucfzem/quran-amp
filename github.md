@@ -130,10 +130,39 @@ L'utilisateur a identifié 3 bugs distincts et fourni une version complète corr
 | Source du portail | https://github.com/ucfzem/ucfzem.github.io/blob/main/works/index.html |
 | Ce backup | github.md + `backups/` du portail |
 
+## 6quater. Version v4 « TV Gold » (16 août 2026) — boutons métalliques SVG + texte arabe uniquement
+
+Nouvelle version complète fournie par l'utilisateur (3 points adressés d'après l'écran TV) :
+
+### Point 1 — Auto-scroll playlist (Bug 1)
+- `item.addEventListener('focus', () => item.scrollIntoView({ block: 'nearest', behavior: 'smooth' }))` sur chaque `.playlist-item` (auto-scroll dès Surah 3).
+- Navigation D-Pad Up/Down dans `setupTVNavigation()` : flèche + `keyCode` 38/40, scroll-into-view, et débordement → `reciterBtn.focus()` (haut) / `textContainer.focus()` (bas).
+
+### Point 2 — Nettoyage & résize du texte (Bug 2)
+- **Couche de traduction française supprimée** (choix utilisateur) : plus de `.fr-text`, le fetch API est `quran-uthmani` seul (plus `fr.hamidullah`).
+- `.ar-text` redimensionné : `font-size: clamp(20px, 2.8vw, 30px)` pour tenir dans le panneau (max-height 180px).
+
+### Point 3 — Boutons de transport métalliques (Bug 3)
+- Les caractères ASCII (`|<<`, `>`, `||`, `[]`, `>>|`) sont remplacés par des **icônes SVG vectorielles** (viewBox 24x24) dans les boutons.
+- Finition or métallique : `fill: var(--accent)`, `drop-shadow`, bevels (`inset 0 1px 0`), focus → `fill #fff` + `scale(1.1)`, actif → `translateY(2px)`.
+
+### Correctif ré-appliqué (régression évitée)
+- Le tableau `RECITERS` de l'utilisateur réintroduisait le chemin 404 `Saood_Ash-Shuraym_128kbps` → **re-corrigé en** `Saood bin Ibraaheem Ash-Shuraym_128kbps` (vérifié HTTP 200). Les 9 autres chemins inchangés et valides.
+
+### Autres conservations
+- Picker récitateur : modal sombre custom (`.modal-overlay`/`.modal-card`/`.reciter-option`), `RECITERS` + `selectedReciterId`, trap modal Up/Down/Enter/Back/Escape/27, clic overlay ferme.
+- Normalisation `key === 'Enter' || 13 || 'OK' || 'Select'`, `ArrowUp/38`, etc. (fallback keyCode TV).
+- Basmalah (sauf Sourates 1 et 9), enchaînement des versets, spectre Web Audio, thème sombre/clair, FR/AR.
+
+### Déploiement v4
+- **Commit :** `d5f18fb` « TV Gold v4: SVG metallic transport buttons, Arabic-only resized text, playlist auto-scroll focus (re-apply Shuraim fix) ».
+- `worker.js` régénéré (31 860 octets), vérifié (`node --check` + fetch 200/404 + contenu). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `8ee8a327-435f-4e7b-9d14-f8fa3d636c54`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent 30 348 octets ; titre TV Gold, clamp arabe, SVG, Shuraim corrigé présents ; chemin cassé absent.
+
 ## 7. Vérification finale
 
 - Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
-- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft) **et** la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL).
+- Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft) **et** la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL) **et** la v4 (boutons SVG métalliques, texte arabe uniquement résizé, auto-scroll playlist).
 
 ## 8. Étapes suivantes
 
