@@ -159,7 +159,42 @@ Nouvelle version complète fournie par l'utilisateur (3 points adressés d'aprè
 - `worker.js` régénéré (31 860 octets), vérifié (`node --check` + fetch 200/404 + contenu). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `8ee8a327-435f-4e7b-9d14-f8fa3d636c54`**.
 - **Vérifications post-déploiement :** les 3 plateformes servent 30 348 octets ; titre TV Gold, clamp arabe, SVG, Shuraim corrigé présents ; chemin cassé absent.
 
+## 6quinquies. Version v5 — UI entièrement en arabe + 5 corrections (16 août 2026)
+
+Nouvelle version complète fournie par l'utilisateur (page toute en arabe, `lang="ar"` `dir="rtl"`) avec 5 corrections TV :
+
+### Fix 1 — Boutons de transport redimensionnés
+- Boutons circulaires (rayon 50 %) : 42px de diamètre, bouton Lecture principal 50px. Icons SVG conservées.
+
+### Fix 2 — Numéros de verset retirés de l'affichage
+- L'affichage texte et le titre LCD n'affichent plus « 1/7 » : `arTextEl.textContent = displayAr` et `lcdTitle.textContent = surahs[currentSurahIndex].name`.
+
+### Fix 3 — Noms arabes des récitateurs + liste élargie à 14
+- Noms affichés en arabe (ex. « مشاري راشد العفاسي ») et 4 nouveaux récitateurs ajoutés :
+  - `Muhammad_Jibreel_128kbps` ✅ 200
+  - `Mustafa_Ismail_48kbps` ✅ 200
+  - `Minshawy_Murattal_128kbps` ✅ 200
+  - `Khaalid_Abdullaah_al-Qahtaanee_192kbps` ✅ 200 (le chemin de l'utilisateur `Kahlid_Al-Qahtanee_128kbps` renvoyait **404** → corrigé via la liste du dossier `everyayah.com/data/`)
+- Chemin Shuraim déjà correct cette fois (`Saood bin Ibraaheem Ash-Shuraym_128kbps`, 200). **Les 14 chemins vérifiés HTTP 200.**
+
+### Fix 4 — Visualiseur interactif (clic/OK)
+- `canvas` rendu focusable (`tabindex="0"`) ; clic souris ou OK/Entrée bascule `vizMode` : 0 = barres, 1 = forme d'onde, 2 = ligne oscillante. Info-bulle « انقر لتغيير النمط ».
+
+### Fix 5 — Barre de progression fluide sur toute la sourate
+- Progression globale : `((currentAyahIndex + currentAyahProgress) / totalAyahs) * 100`, `step="0.1"` sur le `seek-bar`, lecture/seek sur l'ensemble de la sourate.
+
+### Fix 6 (post-déploiement) — Basmalah en double
+- L'API `quran-uthmani` intègre déjà بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ dans le texte du verset 1 de la plupart des sourates → le code la préfixait une 2e fois.
+- Correction dans `playAyah()` : si `index === 0 && surahNum !== 1`, retrait de la Basmalah embarquée via `displayAr.replace(/^بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\s*/, '')`, puis préfixe stylisé sur sa propre ligne sauf Sourates 1 et 9.
+
+### Déploiement v5
+- **Commit v5 :** `0c1eca2` « v5: all-Arabic UI, 14 reciters, interactive visualizer, smooth progress ».
+- **Commit Basmalah :** `1fbca3c` « v5: fix duplicate Basmalah (strip API-embedded, prepend styled) ».
+- `worker.js` régénéré (32 148 octets), vérifié (`node --check` + fetch 200/404 + contenu). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `1a3b988e-41c0-4f44-911d-4046bafbc10c`**.
+- **Vérifications post-déploiement :** CF 200 (strip Basmalah présent), Vercel 200 + fix présent, Pages 200 + fix présent, portail 200.
+
 ## 7. Vérification finale
+
 
 - Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
 - Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft) **et** la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL) **et** la v4 (boutons SVG métalliques, texte arabe uniquement résizé, auto-scroll playlist).
