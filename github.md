@@ -395,12 +395,38 @@ Conversion de l'app web en **application Android Google Play** via Capacitor, da
 3. En attendant : version web https://ucfzem.github.io/quran-amp/ identique.
 4. Publier : Android Studio → Generate Signed Bundle (keystore) → `app/build/outputs/bundle/release/app-release.aab`.
 
+## 6quindecies. Android — correctif de build (patch-package, 16 août 2026)
+
+Le build GitHub Actions échouait sur le plugin `@srikarthiks/capacitor-media-session@0.0.8` (3 bugs successifs) :
+
+### Bug 1 — Dépendances Gradle fantômes
+- `android/build.gradle` du plugin listait ~24 artefacts `androidx.media3:*:1.2.1` **inexistants sur Maven** (copier-coller du plugin) → `Could not find androidx.media3:media3-session:1.2.1`.
+- Le code Java n'utilise **aucun** import media3 → les dépendances ont été supprimées (ne garde que `androidx.appcompat`, `androidx.core`, `androidx.media:media:1.7.0`).
+
+### Bug 2 — Import `CapacitorContext` obsolète
+- `MediaSessionPlugin.java:26` importait `com.getcapacitor.plugin.util.CapacitorContext` (n'existe plus, jamais utilisé) → supprimé.
+
+### Bug 3 — Appel à une méthode inexistante
+- `MediaSessionService.java:88` appelait `setupNotification()` **jamais définie** (la notification + `startForeground` sont déjà faites dans `setupMediaSession()`) → appel supprimé.
+
+### Mécanisme : `patch-package`
+- `patch-package` installé en devDependency ; script `"postinstall": "patch-package"` dans `mobile/package.json`.
+- Patch committé : `mobile/patches/@srikarthiks+capacitor-media-session+0.0.8.patch` (3 fichiers : `build.gradle`, `MediaSessionPlugin.java`, `MediaSessionService.java`).
+- `npm ci` (CI) ré-applique le patch automatiquement — validé localement (`npm ci` → postinstall → patch appliqué).
+- Note : le plugin étant maintenu sur GitHub, le patch peut être proposé en issue upstream.
+
+### Déploiement
+- **Commit `afe7835`** « fix(mobile): patch media-session plugin - remove non-existent media3 deps (patch-package, auto-applied by npm ci) ».
+- **Commit `57b3edc`** « fix(mobile): patch plugin Java - remove stale CapacitorContext import and undefined setupNotification() call ».
+- **Run `31962360579` → SUCCESS** : `assembleDebug` + `bundleRelease` OK, artifact `quran-amp-android` (8,1 MB) téléchargeable depuis l'onglet Actions.
+
 ## 7. Vérification finale
 
 
 
 - Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
 - Les 3 plateformes servent l'index corrigé (récitateur Shuraim réparé), la version TV Gold (contrôleur D-Pad, select agrandi, typographie 10 ft), la correction 3 bugs (picker récitateur sombre, playlist Up/Down, focus RTL), la v4 (boutons SVG métalliques, texte arabe uniquement résizé, auto-scroll playlist) **et la v12** (visualiseur 5 modes, click sur canvas pour changer de style).
+- **Android :** build CI **SUCCESS** (commit `57b3edc` + run `31962360579`), APK debug + AAB release produits.
 
 ## 8. Étapes suivantes
 
