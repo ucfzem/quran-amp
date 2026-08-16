@@ -193,7 +193,25 @@ Nouvelle version complète fournie par l'utilisateur (page toute en arabe, `lang
 - `worker.js` régénéré (32 148 octets), vérifié (`node --check` + fetch 200/404 + contenu). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `1a3b988e-41c0-4f44-911d-4046bafbc10c`**.
 - **Vérifications post-déploiement :** CF 200 (strip Basmalah présent), Vercel 200 + fix présent, Pages 200 + fix présent, portail 200.
 
+## 6sexies. Version v6 — finale : texte tel quel + garde de la barre de progression pendant la Basmalah (16 août 2026)
+
+Nouvelle version finale fournie par l'utilisateur avec deux changements de comportement :
+
+### Changement — Affichage du texte « tel quel »
+- `playAyah()` affiche désormais `ayahAr.text` **sans aucune transformation** (commentaire : « لا نضيف بسملة ولا نحذفها ») : plus de retrait de la Basmalah embarquée ni de préfixe stylisé.
+- Vérification empirique de l'API `quran-uthmani` : la Basmalah est **embarquée dans le texte du verset 1** (ex. Sourate 2 : `بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ`), Sourate 1 = Basmalah seule, Sourate 9 sans Basmalah. → Aucune duplication visuelle (plus de préfixe), Basmalah affichée en début de verset 1.
+- La Basmalah **audio** (001001.mp3) reste jouée en intro des Sourates ≠ 1 et 9.
+
+### Nouveau — Garde de la barre de progression
+- Dans `seekBar.addEventListener('input')`, premier bloc : `if (isBasmalahPlaying) { isBasmalahPlaying = false; }` → si l'utilisateur déplace la barre pendant la Basmalah audio, son état est annulé pour éviter une « qafza ṣawtiyya » (saut audio) ; le seek global sur la sourate reste intact.
+
+### Déploiement v6
+- **Commit :** `7b95eef` « v6 final: display API text as-is, seekBar guard during audio Basmalah ».
+- `worker.js` régénéré (30 987 octets), vérifié (`node --check` + fetch 200/404 + contenu : garde + commentaire présents). Push GitHub → Pages + Vercel auto. `wrangler deploy` → **version `cf5aa498-40c2-429e-a09b-cfd49d610a84`**.
+- **Vérifications post-déploiement :** les 3 plateformes servent le code v6 (CF instantané, Vercel + Pages après ~20 s) ; les 14 chemins de récitateurs re-vérifiés HTTP 200.
+
 ## 7. Vérification finale
+
 
 
 - Portail live : ordre = 1 Quran Majeed v3 → 2 Quran Reader → **3 Quran Amp** → 4 Tanger d'Antan … → 15 SavoirsEnJouant. Section verrouillée intacte.
