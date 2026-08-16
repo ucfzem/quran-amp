@@ -1,0 +1,38 @@
+diff --git a/node_modules/@srikarthiks/capacitor-media-session/android/build.gradle b/node_modules/@srikarthiks/capacitor-media-session/android/build.gradle
+index 03557e2..6b365fb 100644
+--- a/node_modules/@srikarthiks/capacitor-media-session/android/build.gradle
++++ b/node_modules/@srikarthiks/capacitor-media-session/android/build.gradle
+@@ -55,33 +55,6 @@ dependencies {
+     implementation "androidx.appcompat:appcompat:$androidxVersion"
+     implementation "androidx.core:core:1.15.0"
+     implementation "androidx.media:media:1.7.0"
+-    implementation "androidx.media3:media3-session:1.2.1"
+-    implementation "androidx.media3:media3-common:1.2.1"
+-    implementation "androidx.media3:media3-exoplayer:1.2.1"
+-    implementation "androidx.media3:media3-ui:1.2.1"
+-    implementation "androidx.media3:media3-session:1.2.1"
+-    implementation "androidx.media3:media3-transformer:1.2.1"
+-    implementation "androidx.media3:media3-datasource:1.2.1"
+-    implementation "androidx.media3:media3-datasource-cronet:1.2.1"
+-    implementation "androidx.media3:media3-datasource-rtmp:1.2.1"
+-    implementation "androidx.media3:media3-datasource-cast:1.2.1"
+-    implementation "androidx.media3:media3-datasource-dash:1.2.1"
+-    implementation "androidx.media3:media3-datasource-hls:1.2.1"
+-    implementation "androidx.media3:media3-datasource-smoothstreaming:1.2.1"
+-    implementation "androidx.media3:media3-datasource-ssai:1.2.1"
+-    implementation "androidx.media3:media3-datasource-rtsp:1.2.1"
+-    implementation "androidx.media3:media3-datasource-icy:1.2.1"
+-    implementation "androidx.media3:media3-datasource-ads:1.2.1"
+-    implementation "androidx.media3:media3-datasource-cronet:1.2.1"
+-    implementation "androidx.media3:media3-datasource-rtmp:1.2.1"
+-    implementation "androidx.media3:media3-datasource-cast:1.2.1"
+-    implementation "androidx.media3:media3-datasource-dash:1.2.1"
+-    implementation "androidx.media3:media3-datasource-hls:1.2.1"
+-    implementation "androidx.media3:media3-datasource-smoothstreaming:1.2.1"
+-    implementation "androidx.media3:media3-datasource-ssai:1.2.1"
+-    implementation "androidx.media3:media3-datasource-rtsp:1.2.1"
+-    implementation "androidx.media3:media3-datasource-icy:1.2.1"
+-    implementation "androidx.media3:media3-datasource-ads:1.2.1"
+     
+     // Testing dependencies
+     testImplementation "junit:junit:$junitVersion"

@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Quran Amp - version Android (Capacitor 7). L'original web reste dans le dossier parent.",
   "scripts": {
+    "postinstall": "patch-package",
     "fonts": "node scripts/install-fonts.mjs",
     "build:web": "node scripts/build.mjs",
     "obfuscate": "node scripts/obfuscate.mjs",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^7.0.0",
-    "javascript-obfuscator": "^4.1.1"
+    "javascript-obfuscator": "^4.1.1",
+    "patch-package": "^8.0.1"
   }
 }
