@@ -36,3 +36,27 @@ index 03557e2..6b365fb 100644
      
      // Testing dependencies
      testImplementation "junit:junit:$junitVersion"
+diff --git a/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionPlugin.java b/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionPlugin.java
+index 337d934..9013046 100644
+--- a/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionPlugin.java
++++ b/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionPlugin.java
+@@ -23,7 +23,6 @@ import com.getcapacitor.PluginCall;
+ import com.getcapacitor.PluginMethod;
+ import com.getcapacitor.annotation.CapacitorPlugin;
+ import com.getcapacitor.annotation.Permission;
+-import com.getcapacitor.plugin.util.CapacitorContext;
+ 
+ import org.json.JSONException;
+ import org.json.JSONObject;
+diff --git a/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionService.java b/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionService.java
+index 5d8564a..fa71642 100644
+--- a/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionService.java
++++ b/node_modules/@srikarthiks/capacitor-media-session/android/src/main/java/com/goalplay/capacitormediasession/MediaSessionService.java
+@@ -85,7 +85,6 @@ public class MediaSessionService extends Service {
+         super.onCreate();
+         createNotificationChannel();
+         setupMediaSession();
+-        setupNotification();
+     }
+ 
+     private void createNotificationChannel() {
