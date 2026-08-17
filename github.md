@@ -528,3 +528,52 @@ Titre servi sur les 3 plateformes = **« مشغل القرآن الكريم »**
 - `https://quran-amp.azer-tyu199p.workers.dev/` ✅
 
 Note : `.wrangler/` (cache local wrangler) non commité — à ajouter au `.gitignore` si souhaité.
+
+---
+
+## 12. Backup — v13 « TV Gold Edition Pro » : real tweaking (17 août 2026)
+
+L'utilisateur a fourni un `index.html` complet revu en profondeur (nouvelle UI « Pro »). Intégré, vérifié et déployé sur les 3 plateformes.
+
+### Nouveautés v13 (fournies par l'utilisateur)
+- **Thème or retravaillé** : nouveaux tokens CSS (`--accent-alt`, `--gold-gradient` 5 arrêts `#7a5c32→#d4af37→#f0d878→#d4af37→#7a5c32`, `--gold-gradient-shimmer`, `--toast-*`, `--btn-active-bg`, `--item-active-*`, `--shadow-inset`), fond radial doré, animations **shimmer** sur la barre de titre.
+- **Modale paramètres** (bouton ⚙ / touche `O`) : vitesse de lecture (0.5–2x), mode répétition (off/one/all/shuffle), **couleur du visualiseur** (6 swatches), mode visualiseur (5), **taille du texte** (0.85–1.4), **auto-scroll**, raccourcis clavier documentés.
+- **Nouveaux contrôles** : barre de **recherche** de sourates, bouton **mute**, boutons shuffle/repeat actifs visuellement, `⏱`/`🔊` labels des sliders.
+- **Choix UI** : titre affiché **مشغل القرآن الكريم** (pas de « ويناتمب »), boutons de transport circulaires, `.btn-toggle`, touches globales `Space/T/O/M/R/S/N/P/Esc`.
+- Récitateurs **inchangés (14)** — chemins identiques à v12.
+
+### Vérifications avant déploiement
+- JS extrait 41 566 octets → `node --check` OK.
+- **14/14 chemins de récitateurs** `https://everyayah.com/data/<id>/001001.mp3` → **HTTP 200** (3 échecs HEAD transitoires `fetch failed` re-testés en curl → tous 200 : MaherAlMuaiqly, Abdul_Basit_Murattal, Shuraym avec espaces).
+
+### Fichiers modifiés / régénérés
+- `index.html` — nouvelle version (source).
+- `worker.js` — régénéré via `node _gen-worker.js` (84 858 octets), `node --check` OK, smoke test ESM **10/10 PASS** (`/` 200, `/x` 404, titre Pro, « مشغل القرآن الكريم » présent, Winamp absent, 14 récitateurs, settings-modal, shimmer, `#f0d878`).
+- `mobile/www/index.html` — régénéré par le pipeline mobile (`mobile/npm ci` → `npm run build:web`) : fonts locales, `js/native-bridge.js` injecté, `overscroll-behavior`, **JS obfusqué** (83 707 octets) ; vérifié : titre Pro, bridge, fonts locales, « مشغل القرآن الكريم », Winamp absent. `npx cap sync android` OK (3 plugins). Assets Android gitignorés (générés au build).
+
+### Déploiement
+- **Commit :** `57e11e8` « v13 Pro: real tweaking - revamped gold theme, settings modal, search bar, muted button, keyboard shortcuts » (3 fichiers, +3292/−1623).
+- **Cloudflare :** `wrangler deploy` → upload 86.07 KiB / gzip 15.27 → **Version ID `c0713d85-d4d6-457a-8ca7-628984715735`**.
+- **Vercel :** auto-déploiement via push (200 dès le 1er poll).
+- **GitHub Pages :** le run initial « pages build and deployment » a **échoué à l'étape Deploy** (build Jekyll OK) ; re-run des jobs ratés (`rerun-failed-jobs`, `32053594460`) → **success** → v13 servie.
+- **Android CI :** run `32053595711` (Build Android APK+AAB) **SUCCESS** auto-déclenché par le push (le build web mobile est inclus dans `mobile/www`).
+
+### Vérifications post-déploiement (3 plateformes + portail)
+| Plateforme | HTTP | Titre Pro | settings-modal | « ويناتمب » |
+|---|---|---|---|---|
+| GitHub Pages | 200 | ✓ | ✓ | absent ✓ |
+| Vercel | 200 | ✓ | ✓ | absent ✓ |
+| Cloudflare | 200 | ✓ | ✓ | absent ✓ |
+| Portail works | 200 | — | — | — |
+
+Quran Amp toujours 3ᵉ sur `https://ucfzem.github.io/works/`.
+
+### Liens
+| Élément | Lien |
+|---|---|
+| Projet (Pages) | https://ucfzem.github.io/quran-amp/ |
+| Vercel | https://quran-amp.vercel.app/ |
+| Cloudflare (v13 `c0713d85`) | https://quran-amp.azer-tyu199p.workers.dev/ |
+| Portail (3ᵉ position) | https://ucfzem.github.io/works/ |
+| Repo + Actions | https://github.com/ucfzem/quran-amp |
+| Backup | github.md (même dépôt), section 12 |
