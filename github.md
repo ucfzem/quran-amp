@@ -766,3 +766,62 @@ git push origin v1.0.0
 ### Commits
 - `3592115` — ci: enhanced Android workflow — tag triggers, GitHub Release, signed APK fallback
 - `9b5d8de` — ci: final workflow — timeout, semver validation, AAB, 7-day retention
+
+---
+
+## §15 — 24 récitateurs + encodeURI + worker.js fix
+
+**Date :** 2026-08-17
+
+### Modifications
+1. **RECITERS** : liste mise à jour avec 24 récitateurs fournis par l'utilisateur (IDs vérifiés)
+2. **encodeURI()** ajouté aux 3 URLs audio dans index.html
+3. **worker.js** régénéré avec backtick template literal + objet `{ options }` correct pour `new Response()`
+4. **mobile/www/index.html** rebuild avec obfuscation
+
+### Récitateurs (24)
+| # | ID | Nom |
+|---|---|---|
+| 1 | Husary_128kbps | محمود خليل الحصري |
+| 2 | Husary_Mujawwad_128kbps | الحصري - مجوّد |
+| 3 | Alafasy_128kbps | مشاري راشد العفاسي |
+| 4 | Abdul_Basit_Murattal_192kbps | عبد الباسط - مرتل |
+| 5 | Abdul_Basit_Mujawwad_128kbps | عبد الباسط - مجوّد |
+| 6 | Abdurrahmaan_As-Sudais_192kbps | عبد الرحمن السديس |
+| 7 | Ghamadi_40kbps | سعد الغامدي |
+| 8 | MaherAlMuaiqly128kbps | ماهر المعيقلي |
+| 9 | Minshawy_Murattal_128kbps | المنشاوي - مرتل |
+| 10 | Minshawy_Mujawwad_128kbps | المنشاوي - مجوّد |
+| 11 | Muhammad_Jibreel_128kbps | محمد جبريل |
+| 12 | Nasser_Alqatami_128kbps | ناصر القطامي |
+| 13 | Yasser_Ad-Dussary_128kbps | ياسر الدوسري |
+| 14 | Abu_Bakr_Ash-Shaatree_128kbps | أبو بكر الشاطري |
+| 15 | Saood bin Ibraaheem Ash-Shuraym_128kbps | سعود الشريم |
+| 16 | Khaalid_Abdullaah_al-Qahtaanee_192kbps | خالد القحطاني |
+| 17 | Abdullah-Basfar_128kbps | عبد الله بصفر |
+| 18 | Abdul-Muhsin-al-Qasim_128kbps | عبد المحسن القاسم |
+| 19 | Ali-al-Huthayfi_128kbps | علي الحذيفي |
+| 20 | Ibrahim-Akhdar_128kbps | إبراهيم الأخضر |
+| 21 | Muhammad-Ayyoub_128kbps | محمد أيوب |
+| 22 | Ahmad-al-Ajmy_128kbps | أحمد العجمي |
+| 23 | Fares-Abbad_128kbps | فارس عباد |
+| 24 | Hani-Rifai_128kbps | هاني الرفاعي |
+
+### worker.js fix
+- **Problème** : wrangler/esbuild rejetait le worker car `new Response(html, headers:...)` n'est pas syntaxiquement valide — il manquait l'objet `{ }` around l'init
+- **Solution** : backtick template literal (`\``) pour le HTML + `new Response(body, { headers: ... })`
+- **Note** : les backticks et `${}` internes du HTML sont échappés avec `\`` et `\${`
+
+### Déploiement
+| Plateforme | HTTP | 24 récitateurs |
+|---|---|---|
+| GitHub Pages | 200 | ✅ 24 |
+| Vercel | 200 | ✅ 24 |
+| Cloudflare | 200 | ✅ 24 |
+
+### Cloudflare
+- **Version ID** : `c0a0b1ca-2b9a-44a6-8b3e-0c575c9f5f88`
+- **Upload** : 90.48 KiB / gzip 16.21 KiB
+
+### Commit
+- `ae935e8` — feat: 24 reciters (user-verified), encodeURI audio URLs, worker.js backtick fix
