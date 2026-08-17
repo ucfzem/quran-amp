@@ -873,3 +873,34 @@ audio error handler → playUrlChain(urls, _audioRetryIndex)
 
 ### Commit
 - `998017d` — feat: multi-CDN fallback system (everyayah → mp3quran.net)
+
+---
+
+## §16bis — Fix Huthayfi + Minshawy Mujawwad
+
+**Date :** 2026-08-17
+
+### Problèmes
+1. **علي الحذيفي (Ali Al-Huthayfi)** : 404 sur everyayah, mp3quran.net (server.mp3quran.net) down/timéout
+2. **المنشاوي مجوّد (Minshawy Mujawwad)** : 404 sur everyayah avec `_128kbps`
+
+### Solutions
+| Réciteur | Avant | Après |
+|---|---|---|
+| علي الحذيفي | `fb: ["hudhaify"]` sur server.mp3quran (mort) | `fb: ["hthfi"]` sur **server9.mp3quran.net** (✅ 200) |
+| المنشاوي مجوّد | `Minshawy_Mujawwad_128kbps` (404) | `Minshawy_Mujawwad_192kbps` (✅ 200) |
+
+### Découverte : server9.mp3quran.net
+- `https://server9.mp3quran.net/hthfi/001.mp3` → **200**
+- Seul `hthfi` existe sur server9 pour les 8 slugs testés (basfar, alqasim, akhdar, ayyub, ajmi, abbad, rifai → tous 404)
+- Le fallback mp3quran passe de `server.mp3quran.net` → `server9.mp3quran.net`
+
+### Déploiement
+| Plateforme | Reciters | hthfi |
+|---|---|---|
+| GitHub Pages | 24 | ✅ |
+| Vercel | 24 | ✅ |
+| Cloudflare | 24 | ✅ (Version `054862e5-af84-4a86-80c7-fcc9434a4cf4`, 92.27 KiB) |
+
+### Commit
+- `466c71e` — fix: Huthayfi via server9.mp3quran.net/hthfi, Minshawy_Mujawwad_192kbps
