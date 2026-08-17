@@ -1260,31 +1260,65 @@
 
     <script>
         const RECITERS = [
-            { id: "Husary_128kbps", name: "محمود خليل الحصري" },
-            { id: "Husary_Mujawwad_128kbps", name: "الحصري - مجوّد" },
-            { id: "Alafasy_128kbps", name: "مشاري راشد العفاسي" },
-            { id: "Abdul_Basit_Murattal_192kbps", name: "عبد الباسط - مرتل" },
-            { id: "Abdul_Basit_Mujawwad_128kbps", name: "عبد الباسط - مجوّد" },
-            { id: "Abdurrahmaan_As-Sudais_192kbps", name: "عبد الرحمن السديس" },
-            { id: "Ghamadi_40kbps", name: "سعد الغامدي" },
-            { id: "MaherAlMuaiqly128kbps", name: "ماهر المعيقلي" },
-            { id: "Minshawy_Murattal_128kbps", name: "المنشاوي - مرتل" },
-            { id: "Minshawy_Mujawwad_128kbps", name: "المنشاوي - مجوّد" },
-            { id: "Muhammad_Jibreel_128kbps", name: "محمد جبريل" },
-            { id: "Nasser_Alqatami_128kbps", name: "ناصر القطامي" },
-            { id: "Yasser_Ad-Dussary_128kbps", name: "ياسر الدوسري" },
-            { id: "Abu_Bakr_Ash-Shaatree_128kbps", name: "أبو بكر الشاطري" },
-            { id: "Saood bin Ibraaheem Ash-Shuraym_128kbps", name: "سعود الشريم" },
-            { id: "Khaalid_Abdullaah_al-Qahtaanee_192kbps", name: "خالد القحطاني" },
-            { id: "Abdullah-Basfar_128kbps", name: "عبد الله بصفر" },
-            { id: "Abdul-Muhsin-al-Qasim_128kbps", name: "عبد المحسن القاسم" },
-            { id: "Ali-al-Huthayfi_128kbps", name: "علي الحذيفي" },
-            { id: "Ibrahim-Akhdar_128kbps", name: "إبراهيم الأخضر" },
-            { id: "Muhammad-Ayyoub_128kbps", name: "محمد أيوب" },
-            { id: "Ahmad-al-Ajmy_128kbps", name: "أحمد العجمي" },
-            { id: "Fares-Abbad_128kbps", name: "فارس عباد" },
-            { id: "Hani-Rifai_128kbps", name: "هاني الرفاعي" }
+            { id: "Husary_128kbps", name: "محمود خليل الحصري", fb: ["husary"] },
+            { id: "Husary_Mujawwad_128kbps", name: "الحصري - مجوّد", fb: ["husary_mj"] },
+            { id: "Alafasy_128kbps", name: "مشاري راشد العفاسي", fb: ["afasy"] },
+            { id: "Abdul_Basit_Murattal_192kbps", name: "عبد الباسط - مرتل", fb: ["abdulbasit"] },
+            { id: "Abdul_Basit_Mujawwad_128kbps", name: "عبد الباسط - مجوّد", fb: ["abdulbasit_mj"] },
+            { id: "Abdurrahmaan_As-Sudais_192kbps", name: "عبد الرحمن السديس", fb: ["sudais"] },
+            { id: "Ghamadi_40kbps", name: "سعد الغامدي", fb: ["ghamadi"] },
+            { id: "MaherAlMuaiqly128kbps", name: "ماهر المعيقلي", fb: ["maher"] },
+            { id: "Minshawy_Murattal_128kbps", name: "المنشاوي - مرتل", fb: ["minshawi"] },
+            { id: "Minshawy_Mujawwad_128kbps", name: "المنشاوي - مجوّد", fb: ["minshawi_mj"] },
+            { id: "Muhammad_Jibreel_128kbps", name: "محمد جبريل", fb: ["jibreel"] },
+            { id: "Nasser_Alqatami_128kbps", name: "ناصر القطامي", fb: ["nasser"] },
+            { id: "Yasser_Ad-Dussary_128kbps", name: "ياسر الدوسري", fb: ["yasser"] },
+            { id: "Abu_Bakr_Ash-Shaatree_128kbps", name: "أبو بكر الشاطري", fb: ["abubakr"] },
+            { id: "Saood bin Ibraaheem Ash-Shuraym_128kbps", name: "سعود الشريم", fb: ["shuraym"] },
+            { id: "Khaalid_Abdullaah_al-Qahtaanee_192kbps", name: "خالد القحطاني", fb: ["khalid"] },
+            { id: "Abdullah_Basfar_192kbps", name: "عبد الله بصفر", fb: ["basfar"] },
+            { id: "Abdul-Muhsin-al-Qasim_128kbps", name: "عبد المحسن القاسم", fb: ["alqasim"] },
+            { id: "Ali-al-Huthayfi_128kbps", name: "علي الحذيفي", fb: ["hudhaify"] },
+            { id: "Ibrahim_Akhdar_32kbps", name: "إبراهيم الأخضر", fb: ["akhdar"] },
+            { id: "Muhammad_Ayyoub_128kbps", name: "محمد أيوب", fb: ["ayyub"] },
+            { id: "Ahmad-al-Ajmy_128kbps", name: "أحمد العجمي", fb: ["ajmi"] },
+            { id: "Fares_Abbad_64kbps", name: "فارس عباد", fb: ["abbad"] },
+            { id: "Hani_Rifai_192kbps", name: "هاني الرفاعي", fb: ["rifai"] }
         ];
+
+        const AUDIO_SOURCES = [
+            { name: "everyayah", url: (id, s, a) => encodeURI("https://everyayah.com/data/" + id + "/" + s + a + ".mp3") },
+            { name: "mp3quran",  url: (fb, s) => "https://server.mp3quran.net/" + fb + "/" + s + ".mp3" }
+        ];
+
+        function buildAudioUrls(reciter, surahNum, ayahNum) {
+            const s3 = pad3(surahNum), a3 = pad3(ayahNum);
+            const urls = [];
+            urls.push(AUDIO_SOURCES[0].url(reciter.id, s3, a3));
+            if (reciter.fb && reciter.fb.length > 0) {
+                urls.push(AUDIO_SOURCES[1].url(reciter.fb[0], s3));
+            }
+            return urls;
+        }
+
+        function buildBasmalahUrls(reciter) {
+            const urls = [];
+            urls.push(AUDIO_SOURCES[0].url(reciter.id, "001", "001"));
+            if (reciter.fb && reciter.fb.length > 0) {
+                urls.push(AUDIO_SOURCES[1].url(reciter.fb[0], "001"));
+            }
+            return urls;
+        }
+
+        let _audioRetryIndex = 0;
+        let _audioUrlChain = [];
+        function playUrlChain(urls, idx) {
+            if (idx >= urls.length) { showToast("تعذر تحميل الصوت", 3000); return; }
+            _audioUrlChain = urls;
+            _audioRetryIndex = idx + 1;
+            audio.src = urls[idx];
+            audio.load();
+        }
 
 
         const VIZ_MODE_NAMES = ['أشرطة', 'منحنى', 'تعبئة', 'دوائر', 'موجات'];
@@ -1922,17 +1956,14 @@
             textContainer.scrollTop = 0;
             lcdAyahCount.textContent = `آية ${ayahAr.numberInSurah} / ${currentAyahsAr.length}`;
             seekBar.value = 0;
-            const reciter = settings.reciterId;
-            const formattedSurah = pad3(surahNum);
-            const formattedAyah = pad3(index + 1);
+            const reciterObj = RECITERS.find(r => r.id === settings.reciterId) || RECITERS[0];
             if (index === 0 && surahNum !== 1 && surahNum !== 9) {
                 isBasmalahPlaying = true;
-                audio.src = encodeURI(`https://everyayah.com/data/${reciter}/001001.mp3`);
+                playUrlChain(buildBasmalahUrls(reciterObj), 0);
             } else {
                 isBasmalahPlaying = false;
-                audio.src = encodeURI(`https://everyayah.com/data/${reciter}/${formattedSurah}${formattedAyah}.mp3`);
+                playUrlChain(buildAudioUrls(reciterObj, surahNum, index + 1), 0);
             }
-            audio.load();
             audio.playbackRate = settings.playbackSpeed;
             lcdTitle.textContent = `${surahs[currentSurahIndex].name}`;
             if (autoPlay) {
@@ -2102,11 +2133,9 @@
             if (isBasmalahPlaying) {
                 isBasmalahPlaying = false;
                 if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
-                const reciter = settings.reciterId;
-                const formattedSurah = pad3(surahs[currentSurahIndex].number);
-                audio.src = encodeURI(`https://everyayah.com/data/${reciter}/${formattedSurah}001.mp3`);
-                audio.load();
-                audio.play();
+                const reciterObj = RECITERS.find(r => r.id === settings.reciterId) || RECITERS[0];
+                const surahNum = surahs[currentSurahIndex].number;
+                playUrlChain(buildAudioUrls(reciterObj, surahNum, 1), 0);
                 return;
             }
             if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
@@ -2138,6 +2167,11 @@
 
         // --- Écouteurs d'événements ---
         function setupEventListeners() {
+            audio.addEventListener('error', () => {
+                if (_audioRetryIndex > 0 && _audioRetryIndex < _audioUrlChain.length) {
+                    playUrlChain(_audioUrlChain, _audioRetryIndex);
+                }
+            }, true);
             reciterBtn.addEventListener('click', openReciterModal);
             modalCloseBtn.addEventListener('click', closeReciterModal);
             reciterModal.addEventListener('click', (e) => { if (e.target === reciterModal) closeReciterModal(); });
