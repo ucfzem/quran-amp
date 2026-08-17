@@ -668,3 +668,101 @@ L'utilisateur a fourni des optimisations ciblées pour Smart TV 2018 (1 Go RAM) 
 | Cloudflare | 200 | ✓ | ✓ | ✓ |
 
 Portail `works` 200, Quran Amp toujours 3ᵉ.
+
+---
+
+## §14 — Workflow GitHub Actions amélioré (Build & Release Android APK)
+
+**Date :** 2026-08-17
+
+### Contexte
+L'utilisateur a fourni une version augmentée du workflow GitHub Actions pour les builds Android, intégrant :
+- Un déclencheur sur les tags Git (`v*.*.*`)
+- La création automatique de Release GitHub avec l'APK signé attaché
+- Une validation semver des tags
+- Un timeout de sécurité
+
+### Modifications apportées au workflow `.github/workflows/build-android.yml`
+
+#### Fonctionnalités présentes
+| Fonctionnalité | Détail |
+|---|---|
+| **Triggers** | Push `main` + tags `v*.*.*` + `workflow_dispatch` |
+| **Timeout** | `timeout-minutes: 30` (protection Gradle) |
+| **Node.js** | v22 (compatible Capacitor 7) |
+| **Java** | Zulu 21 (requis par Capacitor 7 + AGP 8.5+) |
+| **Gradle cache** | `gradle/actions/setup-gradle@v3` |
+| **patch-package** | Via `postinstall` dans `mobile/package.json` |
+| **Build web** | `npm ci` → `npm run build:web` (obfuscation) → `npx cap sync android` |
+| **Keystore** | Détecté via `secrets.ANDROID_KEYSTORE_BASE64` |
+| **Release signé** | APK + AAB si keystore présent |
+| **Debug fallback** | APK debug si pas de keystore |
+| **Retention** | 7 jours |
+| **Tag validation** | Regex semver `vX.Y.Z(-prerelease)?` avec `::error::` |
+| **GitHub Release** | `softprops/action-gh-release@v2` avec release notes auto |
+| **APK naming** | `quran-amp-v1.0.0.apk` (signed) ou `quran-amp-v1.0.0-debug.apk` |
+
+#### Différences avec la version précédente
+- Ajout `timeout-minutes: 30`
+- Ajout validation semver des tags (early exit)
+- Retention réduite de 14 → 7 jours
+- AAB ajouté en upload alongside APK
+- Tag validation placée après checkout (avant build)
+
+### Workflow final
+```yaml
+name: Build & Release Android APK (quran-amp)
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ./mobile
+    steps:
+      - Checkout
+      - Validate tag semver (regex)
+      - Node.js 22 (npm cache)
+      - Java Zulu 21
+      - npm ci + npm run build:web
+      - npx cap sync android
+      - Gradle cache
+      - Check keystore availability
+      - Decode keystore (if present)
+      - Build signed release APK (if keystore)
+      - Build signed release AAB (if keystore)
+      - Upload signed APK+AAB (retention 7d)
+      - Build debug APK (fallback, if no keystore)
+      - Upload debug APK (retention 7d)
+      - Determine APK path (tag only)
+      - Create GitHub Release with APK (softprops/action-gh-release@v2)
+```
+
+### Secrets requis pour release signée
+| Secret | Description |
+|---|---|
+| `ANDROID_KEYSTORE_BASE64` | Keystore encodé en base64 |
+| `KEYSTORE_PASSWORD` | Mot de passe du keystore |
+| `KEY_ALIAS` | Alias de la clé |
+| `KEY_PASSWORD` | Mot de passe de la clé |
+
+### Utilisation
+```bash
+# Push normal → build debug APK (artefact)
+git push origin main
+
+# Tag → build signé + GitHub Release avec APK
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+### Commits
+- `3592115` — ci: enhanced Android workflow — tag triggers, GitHub Release, signed APK fallback
+- `9b5d8de` — ci: final workflow — timeout, semver validation, AAB, 7-day retention
