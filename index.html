@@ -1310,14 +1310,19 @@
             return urls;
         }
 
-        let _audioRetryIndex = 0;
-        let _audioUrlChain = [];
-        function playUrlChain(urls, idx) {
-            if (idx >= urls.length) { showToast("تعذر تحميل الصوت", 3000); return; }
-            _audioUrlChain = urls;
-            _audioRetryIndex = idx + 1;
-            audio.src = urls[idx];
-            audio.load();
+        async function playUrlChain(urls, idx) {
+            const pending = urls.slice(idx);
+            for (const url of pending) {
+                try {
+                    const res = await fetch(url, { method: 'HEAD' });
+                    if (res.ok) {
+                        audio.src = url;
+                        audio.load();
+                        return;
+                    }
+                } catch (e) {}
+            }
+            showToast("تعذر تحميل الصوت", 3000);
         }
 
 
@@ -2167,11 +2172,6 @@
 
         // --- Écouteurs d'événements ---
         function setupEventListeners() {
-            audio.addEventListener('error', () => {
-                if (_audioRetryIndex > 0 && _audioRetryIndex < _audioUrlChain.length) {
-                    playUrlChain(_audioUrlChain, _audioRetryIndex);
-                }
-            }, true);
             reciterBtn.addEventListener('click', openReciterModal);
             modalCloseBtn.addEventListener('click', closeReciterModal);
             reciterModal.addEventListener('click', (e) => { if (e.target === reciterModal) closeReciterModal(); });
