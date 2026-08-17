@@ -2,7 +2,2240 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/") {
-      return new Response("<!DOCTYPE html><html lang=\"ar\" data-theme=\"dark\" dir=\"rtl\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\">\n    <title>Winamp Quran Player - TV Gold Edition Pro</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n    <link href=\"https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=VT323&family=Tajawal:wght@400;700&display=swap\" rel=\"stylesheet\">\n\n\n    <style>\n        :root {\n            --bg-color: #0e0a06;\n            --chassis-bg: linear-gradient(145deg, #3d2b1a, #1a110b);\n            --chassis-border: #8a6b3a;\n            --lcd-bg: #080502;\n            --lcd-text: #ffd700;\n            --lcd-glow: rgba(255, 215, 0, 0.28);\n            --btn-bg: linear-gradient(180deg, #5a4230 0%, #2b1d12 100%);\n            --btn-border: #a9844a;\n            --btn-text: #f5e6c8;\n            --text-main: #f5e6c8;\n            --panel-bg: #1c130c;\n            --accent: #d4af37;\n            --accent-alt: #b8860b;\n            --gold-gradient: linear-gradient(90deg, #7a5c32, #d4af37, #f0d878, #d4af37, #7a5c32);\n            --gold-gradient-shimmer: linear-gradient(110deg, #6a4c22, #d4af37, #f9e97a, #d4af37, #6a4c22);\n            --focus-ring: #ffe600;\n            --modal-overlay: rgba(0, 0, 0, 0.88);\n            --viz-color: #ffd700;\n            --viz-color-alt: #ffaa00;\n            --btn-active-bg: linear-gradient(180deg, #8a6b3a 0%, #5a4230 100%);\n            --slider-track: #0a0502;\n            --item-hover: rgba(212, 175, 55, 0.22);\n            --item-active-bg: #d4af37;\n            --item-active-text: #120e0b;\n            --shadow-inset: inset 1px 1px 0 rgba(255, 230, 150, 0.22);\n            --toast-bg: #2a1d12;\n            --toast-border: #d4af37;\n            --toast-text: #f5e6c8;\n        }\n\n\n        [data-theme=\"light\"] {\n            --bg-color: #f2ece1;\n            --chassis-bg: linear-gradient(145deg, #f0e8d8, #d0c3ad);\n            --chassis-border: #b8925a;\n            --lcd-bg: #2e2412;\n            --lcd-text: #ffcc00;\n            --lcd-glow: rgba(255, 204, 0, 0.32);\n            --btn-bg: linear-gradient(180deg, #ffffff 0%, #e8dcc8 100%);\n            --btn-border: #c3a05e;\n            --btn-text: #3d2b1f;\n            --text-main: #3d2b1f;\n            --panel-bg: #e8dcc8;\n            --accent: #8a6a2d;\n            --accent-alt: #6a4c1a;\n            --gold-gradient: linear-gradient(90deg, #b8925a, #f0e0a0, #fff8d0, #f0e0a0, #b8925a);\n            --gold-gradient-shimmer: linear-gradient(110deg, #a88448, #e8d080, #fff8c8, #e8d080, #a88448);\n            --focus-ring: #d4af37;\n            --modal-overlay: rgba(0, 0, 0, 0.6);\n            --viz-color: #cc8800;\n            --viz-color-alt: #ffcc00;\n            --btn-active-bg: linear-gradient(180deg, #d0c0a0 0%, #b8a080 100%);\n            --slider-track: #1a1208;\n            --item-hover: rgba(180, 140, 60, 0.2);\n            --item-active-bg: #b8925a;\n            --item-active-text: #f5e6c8;\n            --shadow-inset: inset 1px 1px 0 rgba(255, 255, 255, 0.4);\n            --toast-bg: #f0e8d8;\n            --toast-border: #8a6a2d;\n            --toast-text: #3d2b1f;\n        }\n\n\n        * {\n            box-sizing: border-box;\n            margin: 0;\n            padding: 0;\n            user-select: none;\n            -webkit-tap-highlight-color: transparent;\n        }\n\n\n        body {\n            background-color: var(--bg-color);\n            background-image: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);\n            color: var(--text-main);\n            font-family: 'Tajawal', system-ui, -apple-system, sans-serif;\n            min-height: 100vh;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            padding: 10px;\n            transition: background 0.4s, color 0.4s;\n        }\n\n\n        .winamp-container {\n            width: 100%;\n            max-width: min(94vw, 600px);\n            background: var(--chassis-bg);\n            border: 3px solid var(--chassis-border);\n            border-radius: 12px;\n            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.9), var(--shadow-inset), 0 0 0 1px rgba(255, 255, 255, 0.05);\n            padding: 14px;\n            display: flex;\n            flex-direction: column;\n            gap: 12px;\n            position: relative;\n            transition: all 0.3s;\n        }\n\n\n        :focus,\n        :focus-visible {\n            outline: 3px solid var(--focus-ring) !important;\n            outline-offset: 2px !important;\n            box-shadow: 0 0 14px var(--focus-ring) !important;\n        }\n\n\n        /* --- Barre de titre --- */\n        .title-bar {\n            background: var(--gold-gradient);\n            background-size: 200% 100%;\n            color: #120e0b;\n            font-size: 14px;\n            font-weight: bold;\n            padding: 6px 12px;\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            border-radius: 7px;\n            animation: shimmer 5s linear infinite;\n            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);\n        }\n\n\n        @keyframes shimmer {\n            0% {\n                background-position: 200% 0;\n            }\n            100% {\n                background-position: -200% 0;\n            }\n        }\n\n\n        .title-bar-text {\n            display: flex;\n            align-items: center;\n            gap: 8px;\n            letter-spacing: 0.5px;\n            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);\n        }\n\n\n        .title-bar-controls {\n            display: flex;\n            gap: 5px;\n        }\n\n\n        .win-btn {\n            min-width: 34px;\n            height: 28px;\n            background: var(--btn-bg);\n            border: 1px solid var(--btn-border);\n            font-size: 13px;\n            line-height: 26px;\n            text-align: center;\n            color: var(--btn-text);\n            cursor: pointer;\n            border-radius: 5px;\n            font-weight: bold;\n            padding: 0 6px;\n            transition: all 0.2s;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            gap: 2px;\n        }\n\n\n        .win-btn:hover {\n            background: var(--btn-active-bg);\n            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);\n            transform: translateY(-1px);\n        }\n\n\n        .win-btn:active {\n            transform: translateY(1px);\n            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);\n        }\n\n\n        .win-btn svg {\n            width: 16px;\n            height: 16px;\n            fill: var(--btn-text);\n            flex-shrink: 0;\n        }\n\n\n        /* --- Écran LCD --- */\n        .lcd-screen {\n            background-color: var(--lcd-bg);\n            border: 3px inset var(--chassis-border);\n            border-radius: 8px;\n            padding: 10px 14px;\n            box-shadow: inset 0 0 18px var(--lcd-glow), 0 0 8px rgba(0, 0, 0, 0.5);\n            display: grid;\n            grid-template-columns: 110px 1fr;\n            gap: 12px;\n            align-items: center;\n            position: relative;\n            overflow: hidden;\n        }\n\n\n        .lcd-screen::after {\n            content: '';\n            position: absolute;\n            top: 0;\n            left: 0;\n            right: 0;\n            bottom: 0;\n            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px);\n            pointer-events: none;\n            border-radius: 5px;\n        }\n\n\n        .lcd-info {\n            overflow: hidden;\n            text-align: right;\n            position: relative;\n            z-index: 1;\n        }\n\n\n        .lcd-ticker {\n            font-family: 'VT323', monospace;\n            color: var(--lcd-text);\n            font-size: 21px;\n            white-space: nowrap;\n            text-shadow: 0 0 8px var(--lcd-text), 0 0 20px var(--lcd-glow);\n            animation: ticker-rtl 14s linear infinite;\n            display: inline-block;\n            letter-spacing: 0.5px;\n        }\n\n\n        @keyframes ticker-rtl {\n            0% {\n                transform: translateX(-100%);\n            }\n            100% {\n                transform: translateX(100%);\n            }\n        }\n\n\n        .lcd-timer {\n            font-family: 'VT323', monospace;\n            color: var(--lcd-text);\n            font-size: 26px;\n            text-shadow: 0 0 8px var(--lcd-text), 0 0 20px var(--lcd-glow);\n            margin-top: 2px;\n            letter-spacing: 1px;\n        }\n\n\n        .lcd-ayah-count {\n            font-family: 'VT323', monospace;\n            color: var(--lcd-text);\n            font-size: 15px;\n            opacity: 0.85;\n            margin-top: 3px;\n            text-shadow: 0 0 5px var(--lcd-glow);\n        }\n\n\n        .viz-mode-indicator {\n            font-family: 'VT323', monospace;\n            color: var(--lcd-text);\n            font-size: 11px;\n            position: absolute;\n            bottom: 3px;\n            left: 10px;\n            opacity: 0.7;\n            z-index: 2;\n            pointer-events: none;\n            text-shadow: 0 0 4px var(--lcd-glow);\n            transition: opacity 0.3s;\n        }\n\n\n        canvas#spectrum {\n            width: 110px;\n            height: 46px;\n            background: rgba(0, 0, 0, 0.7);\n            border: 1px solid var(--chassis-border);\n            border-radius: 5px;\n            cursor: pointer;\n            position: relative;\n            z-index: 2;\n            transition: box-shadow 0.3s;\n        }\n\n\n        canvas#spectrum:hover {\n            box-shadow: 0 0 12px var(--lcd-glow);\n        }\n\n\n        /* --- Panneau de contrôle --- */\n        .controls-panel {\n            display: flex;\n            flex-direction: column;\n            gap: 8px;\n        }\n\n\n        .reciter-trigger-btn {\n            width: 100%;\n            background: var(--btn-bg);\n            color: var(--btn-text);\n            border: 1px solid var(--btn-border);\n            padding: 10px 14px;\n            font-size: 15px;\n            font-weight: bold;\n            border-radius: 8px;\n            cursor: pointer;\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            font-family: 'Tajawal', sans-serif;\n            transition: all 0.25s;\n            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\n        }\n\n\n        .reciter-trigger-btn:hover {\n            background: var(--btn-active-bg);\n            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);\n        }\n\n\n        .reciter-trigger-btn::after {\n            content: '▼';\n            font-size: 11px;\n            color: var(--accent);\n            transition: transform 0.3s;\n        }\n\n\n        .reciter-trigger-btn:hover::after {\n            transform: translateY(2px);\n        }\n\n\n        .transport-buttons {\n            display: flex;\n            justify-content: center;\n            gap: 8px;\n            flex-wrap: wrap;\n        }\n\n\n        .btn-winamp {\n            width: 42px;\n            height: 42px;\n            border-radius: 50%;\n            background: var(--btn-bg);\n            border: 1.5px solid var(--btn-border);\n            color: var(--btn-text);\n            cursor: pointer;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 8px rgba(0, 0, 0, 0.5);\n            transition: all 0.18s ease;\n            flex-shrink: 0;\n        }\n\n\n        .btn-winamp.btn-main {\n            width: 52px;\n            height: 52px;\n            background: var(--btn-active-bg);\n            border-color: var(--accent);\n            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 14px rgba(212, 175, 55, 0.5);\n        }\n\n\n        .btn-winamp svg {\n            width: 18px;\n            height: 18px;\n            fill: var(--accent);\n            transition: fill 0.2s, transform 0.2s;\n        }\n\n\n        .btn-winamp.btn-main svg {\n            width: 24px;\n            height: 24px;\n            fill: #fff;\n        }\n\n\n        .btn-winamp:hover svg,\n        .btn-winamp:focus svg {\n            fill: #ffffff;\n            transform: scale(1.1);\n        }\n\n\n        .btn-winamp:active {\n            transform: translateY(2px);\n            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);\n        }\n\n\n        .btn-winamp.btn-toggle {\n            width: 36px;\n            height: 36px;\n        }\n        .btn-winamp.btn-toggle svg {\n            width: 15px;\n            height: 15px;\n        }\n        .btn-winamp.btn-toggle.active {\n            background: var(--btn-active-bg);\n            border-color: var(--accent);\n            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);\n        }\n        .btn-winamp.btn-toggle.active svg {\n            fill: #fff;\n        }\n\n\n        .sliders {\n            display: flex;\n            gap: 8px;\n            align-items: center;\n            flex-wrap: wrap;\n        }\n\n\n        .slider-group {\n            display: flex;\n            align-items: center;\n            gap: 6px;\n            flex: 1;\n            min-width: 120px;\n        }\n\n\n        .slider-label {\n            font-size: 11px;\n            color: var(--text-main);\n            opacity: 0.7;\n            white-space: nowrap;\n            font-weight: bold;\n        }\n\n\n        input[type=range] {\n            -webkit-appearance: none;\n            appearance: none;\n            background: var(--slider-track);\n            height: 8px;\n            border-radius: 5px;\n            border: 1px solid var(--chassis-border);\n            cursor: pointer;\n            transition: height 0.2s;\n            flex: 1;\n        }\n\n\n        input[type=range]:hover {\n            height: 10px;\n        }\n\n\n        input[type=range]::-webkit-slider-thumb {\n            -webkit-appearance: none;\n            width: 18px;\n            height: 20px;\n            background: var(--accent);\n            border: 2px solid #fff;\n            border-radius: 4px;\n            cursor: pointer;\n            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);\n            transition: transform 0.2s;\n        }\n\n\n        input[type=range]::-webkit-slider-thumb:hover {\n            transform: scale(1.15);\n        }\n\n\n        input[type=range]::-moz-range-thumb {\n            width: 18px;\n            height: 20px;\n            background: var(--accent);\n            border: 2px solid #fff;\n            border-radius: 4px;\n            cursor: pointer;\n            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);\n        }\n\n\n        .mute-btn {\n            background: var(--btn-bg);\n            border: 1px solid var(--btn-border);\n            border-radius: 5px;\n            padding: 4px 6px;\n            cursor: pointer;\n            color: var(--btn-text);\n            font-size: 11px;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            transition: all 0.2s;\n            min-width: 30px;\n            height: 24px;\n        }\n        .mute-btn:hover {\n            background: var(--btn-active-bg);\n        }\n        .mute-btn svg {\n            width: 14px;\n            height: 14px;\n            fill: var(--btn-text);\n        }\n\n\n        /* --- Recherche --- */\n        .search-bar {\n            display: flex;\n            align-items: center;\n            gap: 6px;\n            background: var(--panel-bg);\n            border: 2px inset var(--chassis-border);\n            border-radius: 6px;\n            padding: 4px 8px;\n            transition: border-color 0.3s;\n        }\n        .search-bar:focus-within {\n            border-color: var(--accent);\n        }\n        .search-bar svg {\n            width: 16px;\n            height: 16px;\n            fill: var(--text-main);\n            opacity: 0.6;\n            flex-shrink: 0;\n        }\n        .search-bar input {\n            background: transparent;\n            border: none;\n            color: var(--text-main);\n            font-family: 'Tajawal', sans-serif;\n            font-size: 14px;\n            padding: 6px 0;\n            width: 100%;\n            outline: none;\n            user-select: text;\n        }\n        .search-bar input::placeholder {\n            color: var(--text-main);\n            opacity: 0.45;\n        }\n\n\n        /* --- Playlist --- */\n        .playlist-window {\n            background: var(--panel-bg);\n            border: 2px inset var(--chassis-border);\n            height: 135px;\n            overflow-y: auto;\n            font-size: 14px;\n            border-radius: 7px;\n            scroll-behavior: smooth;\n            transition: height 0.3s;\n        }\n\n\n        .playlist-item {\n            padding: 8px 14px;\n            cursor: pointer;\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            border-bottom: 1px solid rgba(212, 175, 55, 0.08);\n            transition: all 0.2s;\n            gap: 8px;\n        }\n\n\n        .playlist-item:hover,\n        .playlist-item:focus {\n            background: var(--item-hover);\n        }\n\n\n        .playlist-item.active {\n            background: var(--item-active-bg);\n            color: var(--item-active-text);\n            font-weight: bold;\n            box-shadow: inset 3px 0 0 var(--accent);\n        }\n\n\n        .playlist-item .surah-name {\n            font-weight: 500;\n        }\n        .playlist-item .surah-meta {\n            font-size: 12px;\n            opacity: 0.7;\n            white-space: nowrap;\n        }\n\n\n        /* --- Texte coranique --- */\n        .quran-text-container {\n            background: var(--panel-bg);\n            border: 2px inset var(--chassis-border);\n            padding: 12px;\n            height: 140px;\n            overflow-y: auto;\n            text-align: center;\n            border-radius: 7px;\n            display: flex;\n            flex-direction: column;\n            justify-content: flex-start;\n            align-items: center;\n            scroll-behavior: smooth;\n            position: relative;\n        }\n\n\n        .quran-text-container::before {\n            content: '';\n            position: absolute;\n            top: 0;\n            left: 0;\n            right: 0;\n            height: 2px;\n            background: var(--gold-gradient);\n            border-radius: 2px;\n        }\n\n\n        .ar-text {\n            font-family: 'Amiri', serif;\n            font-size: clamp(18px, 2.6vw, 26px);\n            color: var(--accent);\n            direction: rtl;\n            line-height: 1.7;\n            font-weight: bold;\n            white-space: pre-line;\n            width: 100%;\n            transition: font-size 0.3s;\n            text-shadow: 0 0 4px rgba(212, 175, 55, 0.2);\n        }\n\n\n        .ayah-marker {\n            color: var(--lcd-text);\n            font-size: 0.7em;\n            font-weight: normal;\n            display: inline-block;\n            margin: 0 4px;\n            text-shadow: 0 0 6px var(--lcd-glow);\n        }\n\n\n        /* --- Modales --- */\n        .modal-overlay {\n            position: fixed;\n            top: 0;\n            left: 0;\n            right: 0;\n            bottom: 0;\n            background: var(--modal-overlay);\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            z-index: 1000;\n            padding: 16px;\n            opacity: 0;\n            pointer-events: none;\n            transition: opacity 0.25s ease-in-out;\n            backdrop-filter: blur(4px);\n        }\n\n\n        .modal-overlay.open {\n            opacity: 1;\n            pointer-events: auto;\n        }\n\n\n        .modal-card {\n            background: var(--panel-bg);\n            border: 3px solid var(--chassis-border);\n            border-radius: 10px;\n            width: 100%;\n            max-width: 480px;\n            max-height: 85vh;\n            display: flex;\n            flex-direction: column;\n            overflow: hidden;\n            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);\n            transform: scale(0.95);\n            transition: transform 0.25s;\n        }\n\n\n        .modal-overlay.open .modal-card {\n            transform: scale(1);\n        }\n\n\n        .modal-header {\n            background: var(--gold-gradient);\n            background-size: 200% 100%;\n            color: #120e0b;\n            padding: 10px 14px;\n            font-weight: bold;\n            font-size: 15px;\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            flex-shrink: 0;\n            animation: shimmer 4s linear infinite;\n        }\n\n\n        .modal-close-btn {\n            background: transparent;\n            border: none;\n            font-size: 20px;\n            font-weight: bold;\n            color: #120e0b;\n            cursor: pointer;\n            width: 30px;\n            height: 30px;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            border-radius: 50%;\n            transition: all 0.2s;\n        }\n        .modal-close-btn:hover {\n            background: rgba(0, 0, 0, 0.15);\n        }\n\n\n        .modal-body {\n            overflow-y: auto;\n            padding: 10px 0;\n            max-height: 70vh;\n        }\n\n\n        .modal-section {\n            padding: 6px 16px;\n            margin-bottom: 4px;\n        }\n        .modal-section-title {\n            font-size: 12px;\n            font-weight: bold;\n            color: var(--accent);\n            text-transform: uppercase;\n            letter-spacing: 0.8px;\n            margin-bottom: 6px;\n            border-bottom: 1px solid rgba(212, 175, 55, 0.2);\n            padding-bottom: 4px;\n        }\n\n\n        .reciter-option {\n            padding: 10px 16px;\n            font-size: 15px;\n            color: var(--text-main);\n            cursor: pointer;\n            border-bottom: 1px solid rgba(212, 175, 55, 0.08);\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            transition: background 0.2s;\n        }\n\n\n        .reciter-option:hover,\n        .reciter-option:focus {\n            background: var(--item-hover);\n        }\n\n\n        .reciter-option.selected {\n            background: var(--item-active-bg);\n            color: var(--item-active-text);\n            font-weight: bold;\n        }\n\n\n        /* --- Paramètres --- */\n        .setting-row {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            padding: 7px 0;\n            gap: 8px;\n        }\n        .setting-label {\n            font-size: 14px;\n            color: var(--text-main);\n            font-weight: 500;\n        }\n\n\n        .color-swatches {\n            display: flex;\n            gap: 6px;\n            flex-wrap: wrap;\n        }\n        .color-swatch {\n            width: 28px;\n            height: 28px;\n            border-radius: 50%;\n            cursor: pointer;\n            border: 2px solid transparent;\n            transition: all 0.2s;\n            flex-shrink: 0;\n        }\n        .color-swatch:hover {\n            transform: scale(1.2);\n        }\n        .color-swatch.selected {\n            border-color: #fff;\n            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);\n        }\n\n\n        .mode-btns {\n            display: flex;\n            gap: 4px;\n            flex-wrap: wrap;\n        }\n        .mode-btn {\n            padding: 6px 10px;\n            border-radius: 5px;\n            border: 1px solid var(--btn-border);\n            background: var(--btn-bg);\n            color: var(--btn-text);\n            cursor: pointer;\n            font-size: 12px;\n            font-weight: bold;\n            transition: all 0.2s;\n            font-family: 'Tajawal', sans-serif;\n        }\n        .mode-btn:hover {\n            background: var(--btn-active-bg);\n        }\n        .mode-btn.active {\n            background: var(--btn-active-bg);\n            border-color: var(--accent);\n            color: #fff;\n            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);\n        }\n\n\n        .speed-btns {\n            display: flex;\n            gap: 3px;\n            flex-wrap: wrap;\n        }\n        .speed-btn {\n            padding: 5px 8px;\n            border-radius: 4px;\n            border: 1px solid var(--btn-border);\n            background: var(--btn-bg);\n            color: var(--btn-text);\n            cursor: pointer;\n            font-size: 11px;\n            font-weight: bold;\n            transition: all 0.2s;\n            font-family: 'VT323', monospace;\n            min-width: 36px;\n            text-align: center;\n        }\n        .speed-btn:hover {\n            background: var(--btn-active-bg);\n        }\n        .speed-btn.active {\n            background: var(--btn-active-bg);\n            border-color: var(--accent);\n            color: #fff;\n            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);\n        }\n\n\n        .toggle-switch {\n            position: relative;\n            width: 42px;\n            height: 22px;\n            background: var(--slider-track);\n            border-radius: 11px;\n            cursor: pointer;\n            border: 1px solid var(--btn-border);\n            transition: all 0.3s;\n            flex-shrink: 0;\n        }\n        .toggle-switch.active {\n            background: var(--accent);\n            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);\n        }\n        .toggle-switch::after {\n            content: '';\n            position: absolute;\n            top: 2px;\n            right: 2px;\n            width: 16px;\n            height: 16px;\n            background: #fff;\n            border-radius: 50%;\n            transition: transform 0.3s;\n            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);\n        }\n        .toggle-switch.active::after {\n            transform: translateX(-20px);\n        }\n\n\n        .kbd-shortcuts {\n            font-family: 'VT323', monospace;\n            font-size: 13px;\n            color: var(--text-main);\n            opacity: 0.8;\n            line-height: 1.8;\n        }\n        .kbd-key {\n            display: inline-block;\n            padding: 1px 6px;\n            border: 1px solid var(--btn-border);\n            border-radius: 4px;\n            background: var(--btn-bg);\n            font-size: 12px;\n            margin: 1px 2px;\n            font-family: 'VT323', monospace;\n        }\n\n\n        /* --- Toast notifications --- */\n        .toast-container {\n            position: fixed;\n            top: 16px;\n            left: 50%;\n            transform: translateX(-50%);\n            z-index: 2000;\n            display: flex;\n            flex-direction: column;\n            gap: 6px;\n            pointer-events: none;\n            width: 90%;\n            max-width: 380px;\n        }\n\n\n        .toast {\n            background: var(--toast-bg);\n            border: 2px solid var(--toast-border);\n            color: var(--toast-text);\n            padding: 10px 16px;\n            border-radius: 8px;\n            font-size: 14px;\n            font-weight: bold;\n            text-align: center;\n            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);\n            animation: toast-in 0.35s ease-out, toast-out 0.35s ease-in 2.6s forwards;\n            pointer-events: auto;\n            font-family: 'Tajawal', sans-serif;\n        }\n\n\n        @keyframes toast-in {\n            from {\n                opacity: 0;\n                transform: translateY(-25px) scale(0.9);\n            }\n            to {\n                opacity: 1;\n                transform: translateY(0) scale(1);\n            }\n        }\n        @keyframes toast-out {\n            from {\n                opacity: 1;\n                transform: translateY(0) scale(1);\n            }\n            to {\n                opacity: 0;\n                transform: translateY(-20px) scale(0.95);\n            }\n        }\n\n\n        /* --- Scrollbar --- */\n        ::-webkit-scrollbar {\n            width: 5px;\n        }\n        ::-webkit-scrollbar-track {\n            background: var(--panel-bg);\n        }\n        ::-webkit-scrollbar-thumb {\n            background: var(--chassis-border);\n            border-radius: 3px;\n        }\n        ::-webkit-scrollbar-thumb:hover {\n            background: var(--accent);\n        }\n\n\n        /* ==== TV PERFORMANCE MODE ==== */\n        [data-perf=\"true\"] body { padding: 2vmin; }\n        [data-perf=\"true\"] .winamp-container { max-width: 95vw; padding: 1.5vmin; gap: 1vmin; }\n        [data-perf=\"true\"] .win-btn, [data-perf=\"true\"] .btn-winamp { min-width: 48px; min-height: 48px; font-size: 1.2rem; }\n        [data-perf=\"true\"] .btn-winamp.btn-main { width: 64px; height: 64px; }\n        [data-perf=\"true\"] .title-bar,\n        [data-perf=\"true\"] .modal-header { animation: none !important; background: var(--btn-active-bg) !important; }\n        [data-perf=\"true\"] .winamp-container,\n        [data-perf=\"true\"] .lcd-screen,\n        [data-perf=\"true\"] .btn-winamp { box-shadow: none !important; }\n        [data-perf=\"true\"] .win-btn { box-shadow: none !important; text-shadow: none !important; }\n        [data-perf=\"true\"] .reciter-trigger-btn,\n        [data-perf=\"true\"] .mode-btn,\n        [data-perf=\"true\"] .speed-btn { background: #3d2b1a !important; border: 1px solid #8a6b3a; }\n        [data-perf=\"true\"] canvas#spectrum { width: 80px; height: 32px; }\n        [data-perf=\"true\"] .lcd-screen { border: 1px solid #8a6b3a; }\n        [data-perf=\"true\"] .playlist-window { height: 140px; }\n        [data-perf=\"true\"] .quran-text-container { height: 140px; }\n        [data-perf=\"true\"] .ar-text { font-size: 1.5rem !important; }\n        [data-perf=\"true\"] :focus { outline: 4px solid var(--focus-ring) !important; outline-offset: 4px !important; }\n        [data-perf=\"true\"] .modal-overlay { backdrop-filter: none !important; }\n        [data-perf=\"true\"] * { transition: none !important; }\n    </style>\n</head>\n<body>\n\n\n    <div class=\"winamp-container\" id=\"app-container\">\n        <div class=\"title-bar\">\n            <span class=\"title-bar-text\">\n                <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" style=\"fill:#120e0b;\">\n                    <path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z\" fill=\"#120e0b\"/>\n                </svg>\n                مشغل القرآن الكريم\n            </span>\n            <div class=\"title-bar-controls\">\n                <button class=\"win-btn\" id=\"btn-theme\" tabindex=\"0\" title=\"تغيير السمة (T)\">\n                    <span id=\"theme-icon\">☀</span>\n                </button>\n                <button class=\"win-btn\" id=\"btn-settings\" tabindex=\"0\" title=\"الإعدادات (O)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.41h-3.84a.5.5 0 0 0-.5.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L2.5 9.87a.5.5 0 0 0 .12.61l2.03 1.58c-.04.3-.06.61-.06.94s.02.64.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.13.23.37.32.6.22l2.39-.96c.49.38 1.03.7 1.62.94l.36 2.54c.04.24.23.41.5.41h3.84c.27 0 .46-.17.5-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.23.1.47.01.6-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z\"/></svg>\n                </button>\n            </div>\n        </div>\n\n\n        <div class=\"lcd-screen\">\n            <canvas id=\"spectrum\" width=\"110\" height=\"46\" tabindex=\"0\" title=\"انقر لتغيير نمط العرض\"></canvas>\n            <div class=\"lcd-info\">\n                <div class=\"lcd-ticker\" id=\"lcd-title\">اضغط تشغيل للبدء</div>\n                <div class=\"lcd-timer\" id=\"lcd-time\">00:00</div>\n                <div class=\"lcd-ayah-count\" id=\"lcd-ayah-count\"></div>\n            </div>\n            <span class=\"viz-mode-indicator\" id=\"viz-indicator\">وضع: أشرطة</span>\n        </div>\n\n\n        <div class=\"controls-panel\">\n            <button class=\"reciter-trigger-btn\" id=\"reciter-btn\" tabindex=\"0\">\n                <span id=\"reciter-label\">محمود خليل الحصري</span>\n            </button>\n\n\n            <div class=\"transport-buttons\">\n                <button class=\"btn-winamp btn-toggle\" id=\"btn-shuffle\" tabindex=\"0\" title=\"عشوائي (R)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z\"/></svg>\n                </button>\n                <button class=\"btn-winamp\" id=\"btn-prev\" tabindex=\"0\" title=\"السابقة (N)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M6 6h2v12H6zm3.5 6l8.5 6V6z\"/></svg>\n                </button>\n                <button class=\"btn-winamp\" id=\"btn-stop\" tabindex=\"0\" title=\"إيقاف (S)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M6 6h12v12H6z\"/></svg>\n                </button>\n                <button class=\"btn-winamp btn-main\" id=\"btn-play\" tabindex=\"0\" title=\"تشغيل (Space)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M8 5v14l11-7z\"/></svg>\n                </button>\n                <button class=\"btn-winamp\" id=\"btn-pause\" tabindex=\"0\" title=\"إيقاف مؤقت (Space)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M6 19h4V5H6v14zm8-14v14h4V5h-4z\"/></svg>\n                </button>\n                <button class=\"btn-winamp\" id=\"btn-next\" tabindex=\"0\" title=\"التالية (P)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z\"/></svg>\n                </button>\n                <button class=\"btn-winamp btn-toggle\" id=\"btn-repeat\" tabindex=\"0\" title=\"وضع التكرار (M)\">\n                    <svg viewBox=\"0 0 24 24\"><path d=\"M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z\"/></svg>\n                </button>\n            </div>\n\n\n            <div class=\"sliders\">\n                <div class=\"slider-group\">\n                    <span class=\"slider-label\">⏱</span>\n                    <input type=\"range\" id=\"seek-bar\" class=\"seek-bar\" value=\"0\" min=\"0\" max=\"100\" step=\"0.1\" tabindex=\"0\" title=\"التقدم\">\n                </div>\n                <div class=\"slider-group\">\n                    <span class=\"slider-label\">🔊</span>\n                    <input type=\"range\" id=\"volume-bar\" class=\"volume-bar\" value=\"80\" min=\"0\" max=\"100\" tabindex=\"0\" title=\"الصوت\">\n                    <button class=\"mute-btn\" id=\"btn-mute\" tabindex=\"0\" title=\"كتم الصوت\">\n                        <svg viewBox=\"0 0 24 24\"><path d=\"M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z\"/></svg>\n                    </button>\n                </div>\n            </div>\n        </div>\n\n\n        <div class=\"search-bar\">\n            <svg viewBox=\"0 0 24 24\"><path d=\"M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z\"/></svg>\n            <input type=\"text\" id=\"search-input\" placeholder=\"ابحث عن سورة...\" tabindex=\"0\" autocomplete=\"off\">\n        </div>\n\n\n        <div class=\"playlist-window\" id=\"playlist\"></div>\n\n\n        <div class=\"quran-text-container\" id=\"text-container\" tabindex=\"0\">\n            <div class=\"ar-text\" id=\"ar-text\">اخْتَر سُورَة لِلْبَدْء</div>\n        </div>\n    </div>\n\n\n    <!-- Modale du lecteur -->\n    <div class=\"modal-overlay\" id=\"reciter-modal\">\n        <div class=\"modal-card\">\n            <div class=\"modal-header\">\n                <span>اختر القارئ</span>\n                <button class=\"modal-close-btn\" id=\"modal-close\">✕</button>\n            </div>\n            <div class=\"modal-body\" id=\"reciter-list\"></div>\n        </div>\n    </div>\n\n\n    <!-- Modale des paramètres -->\n    <div class=\"modal-overlay\" id=\"settings-modal\">\n        <div class=\"modal-card\">\n            <div class=\"modal-header\">\n                <span>الإعدادات</span>\n                <button class=\"modal-close-btn\" id=\"settings-close\">✕</button>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"modal-section\">\n                    <div class=\"modal-section-title\">التشغيل</div>\n                    <div class=\"setting-row\">\n                        <span class=\"setting-label\">سرعة التشغيل</span>\n                        <div class=\"speed-btns\" id=\"speed-btns\">\n                            <button class=\"speed-btn\" data-speed=\"0.5\">0.5x</button>\n                            <button class=\"speed-btn\" data-speed=\"0.75\">0.75x</button>\n                            <button class=\"speed-btn active\" data-speed=\"1\">1x</button>\n                            <button class=\"speed-btn\" data-speed=\"1.25\">1.25x</button>\n                            <button class=\"speed-btn\" data-speed=\"1.5\">1.5x</button>\n                            <button class=\"speed-btn\" data-speed=\"2\">2x</button>\n                        </div>\n                    </div>\n                    <div class=\"setting-row\">\n                        <span class=\"setting-label\">وضع التكرار</span>\n                        <div class=\"mode-btns\" id=\"repeat-btns\">\n                            <button class=\"mode-btn active\" data-repeat=\"off\">إيقاف</button>\n                            <button class=\"mode-btn\" data-repeat=\"one\">واحد</button>\n                            <button class=\"mode-btn\" data-repeat=\"all\">الكل</button>\n                            <button class=\"mode-btn\" data-repeat=\"shuffle\">عشوائي</button>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-section\">\n                    <div class=\"modal-section-title\">العرض</div>\n                    <div class=\"setting-row\">\n                        <span class=\"setting-label\">لون العرض المرئي</span>\n                        <div class=\"color-swatches\" id=\"color-swatches\">\n                            <button class=\"color-swatch selected\" data-color=\"#ffd700\" data-alt=\"#ffaa00\" style=\"background:#ffd700;\" title=\"ذهبي\"></button>\n                            <button class=\"color-swatch\" data-color=\"#00ff88\" data-alt=\"#00cc66\" style=\"background:#00ff88;\" title=\"زمردي\"></button>\n                            <button class=\"color-swatch\" data-color=\"#00ccff\" data-alt=\"#0099ff\" style=\"background:#00ccff;\" title=\"سماوي\"></button>\n                            <button class=\"color-swatch\" data-color=\"#ff5555\" data-alt=\"#cc2222\" style=\"background:#ff5555;\" title=\"أحمر\"></button>\n                            <button class=\"color-swatch\" data-color=\"#cc66ff\" data-alt=\"#9944cc\" style=\"background:#cc66ff;\" title=\"بنفسجي\"></button>\n                            <button class=\"color-swatch\" data-color=\"#ffffff\" data-alt=\"#cccccc\" style=\"background:#ffffff;\" title=\"أبيض\"></button>\n                        </div>\n                    </div>\n                    <div class=\"setting-row\">\n                        <span class=\"setting-label\">نمط العرض المرئي</span>\n                        <div class=\"mode-btns\" id=\"viz-mode-btns\">\n                            <button class=\"mode-btn active\" data-viz=\"0\">أشرطة</button>\n                            <button class=\"mode-btn\" data-viz=\"1\">منحنى</button>\n                            <button class=\"mode-btn\" data-viz=\"2\">تعبئة</button>\n                            <button class=\"mode-btn\" data-viz=\"3\">دوائر</button>\n                            <button class=\"mode-btn\" data-viz=\"4\">موجات</button>\n                        </div>\n                    </div>\n                    <div class=\"setting-row\">\n                        <span class=\"setting-label\">حجم الخط</span>\n                        <div class=\"mode-btns\" id=\"font-size-btns\">\n                            <button class=\"mode-btn\" data-font=\"0.85\">صغير</button>\n                            <button class=\"mode-btn active\" data-font=\"1\">متوسط</button>\n                            <button class=\"mode-btn\" data-font=\"1.2\">كبير</button>\n                            <button class=\"mode-btn\" data-font=\"1.4\">أكبر</button>\n                        </div>\n                    </div>\n                    <div class=\"setting-row\">\n                        <span class=\"setting-label\">تمرير تلقائي</span>\n                        <div class=\"toggle-switch\" id=\"auto-scroll-toggle\" tabindex=\"0\" role=\"switch\" aria-checked=\"false\"></div>\n                    </div>\n                    <div class=\"setting-row\">\n                        <span class=\"setting-label\">وضع الأداء الخفيف (TV)</span>\n                        <div class=\"toggle-switch\" id=\"perf-toggle\" tabindex=\"0\" role=\"switch\" aria-checked=\"false\"></div>\n                    </div>\n                </div>\n                <div class=\"modal-section\">\n                    <div class=\"modal-section-title\">اختصارات لوحة المفاتيح</div>\n                    <div class=\"kbd-shortcuts\">\n                        <span class=\"kbd-key\">Space</span> تشغيل/إيقاف مؤقت &nbsp;\n                        <span class=\"kbd-key\">←</span><span class=\"kbd-key\">→</span> تقدم &nbsp;\n                        <span class=\"kbd-key\">↑</span><span class=\"kbd-key\">↓</span> صوت &nbsp;\n                        <span class=\"kbd-key\">N</span><span class=\"kbd-key\">P</span> التالي/السابق &nbsp;\n                        <span class=\"kbd-key\">S</span> إيقاف &nbsp;\n                        <span class=\"kbd-key\">M</span> تكرار &nbsp;\n                        <span class=\"kbd-key\">R</span> عشوائي &nbsp;\n                        <span class=\"kbd-key\">T</span> سمة &nbsp;\n                        <span class=\"kbd-key\">O</span> إعدادات &nbsp;\n                        <span class=\"kbd-key\">Esc</span> إغلاق\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n\n    <div class=\"toast-container\" id=\"toast-container\"></div>\n\n\n    <audio id=\"audio-player\" playsinline></audio>\n\n\n    <script>\n        const RECITERS = [\n            { id: \"Husary_128kbps\", name: \"محمود خليل الحصري\" },\n            { id: \"Alafasy_128kbps\", name: \"مشاري راشد العفاسي\" },\n            { id: \"Abdurrahmaan_As-Sudais_192kbps\", name: \"عبد الرحمن السديس\" },\n            { id: \"Ghamadi_40kbps\", name: \"سعد الغامدي\" },\n            { id: \"MaherAlMuaiqly128kbps\", name: \"ماهر المعيقلي\" },\n            { id: \"Abdul_Basit_Murattal_192kbps\", name: \"عبد الباسط عبد الصمد\" },\n            { id: \"Saood bin Ibraaheem Ash-Shuraym_128kbps\", name: \"سعود الشريم\" },\n            { id: \"Abu_Bakr_Ash-Shaatree_128kbps\", name: \"أبو بكر الشاطري\" },\n            { id: \"Yasser_Ad-Dussary_128kbps\", name: \"ياسر الدوسري\" },\n            { id: \"Nasser_Alqatami_128kbps\", name: \"ناصر القطامي\" },\n            { id: \"Muhammad_Jibreel_128kbps\", name: \"محمد جبريل\" },\n            { id: \"Mustafa_Ismail_48kbps\", name: \"مصطفى إسماعيل\" },\n            { id: \"Minshawy_Murattal_128kbps\", name: \"محمد صديق المنشاوي\" },\n            { id: \"Khaalid_Abdullaah_al-Qahtaanee_192kbps\", name: \"خالد القحطاني\" }\n        ];\n\n\n        const VIZ_MODE_NAMES = ['أشرطة', 'منحنى', 'تعبئة', 'دوائر', 'موجات'];\n        const SPEED_PRESETS = [0.5, 0.75, 1, 1.25, 1.5, 2];\n        const FONT_SIZES = [0.85, 1, 1.2, 1.4];\n\n\n        // État global\n        let settings = {\n            theme: 'dark',\n            reciterId: 'Husary_128kbps',\n            visualizerMode: 0,\n            visualizerColor: '#ffd700',\n            visualizerColorAlt: '#ffaa00',\n            playbackSpeed: 1.0,\n            repeatMode: 'off',\n            fontSize: 1,\n            autoScroll: false,\n            muted: false,\n            shuffleEnabled: false,\n            perf: false\n        };\n\n\n        let surahs = [];\n        let currentSurahIndex = 0;\n        let currentAyahIndex = 0;\n        let currentAyahsAr = [];\n        let audioCtx, analyser, source, canvasCtx;\n        let isAudioInitialized = false;\n        let isBasmalahPlaying = false;\n        let idlePhase = 0;\n        let vizMode = 0;\n        let totalElapsedBeforeCurrentAyah = 0;\n        let searchQuery = '';\n        let toastTimeout = null;\n\n\n        const audio = document.getElementById('audio-player');\n        const playBtn = document.getElementById('btn-play');\n        const pauseBtn = document.getElementById('btn-pause');\n        const stopBtn = document.getElementById('btn-stop');\n        const prevBtn = document.getElementById('btn-prev');\n        const nextBtn = document.getElementById('btn-next');\n        const seekBar = document.getElementById('seek-bar');\n        const volumeBar = document.getElementById('volume-bar');\n        const muteBtn = document.getElementById('btn-mute');\n        const lcdTitle = document.getElementById('lcd-title');\n        const lcdTime = document.getElementById('lcd-time');\n        const lcdAyahCount = document.getElementById('lcd-ayah-count');\n        const playlistEl = document.getElementById('playlist');\n        const themeBtn = document.getElementById('btn-theme');\n        const settingsBtn = document.getElementById('btn-settings');\n        const arTextEl = document.getElementById('ar-text');\n        const textContainer = document.getElementById('text-container');\n        const canvas = document.getElementById('spectrum');\n        const reciterBtn = document.getElementById('reciter-btn');\n        const reciterLabel = document.getElementById('reciter-label');\n        const reciterModal = document.getElementById('reciter-modal');\n        const reciterList = document.getElementById('reciter-list');\n        const modalCloseBtn = document.getElementById('modal-close');\n        const settingsModal = document.getElementById('settings-modal');\n        const settingsClose = document.getElementById('settings-close');\n        const searchInput = document.getElementById('search-input');\n        const shuffleBtn = document.getElementById('btn-shuffle');\n        const repeatBtn = document.getElementById('btn-repeat');\n        const toastContainer = document.getElementById('toast-container');\n        const vizIndicator = document.getElementById('viz-indicator');\n\n\n        canvasCtx = canvas.getContext('2d');\n\n\n        // --- Toast notifications ---\n        function showToast(message, duration = 3000) {\n            if (toastTimeout) clearTimeout(toastTimeout);\n            const toast = document.createElement('div');\n            toast.className = 'toast';\n            toast.textContent = message;\n            toastContainer.appendChild(toast);\n            toastTimeout = setTimeout(() => {\n                if (toast.parentNode) toast.parentNode.removeChild(toast);\n                toastTimeout = null;\n            }, duration);\n        }\n\n\n        // --- Canvas : changement de mode ---\n        canvas.addEventListener('click', () => {\n            vizMode = (vizMode + 1) % VIZ_MODE_NAMES.length;\n            settings.visualizerMode = vizMode;\n            updateVizModeButtons();\n            updateVizIndicator();\n            showToast('نمط العرض: ' + VIZ_MODE_NAMES[vizMode], 1500);\n        });\n\n\n        function updateVizIndicator() {\n            vizIndicator.textContent = 'وضع: ' + VIZ_MODE_NAMES[vizMode];\n            vizIndicator.style.opacity = '1';\n            clearTimeout(vizIndicator._timeout);\n            vizIndicator._timeout = setTimeout(() => {\n                vizIndicator.style.opacity = '0.7';\n            }, 1500);\n        }\n\n\n        function updateVizModeButtons() {\n            document.querySelectorAll('#viz-mode-btns .mode-btn').forEach(btn => {\n                btn.classList.toggle('active', parseInt(btn.dataset.viz) === vizMode);\n            });\n        }\n\n\n        // --- Performance mode ---\n        function autoDetectPerf() {\n            try {\n                const mem = navigator.deviceMemory;\n                const cores = navigator.hardwareConcurrency;\n                const ua = (navigator.userAgent || '').toLowerCase();\n                const isTV = /(webos|tizen|netcast|smart-tv|googletv|startappbundle)/.test(ua);\n                if (isTV && ((mem && mem < 2) || (cores && cores <= 2) || !mem || !cores)) return true;\n                if (mem && mem < 2) return true;\n            } catch (e) {}\n            return false;\n        }\n\n        function applyPerformanceMode() {\n            document.documentElement.setAttribute('data-perf', settings.perf ? 'true' : 'false');\n            if (analyser) analyser.fftSize = settings.perf ? 32 : 64;\n        }\n\n\n        // --- Initialisation ---\n        async function init() {\n            if (autoDetectPerf()) settings.perf = true;\n            applyPerformanceMode();\n            setupTouchUnlock();\n            drawSpectrum();\n            renderReciterList();\n            setupSettingsUI();\n            await fetchSurahs();\n            setupEventListeners();\n            setupTVNavigation();\n            applySettingsToUI();\n            updateVizIndicator();\n            playBtn.focus();\n        }\n\n\n        function setupTouchUnlock() {\n            const unlockHandler = () => {\n                initAudioContext();\n                if (!audio.src || audio.paused) {\n                    loadSurah(0, true);\n                }\n                window.removeEventListener('touchstart', unlockHandler);\n                window.removeEventListener('click', unlockHandler);\n                window.removeEventListener('keydown', unlockHandler);\n            };\n            window.addEventListener('touchstart', unlockHandler, { once: true });\n            window.addEventListener('click', unlockHandler, { once: true });\n            window.addEventListener('keydown', unlockHandler, { once: true });\n        }\n\n\n        function initAudioContext() {\n            if (isAudioInitialized) {\n                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();\n                return;\n            }\n            if (window.location.protocol !== 'file:') {\n                audio.setAttribute('crossorigin', 'anonymous');\n            }\n            try {\n                const AudioContextClass = window.AudioContext || window.webkitAudioContext;\n                if (AudioContextClass) {\n                    audioCtx = new AudioContextClass();\n                    analyser = audioCtx.createAnalyser();\n                    analyser.fftSize = settings.perf ? 32 : 64;\n                    source = audioCtx.createMediaElementSource(audio);\n                    source.connect(analyser);\n                    analyser.connect(audioCtx.destination);\n                }\n            } catch (e) {\n                console.warn(\"AudioContext init warning.\");\n            }\n            isAudioInitialized = true;\n        }\n\n\n        // --- Dessin du spectre ---\n        let _lastDraw = 0;\n        function drawSpectrum() {\n            const now = performance.now();\n            const interval = settings.perf ? 80 : 0;\n            if (interval && (now - _lastDraw < interval)) {\n                requestAnimationFrame(drawSpectrum);\n                return;\n            }\n            _lastDraw = now;\n            requestAnimationFrame(drawSpectrum);\n            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);\n            const isActive = analyser && audio.src && !audio.paused;\n            if (isActive) {\n                drawActiveSpectrum();\n            } else {\n                drawIdleWave();\n            }\n        }\n\n\n        function drawActiveSpectrum() {\n            const bufferLength = analyser.frequencyBinCount;\n            const dataArray = new Uint8Array(bufferLength);\n            analyser.getByteFrequencyData(dataArray);\n            const accent = settings.visualizerColor;\n            const lcdText = settings.visualizerColorAlt;\n            switch (settings.visualizerMode) {\n                case 0:\n                    drawBars(dataArray, accent, lcdText);\n                    break;\n                case 1:\n                    drawCurve(dataArray, lcdText);\n                    break;\n                case 2:\n                    drawFill(dataArray, accent, lcdText);\n                    break;\n                case 3:\n                    drawCircles(dataArray, accent, lcdText);\n                    break;\n                case 4:\n                    drawWaveform(dataArray, lcdText);\n                    break;\n                default:\n                    drawBars(dataArray, accent, lcdText);\n            }\n        }\n\n\n        function drawBars(dataArray, accent, lcdText) {\n            const bufferLength = dataArray.length;\n            const barWidth = (canvas.width / bufferLength) * 1.5;\n            let x = 0;\n            for (let i = 0; i < bufferLength; i++) {\n                const barHeight = Math.max(2, (dataArray[i] / 255) * canvas.height);\n                const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);\n                gradient.addColorStop(0, accent);\n                gradient.addColorStop(1, lcdText);\n                canvasCtx.save();\n                canvasCtx.shadowColor = lcdText;\n                canvasCtx.shadowBlur = 7;\n                canvasCtx.fillStyle = gradient;\n                canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);\n                canvasCtx.restore();\n                canvasCtx.save();\n                canvasCtx.shadowColor = '#ffffff';\n                canvasCtx.shadowBlur = 5;\n                canvasCtx.fillStyle = '#fff8dc';\n                canvasCtx.fillRect(x, Math.max(0, canvas.height - barHeight - 2), barWidth - 1, 2);\n                canvasCtx.restore();\n                x += barWidth;\n            }\n        }\n\n\n        function drawCurve(dataArray, lcdText) {\n            canvasCtx.beginPath();\n            canvasCtx.strokeStyle = lcdText;\n            canvasCtx.lineWidth = 2;\n            canvasCtx.shadowColor = lcdText;\n            canvasCtx.shadowBlur = 9;\n            const sliceWidth = canvas.width / dataArray.length;\n            let x = 0;\n            for (let i = 0; i < dataArray.length; i++) {\n                const v = dataArray[i] / 255.0;\n                const y = canvas.height - (v * canvas.height);\n                if (i === 0) canvasCtx.moveTo(x, y);\n                else canvasCtx.lineTo(x, y);\n                x += sliceWidth;\n            }\n            canvasCtx.stroke();\n        }\n\n\n        function drawFill(dataArray, accent, lcdText) {\n            const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;\n            const h = (avg / 255) * canvas.height;\n            const gradient = canvasCtx.createLinearGradient(0, 0, 0, canvas.height);\n            gradient.addColorStop(0, lcdText);\n            gradient.addColorStop(1, accent);\n            canvasCtx.save();\n            canvasCtx.shadowColor = lcdText;\n            canvasCtx.shadowBlur = 12;\n            canvasCtx.fillStyle = gradient;\n            const rectHeight = Math.max(2, h);\n            canvasCtx.fillRect(0, (canvas.height - rectHeight) / 2, canvas.width, rectHeight);\n            canvasCtx.restore();\n        }\n\n\n        function drawCircles(dataArray, accent, lcdText) {\n            const centerX = canvas.width / 2;\n            const centerY = canvas.height / 2;\n            const maxRadius = Math.min(canvas.width, canvas.height) / 2 - 2;\n            let sum = 0;\n            for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];\n            const avg = sum / dataArray.length;\n            const ratio = avg / 255;\n            const radius = 2 + ratio * maxRadius;\n            canvasCtx.save();\n            canvasCtx.shadowColor = lcdText;\n            canvasCtx.shadowBlur = 9;\n            canvasCtx.strokeStyle = accent;\n            canvasCtx.lineWidth = 1.8;\n            canvasCtx.beginPath();\n            canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);\n            canvasCtx.stroke();\n            const innerRadius = radius * 0.6;\n            canvasCtx.strokeStyle = lcdText;\n            canvasCtx.lineWidth = 1.2;\n            canvasCtx.beginPath();\n            canvasCtx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);\n            canvasCtx.stroke();\n            canvasCtx.shadowBlur = 5;\n            canvasCtx.fillStyle = lcdText;\n            canvasCtx.beginPath();\n            canvasCtx.arc(centerX, centerY, 2.5, 0, Math.PI * 2);\n            canvasCtx.fill();\n            canvasCtx.restore();\n        }\n\n\n        function drawWaveform(dataArray, lcdText) {\n            const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;\n            const amplitude = (avg / 255) * (canvas.height / 2 - 4);\n            canvasCtx.save();\n            canvasCtx.shadowColor = lcdText;\n            canvasCtx.shadowBlur = 8;\n            canvasCtx.strokeStyle = lcdText;\n            canvasCtx.lineWidth = 2.2;\n            canvasCtx.globalAlpha = 0.9;\n            canvasCtx.beginPath();\n            const midY = canvas.height / 2;\n            const speed = 0.14;\n            const frequency = 0.22;\n            for (let x = 0; x <= canvas.width; x += 2) {\n                const phase = (x * frequency) + (performance.now() / 1000 * speed);\n                const envelope = 0.5 + 0.5 * Math.sin(phase);\n                const y = midY + Math.sin(phase * 1.6) * amplitude * envelope;\n                if (x === 0) canvasCtx.moveTo(x, y);\n                else canvasCtx.lineTo(x, y);\n            }\n            canvasCtx.stroke();\n            canvasCtx.restore();\n        }\n\n\n        function drawIdleWave() {\n            idlePhase += 0.08;\n            const lcdText = settings.visualizerColor;\n            const midY = canvas.height / 2;\n            canvasCtx.save();\n            canvasCtx.shadowColor = lcdText;\n            canvasCtx.shadowBlur = 7;\n            canvasCtx.strokeStyle = lcdText;\n            canvasCtx.lineWidth = 2;\n            canvasCtx.globalAlpha = 0.7;\n            canvasCtx.beginPath();\n            for (let x = 0; x <= canvas.width; x += 2) {\n                const envelope = 0.35 + 0.65 * Math.abs(Math.sin(idlePhase * 0.32));\n                const y = midY + Math.sin((x * 0.15) + idlePhase) * (midY * 0.7) * envelope;\n                if (x === 0) canvasCtx.moveTo(x, y);\n                else canvasCtx.lineTo(x, y);\n            }\n            canvasCtx.stroke();\n            canvasCtx.restore();\n        }\n\n\n        // --- Liste des récitateurs ---\n        function renderReciterList() {\n            reciterList.innerHTML = '';\n            RECITERS.forEach((r) => {\n                const item = document.createElement('div');\n                item.className = `reciter-option ${r.id === settings.reciterId ? 'selected' : ''}`;\n                item.setAttribute('tabindex', '0');\n                item.setAttribute('data-id', r.id);\n                item.innerHTML = `<span>${r.name}</span>${r.id === settings.reciterId ? '<span>✓</span>' : ''}`;\n                const selectHandler = () => {\n                    settings.reciterId = r.id;\n                    reciterLabel.textContent = r.name;\n                    closeReciterModal();\n                    playAyah(currentAyahIndex, true);\n                    showToast('تم تغيير القارئ إلى: ' + r.name);\n                };\n                item.addEventListener('click', selectHandler);\n                item.addEventListener('focus', () => item.scrollIntoView({ block: 'nearest' }));\n                reciterList.appendChild(item);\n            });\n        }\n\n\n        function openReciterModal() {\n            reciterModal.classList.add('open');\n            const selectedItem = reciterList.querySelector('.reciter-option.selected') || reciterList.firstElementChild;\n            if (selectedItem) selectedItem.focus();\n        }\n\n\n        function closeReciterModal() {\n            reciterModal.classList.remove('open');\n            reciterBtn.focus();\n        }\n\n\n        // --- Modale des paramètres ---\n        function openSettingsModal() {\n            settingsModal.classList.add('open');\n            applySettingsToUI();\n            const firstBtn = settingsModal.querySelector('.mode-btn, .color-swatch, .speed-btn, .toggle-switch');\n            if (firstBtn) firstBtn.focus();\n        }\n\n\n        function closeSettingsModal() {\n            settingsModal.classList.remove('open');\n            settingsBtn.focus();\n        }\n\n\n        function setupSettingsUI() {\n            // Vitesse\n            document.querySelectorAll('#speed-btns .speed-btn').forEach(btn => {\n                btn.addEventListener('click', () => {\n                    const spd = parseFloat(btn.dataset.speed);\n                    settings.playbackSpeed = spd;\n                    audio.playbackRate = spd;\n                    applySettingsToUI();\n                    showToast('سرعة التشغيل: ' + spd + 'x');\n                });\n            });\n            // Répétition\n            document.querySelectorAll('#repeat-btns .mode-btn').forEach(btn => {\n                btn.addEventListener('click', () => {\n                    settings.repeatMode = btn.dataset.repeat;\n                    applySettingsToUI();\n                    const labels = { off: 'إيقاف', one: 'تكرار واحد', all: 'تكرار الكل', shuffle: 'عشوائي' };\n                    showToast('وضع التكرار: ' + labels[settings.repeatMode]);\n                });\n            });\n            // Couleur du visualiseur\n            document.querySelectorAll('#color-swatches .color-swatch').forEach(btn => {\n                btn.addEventListener('click', () => {\n                    settings.visualizerColor = btn.dataset.color;\n                    settings.visualizerColorAlt = btn.dataset.alt;\n                    applySettingsToUI();\n                    showToast('تم تغيير لون العرض المرئي');\n                });\n            });\n            // Mode visualiseur\n            document.querySelectorAll('#viz-mode-btns .mode-btn').forEach(btn => {\n                btn.addEventListener('click', () => {\n                    vizMode = parseInt(btn.dataset.viz);\n                    settings.visualizerMode = vizMode;\n                    applySettingsToUI();\n                    updateVizIndicator();\n                    showToast('نمط العرض: ' + VIZ_MODE_NAMES[vizMode], 1500);\n                });\n            });\n            // Taille de police\n            document.querySelectorAll('#font-size-btns .mode-btn').forEach(btn => {\n                btn.addEventListener('click', () => {\n                    settings.fontSize = parseFloat(btn.dataset.font);\n                    applySettingsToUI();\n                    showToast('حجم الخط: ' + btn.textContent);\n                });\n            });\n            // Auto-scroll\n            document.getElementById('auto-scroll-toggle').addEventListener('click', () => {\n                settings.autoScroll = !settings.autoScroll;\n                applySettingsToUI();\n                showToast(settings.autoScroll ? 'تم تفعيل التمرير التلقائي' : 'تم إيقاف التمرير التلقائي');\n            });\n            // Mode performance\n            document.getElementById('perf-toggle').addEventListener('click', () => {\n                settings.perf = !settings.perf;\n                applyPerformanceMode();\n                applySettingsToUI();\n                showToast(settings.perf ? 'تم تفعيل وضع الأداء الخفيف' : 'تم إيقاف وضع الأداء الخفيف');\n            });\n        }\n\n\n        function applySettingsToUI() {\n            document.querySelectorAll('#speed-btns .speed-btn').forEach(btn => {\n                btn.classList.toggle('active', parseFloat(btn.dataset.speed) === settings.playbackSpeed);\n            });\n            document.querySelectorAll('#repeat-btns .mode-btn').forEach(btn => {\n                btn.classList.toggle('active', btn.dataset.repeat === settings.repeatMode);\n            });\n            document.querySelectorAll('#color-swatches .color-swatch').forEach(btn => {\n                btn.classList.toggle('selected', btn.dataset.color === settings.visualizerColor);\n            });\n            document.querySelectorAll('#viz-mode-btns .mode-btn').forEach(btn => {\n                btn.classList.toggle('active', parseInt(btn.dataset.viz) === settings.visualizerMode);\n            });\n            document.querySelectorAll('#font-size-btns .mode-btn').forEach(btn => {\n                btn.classList.toggle('active', parseFloat(btn.dataset.font) === settings.fontSize);\n            });\n            document.getElementById('auto-scroll-toggle').classList.toggle('active', settings.autoScroll);\n            document.getElementById('auto-scroll-toggle').setAttribute('aria-checked', settings.autoScroll);\n            document.getElementById('perf-toggle').classList.toggle('active', settings.perf);\n            document.getElementById('perf-toggle').setAttribute('aria-checked', settings.perf);\n            shuffleBtn.classList.toggle('active', settings.shuffleEnabled);\n            updateRepeatBtnIcon();\n            arTextEl.style.fontSize = (settings.fontSize * 100) + '%';\n            audio.playbackRate = settings.playbackSpeed;\n            audio.volume = settings.muted ? 0 : volumeBar.value / 100;\n        }\n\n\n        function updateRepeatBtnIcon() {\n            const mode = settings.repeatMode;\n            if (mode === 'off') {\n                repeatBtn.classList.remove('active');\n                repeatBtn.title = 'وضع التكرار: إيقاف';\n            } else if (mode === 'one') {\n                repeatBtn.classList.add('active');\n                repeatBtn.title = 'وضع التكرار: واحد';\n            } else if (mode === 'all') {\n                repeatBtn.classList.add('active');\n                repeatBtn.title = 'وضع التكرار: الكل';\n            } else if (mode === 'shuffle') {\n                repeatBtn.classList.add('active');\n                repeatBtn.title = 'وضع التكرار: عشوائي';\n            }\n        }\n\n\n        // --- Récupération des sourates ---\n        async function fetchSurahs() {\n            try {\n                const res = await fetch('https://api.alquran.cloud/v1/surah');\n                const data = await res.json();\n                surahs = data.data;\n                renderPlaylist();\n                await loadSurah(0, true);\n            } catch (err) {\n                lcdTitle.textContent = \"خطأ في الاتصال\";\n                showToast('خطأ في الاتصال بالخادم');\n            }\n        }\n\n\n        function renderPlaylist() {\n            playlistEl.innerHTML = '';\n            const filtered = surahs.filter((s, i) => {\n                const q = searchQuery.toLowerCase().trim();\n                if (!q) return true;\n                return s.name.toLowerCase().includes(q) ||\n                    s.englishName.toLowerCase().includes(q) ||\n                    String(s.number).includes(q);\n            });\n            filtered.forEach((s) => {\n                const i = surahs.indexOf(s);\n                const item = document.createElement('div');\n                item.className = `playlist-item ${i === currentSurahIndex ? 'active' : ''}`;\n                item.setAttribute('tabindex', '0');\n                item.setAttribute('data-index', i);\n                item.innerHTML = `\n              <span class=\"surah-name\">${s.number}. ${s.name}</span>\n              <span class=\"surah-meta\">${s.numberOfAyahs} آية</span>\n            `;\n                item.addEventListener('click', () => loadSurah(i, true));\n                item.addEventListener('focus', () => {\n                    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });\n                });\n                playlistEl.appendChild(item);\n            });\n            if (filtered.length === 0) {\n                const empty = document.createElement('div');\n                empty.style.padding = '15px';\n                empty.style.textAlign = 'center';\n                empty.style.opacity = '0.6';\n                empty.textContent = 'لا توجد نتائج';\n                playlistEl.appendChild(empty);\n            }\n        }\n\n\n        function scrollPlaylistToActive() {\n            const activeItem = playlistEl.querySelector('.playlist-item.active');\n            if (activeItem) {\n                activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });\n            }\n        }\n\n\n        // --- Chargement des sourates ---\n        function pad3(num) {\n            return String(num).padStart(3, '0');\n        }\n\n\n        async function loadSurah(index, autoPlay = true) {\n            currentSurahIndex = index;\n            const surah = surahs[index];\n            document.querySelectorAll('.playlist-item').forEach((el, i) => {\n                el.classList.toggle('active', parseInt(el.dataset.index) === index);\n            });\n            scrollPlaylistToActive();\n            lcdTitle.textContent = `جاري التحميل... ${surah.name}`;\n            totalElapsedBeforeCurrentAyah = 0;\n            seekBar.value = 0;\n            try {\n                const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani`);\n                const data = await res.json();\n                currentAyahsAr = data.data[0].ayahs;\n                playAyah(0, autoPlay);\n                showToast('تم تحميل سورة ' + surah.name);\n            } catch (err) {\n                lcdTitle.textContent = \"خطأ في الاتصال\";\n                showToast('خطأ في تحميل السورة');\n            }\n        }\n\n\n        function playAyah(index, autoPlay = true) {\n            if (!currentAyahsAr || index >= currentAyahsAr.length) return;\n            currentAyahIndex = index;\n            const surahNum = surahs[currentSurahIndex].number;\n            const ayahAr = currentAyahsAr[index];\n            arTextEl.innerHTML = `${ayahAr.text} <span class=\"ayah-marker\">﴿${ayahAr.numberInSurah}﴾</span>`;\n            textContainer.scrollTop = 0;\n            lcdAyahCount.textContent = `آية ${ayahAr.numberInSurah} / ${currentAyahsAr.length}`;\n            seekBar.value = 0;\n            const reciter = settings.reciterId;\n            const formattedSurah = pad3(surahNum);\n            const formattedAyah = pad3(index + 1);\n            if (index === 0 && surahNum !== 1 && surahNum !== 9) {\n                isBasmalahPlaying = true;\n                audio.src = `https://everyayah.com/data/${reciter}/001001.mp3`;\n            } else {\n                isBasmalahPlaying = false;\n                audio.src = `https://everyayah.com/data/${reciter}/${formattedSurah}${formattedAyah}.mp3`;\n            }\n            audio.load();\n            audio.playbackRate = settings.playbackSpeed;\n            lcdTitle.textContent = `${surahs[currentSurahIndex].name}`;\n            if (autoPlay) {\n                initAudioContext();\n                audio.play().catch(e => {\n                    console.log(\"التشغيل التلقائي يحتاج تفاعل المستخدم.\");\n                });\n            }\n        }\n\n\n        function formatTime(totalSeconds) {\n            if (isNaN(totalSeconds) || totalSeconds < 0) totalSeconds = 0;\n            const h = Math.floor(totalSeconds / 3600);\n            const m = Math.floor((totalSeconds % 3600) / 60);\n            const s = Math.floor(totalSeconds % 60);\n            if (h > 0) {\n                return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;\n            }\n            return `${m}:${String(s).padStart(2, '0')}`;\n        }\n\n\n        // --- Navigation TV ---\n        function setupTVNavigation() {\n            window.addEventListener('keydown', (e) => {\n                const key = e.key;\n                const active = document.activeElement;\n\n                switch (key) {\n                    case ' ': case 'Space':\n                        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;\n                        e.preventDefault();\n                        if (audio.paused) audio.play(); else audio.pause();\n                        return;\n                    case 'MediaPlayPause':\n                        e.preventDefault();\n                        if (audio.paused) audio.play(); else audio.pause();\n                        return;\n                    case 'MediaStop':\n                        e.preventDefault();\n                        stopBtn.click();\n                        return;\n                    case 'MediaNextTrack': case 'PageDown':\n                        e.preventDefault();\n                        nextBtn.click();\n                        return;\n                    case 'MediaPreviousTrack': case 'PageUp':\n                        e.preventDefault();\n                        prevBtn.click();\n                        return;\n                    case 'Backspace': case 'BrowserBack':\n                    case 'Escape':\n                        e.preventDefault();\n                        if (settingsModal.classList.contains('open')) closeSettingsModal();\n                        else if (reciterModal.classList.contains('open')) closeReciterModal();\n                        return;\n                    case 'Enter': case 'OK': case 'Select':\n                        if (active && active !== document.body) {\n                            e.preventDefault();\n                            active.click();\n                        }\n                        return;\n                    case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':\n                        e.preventDefault();\n                        if (reciterModal.classList.contains('open')) {\n                            const opts = Array.from(reciterList.querySelectorAll('.reciter-option'));\n                            const cur = opts.indexOf(active);\n                            if (key === 'ArrowUp' && cur > 0) { opts[cur - 1].focus(); opts[cur - 1].scrollIntoView({ block: 'nearest' }); }\n                            if (key === 'ArrowDown' && cur < opts.length - 1) { opts[cur + 1].focus(); opts[cur + 1].scrollIntoView({ block: 'nearest' }); }\n                            return;\n                        }\n                        if (settingsModal.classList.contains('open')) {\n                            const focusables = Array.from(settingsModal.querySelectorAll(\n                                '.mode-btn, .color-swatch, .speed-btn, .toggle-switch, .modal-close-btn'));\n                            const cur = focusables.indexOf(active);\n                            if (key === 'ArrowUp' && cur > 0) focusables[cur - 1].focus();\n                            if (key === 'ArrowDown' && cur < focusables.length - 1) focusables[cur + 1].focus();\n                            return;\n                        }\n                        if (active && active.classList.contains('playlist-item')) {\n                            const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));\n                            const cur = items.indexOf(active);\n                            if (key === 'ArrowUp' && cur > 0) { items[cur - 1].focus(); items[cur - 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }\n                            else if (key === 'ArrowDown' && cur < items.length - 1) { items[cur + 1].focus(); items[cur + 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }\n                            else if (key === 'ArrowUp' && cur === 0) searchInput.focus();\n                            else if (key === 'ArrowDown' && cur === items.length - 1) textContainer.focus();\n                            return;\n                        }\n                        if (active && active.tagName === 'INPUT' && active.type === 'range') {\n                            if (key === 'ArrowLeft') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }\n                            else if (key === 'ArrowRight') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }\n                            else if (key === 'ArrowUp') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }\n                            else if (key === 'ArrowDown') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }\n                            return;\n                        }\n                        if (key === 'ArrowUp') reciterBtn.focus();\n                        if (key === 'ArrowDown') searchInput.focus();\n                        if (key === 'ArrowLeft' || key === 'ArrowRight') playBtn.focus();\n                        return;\n                }\n\n                switch (key) {\n                    case 's': case 'S': stopBtn.click(); break;\n                    case 'n': case 'N': nextBtn.click(); break;\n                    case 'p': case 'P': prevBtn.click(); break;\n                    case 'm': case 'M': cycleRepeatMode(); break;\n                    case 'r': case 'R': toggleShuffle(); break;\n                    case 't': case 'T': toggleTheme(); break;\n                    case 'o': case 'O':\n                        if (settingsModal.classList.contains('open')) closeSettingsModal();\n                        else openSettingsModal();\n                        break;\n                }\n            });\n            textContainer.addEventListener('keydown', (e) => {\n                if (e.key === 'ArrowUp') { textContainer.scrollTop -= 50; e.preventDefault(); }\n                if (e.key === 'ArrowDown') { textContainer.scrollTop += 50; e.preventDefault(); }\n            });\n        }\n\n\n        // --- Actions ---\n        function toggleTheme() {\n            const html = document.documentElement;\n            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';\n            html.setAttribute('data-theme', newTheme);\n            settings.theme = newTheme;\n            document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '☀' : '🌙';\n            showToast(newTheme === 'dark' ? 'الوضع الداكن' : 'الوضع الفاتح');\n        }\n\n\n        function toggleShuffle() {\n            settings.shuffleEnabled = !settings.shuffleEnabled;\n            if (settings.shuffleEnabled) {\n                settings.repeatMode = 'shuffle';\n                showToast('تم تفعيل الوضع العشوائي');\n            } else {\n                if (settings.repeatMode === 'shuffle') settings.repeatMode = 'off';\n                showToast('تم إيقاف الوضع العشوائي');\n            }\n            applySettingsToUI();\n        }\n\n\n        function cycleRepeatMode() {\n            const modes = ['off', 'one', 'all'];\n            const currentIdx = modes.indexOf(settings.repeatMode);\n            settings.repeatMode = modes[(currentIdx + 1) % modes.length];\n            settings.shuffleEnabled = false;\n            applySettingsToUI();\n            const labels = { off: 'إيقاف التكرار', one: 'تكرار واحد', all: 'تكرار الكل' };\n            showToast(labels[settings.repeatMode]);\n        }\n\n\n        function toggleMute() {\n            settings.muted = !settings.muted;\n            audio.volume = settings.muted ? 0 : volumeBar.value / 100;\n            applySettingsToUI();\n            showToast(settings.muted ? 'تم كتم الصوت' : 'تم إلغاء كتم الصوت');\n        }\n\n\n        function handleAudioEnded() {\n            if (isBasmalahPlaying) {\n                isBasmalahPlaying = false;\n                if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;\n                const reciter = settings.reciterId;\n                const formattedSurah = pad3(surahs[currentSurahIndex].number);\n                audio.src = `https://everyayah.com/data/${reciter}/${formattedSurah}001.mp3`;\n                audio.load();\n                audio.play();\n                return;\n            }\n            if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;\n\n\n            if (settings.repeatMode === 'one') {\n                playAyah(currentAyahIndex, true);\n                return;\n            }\n\n\n            if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {\n                const randomSurahIdx = Math.floor(Math.random() * surahs.length);\n                loadSurah(randomSurahIdx, true);\n                return;\n            }\n\n\n            if (currentAyahIndex < currentAyahsAr.length - 1) {\n                playAyah(currentAyahIndex + 1, true);\n            } else if (currentSurahIndex < surahs.length - 1) {\n                loadSurah(currentSurahIndex + 1, true);\n            } else if (settings.repeatMode === 'all') {\n                loadSurah(0, true);\n                showToast('عودة إلى البداية');\n            }\n        }\n\n\n        // --- Écouteurs d'événements ---\n        function setupEventListeners() {\n            reciterBtn.addEventListener('click', openReciterModal);\n            modalCloseBtn.addEventListener('click', closeReciterModal);\n            reciterModal.addEventListener('click', (e) => { if (e.target === reciterModal) closeReciterModal(); });\n\n\n            settingsBtn.addEventListener('click', openSettingsModal);\n            settingsClose.addEventListener('click', closeSettingsModal);\n            settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeSettingsModal(); });\n\n\n            playBtn.addEventListener('click', () => { initAudioContext();\n                audio.play(); });\n            pauseBtn.addEventListener('click', () => audio.pause());\n            stopBtn.addEventListener('click', () => { audio.pause();\n                audio.currentTime = 0;\n                showToast('تم الإيقاف'); });\n\n\n            prevBtn.addEventListener('click', () => {\n                if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1, true);\n                else if (currentSurahIndex > 0) loadSurah(currentSurahIndex - 1, true);\n            });\n            nextBtn.addEventListener('click', () => {\n                if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {\n                    const randomSurahIdx = Math.floor(Math.random() * surahs.length);\n                    loadSurah(randomSurahIdx, true);\n                    return;\n                }\n                if (currentAyahIndex < currentAyahsAr.length - 1) playAyah(currentAyahIndex + 1, true);\n                else if (currentSurahIndex < surahs.length - 1) loadSurah(currentSurahIndex + 1, true);\n                else if (settings.repeatMode === 'all') { loadSurah(0, true);\n                    showToast('عودة إلى البداية'); }\n            });\n\n\n            shuffleBtn.addEventListener('click', toggleShuffle);\n            repeatBtn.addEventListener('click', cycleRepeatMode);\n            muteBtn.addEventListener('click', toggleMute);\n\n\n            audio.addEventListener('ended', handleAudioEnded);\n            audio.addEventListener('timeupdate', () => {\n                const current = audio.currentTime || 0;\n                const duration = audio.duration || 0;\n                const totalElapsed = totalElapsedBeforeCurrentAyah + (isBasmalahPlaying ? 0 : current);\n                const elapsedStr = formatTime(totalElapsed);\n                const remaining = Math.max(0, duration - current);\n                const remainingStr = formatTime(remaining);\n                lcdTime.textContent = `${elapsedStr} / ${remainingStr}`;\n                if (!isBasmalahPlaying && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {\n                    seekBar.value = Math.min(100, (current / audio.duration) * 100);\n                }\n                // Auto-scroll\n                if (settings.autoScroll && !isBasmalahPlaying && duration > 0) {\n                    const progress = current / duration;\n                    const maxScroll = textContainer.scrollHeight - textContainer.clientHeight;\n                    if (maxScroll > 0) {\n                        textContainer.scrollTop = progress * maxScroll;\n                    }\n                }\n            });\n\n\n            seekBar.addEventListener('input', () => {\n                if (isBasmalahPlaying) return;\n                if (!isNaN(audio.duration) && audio.duration > 0) {\n                    audio.currentTime = (parseFloat(seekBar.value) / 100) * audio.duration;\n                }\n            });\n\n\n            volumeBar.addEventListener('input', () => {\n                if (!settings.muted) audio.volume = volumeBar.value / 100;\n                else if (parseFloat(volumeBar.value) > 0) { settings.muted = false;\n                    audio.volume = volumeBar.value / 100;\n                    applySettingsToUI(); }\n            });\n\n\n            searchInput.addEventListener('input', () => {\n                searchQuery = searchInput.value;\n                renderPlaylist();\n            });\n\n\n            themeBtn.addEventListener('click', toggleTheme);\n            themeBtn.addEventListener('focus', () => themeBtn.scrollIntoView({ block: 'nearest' }));\n        }\n\n\n        window.addEventListener('DOMContentLoaded', init);\n    </script>\n</body>\n</html>", {
+      return new Response(`<!DOCTYPE html><html lang="ar" data-theme="dark" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Winamp Quran Player - TV Gold Edition Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=VT323&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --bg-color: #0e0a06;
+            --chassis-bg: linear-gradient(145deg, #3d2b1a, #1a110b);
+            --chassis-border: #8a6b3a;
+            --lcd-bg: #080502;
+            --lcd-text: #ffd700;
+            --lcd-glow: rgba(255, 215, 0, 0.28);
+            --btn-bg: linear-gradient(180deg, #5a4230 0%, #2b1d12 100%);
+            --btn-border: #a9844a;
+            --btn-text: #f5e6c8;
+            --text-main: #f5e6c8;
+            --panel-bg: #1c130c;
+            --accent: #d4af37;
+            --accent-alt: #b8860b;
+            --gold-gradient: linear-gradient(90deg, #7a5c32, #d4af37, #f0d878, #d4af37, #7a5c32);
+            --gold-gradient-shimmer: linear-gradient(110deg, #6a4c22, #d4af37, #f9e97a, #d4af37, #6a4c22);
+            --focus-ring: #ffe600;
+            --modal-overlay: rgba(0, 0, 0, 0.88);
+            --viz-color: #ffd700;
+            --viz-color-alt: #ffaa00;
+            --btn-active-bg: linear-gradient(180deg, #8a6b3a 0%, #5a4230 100%);
+            --slider-track: #0a0502;
+            --item-hover: rgba(212, 175, 55, 0.22);
+            --item-active-bg: #d4af37;
+            --item-active-text: #120e0b;
+            --shadow-inset: inset 1px 1px 0 rgba(255, 230, 150, 0.22);
+            --toast-bg: #2a1d12;
+            --toast-border: #d4af37;
+            --toast-text: #f5e6c8;
+        }
+
+
+        [data-theme="light"] {
+            --bg-color: #f2ece1;
+            --chassis-bg: linear-gradient(145deg, #f0e8d8, #d0c3ad);
+            --chassis-border: #b8925a;
+            --lcd-bg: #2e2412;
+            --lcd-text: #ffcc00;
+            --lcd-glow: rgba(255, 204, 0, 0.32);
+            --btn-bg: linear-gradient(180deg, #ffffff 0%, #e8dcc8 100%);
+            --btn-border: #c3a05e;
+            --btn-text: #3d2b1f;
+            --text-main: #3d2b1f;
+            --panel-bg: #e8dcc8;
+            --accent: #8a6a2d;
+            --accent-alt: #6a4c1a;
+            --gold-gradient: linear-gradient(90deg, #b8925a, #f0e0a0, #fff8d0, #f0e0a0, #b8925a);
+            --gold-gradient-shimmer: linear-gradient(110deg, #a88448, #e8d080, #fff8c8, #e8d080, #a88448);
+            --focus-ring: #d4af37;
+            --modal-overlay: rgba(0, 0, 0, 0.6);
+            --viz-color: #cc8800;
+            --viz-color-alt: #ffcc00;
+            --btn-active-bg: linear-gradient(180deg, #d0c0a0 0%, #b8a080 100%);
+            --slider-track: #1a1208;
+            --item-hover: rgba(180, 140, 60, 0.2);
+            --item-active-bg: #b8925a;
+            --item-active-text: #f5e6c8;
+            --shadow-inset: inset 1px 1px 0 rgba(255, 255, 255, 0.4);
+            --toast-bg: #f0e8d8;
+            --toast-border: #8a6a2d;
+            --toast-text: #3d2b1f;
+        }
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            color: var(--text-main);
+            font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            transition: background 0.4s, color 0.4s;
+        }
+
+
+        .winamp-container {
+            width: 100%;
+            max-width: min(94vw, 600px);
+            background: var(--chassis-bg);
+            border: 3px solid var(--chassis-border);
+            border-radius: 12px;
+            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.9), var(--shadow-inset), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+
+        :focus,
+        :focus-visible {
+            outline: 3px solid var(--focus-ring) !important;
+            outline-offset: 2px !important;
+            box-shadow: 0 0 14px var(--focus-ring) !important;
+        }
+
+
+        /* --- Barre de titre --- */
+        .title-bar {
+            background: var(--gold-gradient);
+            background-size: 200% 100%;
+            color: #120e0b;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 7px;
+            animation: shimmer 5s linear infinite;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
+        }
+
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+
+        .title-bar-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+
+        .title-bar-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+
+        .win-btn {
+            min-width: 34px;
+            height: 28px;
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            font-size: 13px;
+            line-height: 26px;
+            text-align: center;
+            color: var(--btn-text);
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 0 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+        }
+
+
+        .win-btn:hover {
+            background: var(--btn-active-bg);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+            transform: translateY(-1px);
+        }
+
+
+        .win-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+
+        .win-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--btn-text);
+            flex-shrink: 0;
+        }
+
+
+        /* --- Écran LCD --- */
+        .lcd-screen {
+            background-color: var(--lcd-bg);
+            border: 3px inset var(--chassis-border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            box-shadow: inset 0 0 18px var(--lcd-glow), 0 0 8px rgba(0, 0, 0, 0.5);
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 12px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .lcd-screen::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px);
+            pointer-events: none;
+            border-radius: 5px;
+        }
+
+
+        .lcd-info {
+            overflow: hidden;
+            text-align: right;
+            position: relative;
+            z-index: 1;
+        }
+
+
+        .lcd-ticker {
+            font-family: 'VT323', monospace;
+            color: var(--lcd-text);
+            font-size: 21px;
+            white-space: nowrap;
+            text-shadow: 0 0 8px var(--lcd-text), 0 0 20px var(--lcd-glow);
+            animation: ticker-rtl 14s linear infinite;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+
+        @keyframes ticker-rtl {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+
+        .lcd-timer {
+            font-family: 'VT323', monospace;
+            color: var(--lcd-text);
+            font-size: 26px;
+            text-shadow: 0 0 8px var(--lcd-text), 0 0 20px var(--lcd-glow);
+            margin-top: 2px;
+            letter-spacing: 1px;
+        }
+
+
+        .lcd-ayah-count {
+            font-family: 'VT323', monospace;
+            color: var(--lcd-text);
+            font-size: 15px;
+            opacity: 0.85;
+            margin-top: 3px;
+            text-shadow: 0 0 5px var(--lcd-glow);
+        }
+
+
+        .viz-mode-indicator {
+            font-family: 'VT323', monospace;
+            color: var(--lcd-text);
+            font-size: 11px;
+            position: absolute;
+            bottom: 3px;
+            left: 10px;
+            opacity: 0.7;
+            z-index: 2;
+            pointer-events: none;
+            text-shadow: 0 0 4px var(--lcd-glow);
+            transition: opacity 0.3s;
+        }
+
+
+        canvas#spectrum {
+            width: 110px;
+            height: 46px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--chassis-border);
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: box-shadow 0.3s;
+        }
+
+
+        canvas#spectrum:hover {
+            box-shadow: 0 0 12px var(--lcd-glow);
+        }
+
+
+        /* --- Panneau de contrôle --- */
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+
+        .reciter-trigger-btn {
+            width: 100%;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid var(--btn-border);
+            padding: 10px 14px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.25s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+
+        .reciter-trigger-btn:hover {
+            background: var(--btn-active-bg);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+        }
+
+
+        .reciter-trigger-btn::after {
+            content: '▼';
+            font-size: 11px;
+            color: var(--accent);
+            transition: transform 0.3s;
+        }
+
+
+        .reciter-trigger-btn:hover::after {
+            transform: translateY(2px);
+        }
+
+
+        .transport-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+
+        .btn-winamp {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--btn-bg);
+            border: 1.5px solid var(--btn-border);
+            color: var(--btn-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 8px rgba(0, 0, 0, 0.5);
+            transition: all 0.18s ease;
+            flex-shrink: 0;
+        }
+
+
+        .btn-winamp.btn-main {
+            width: 52px;
+            height: 52px;
+            background: var(--btn-active-bg);
+            border-color: var(--accent);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 14px rgba(212, 175, 55, 0.5);
+        }
+
+
+        .btn-winamp svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent);
+            transition: fill 0.2s, transform 0.2s;
+        }
+
+
+        .btn-winamp.btn-main svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+
+        .btn-winamp:hover svg,
+        .btn-winamp:focus svg {
+            fill: #ffffff;
+            transform: scale(1.1);
+        }
+
+
+        .btn-winamp:active {
+            transform: translateY(2px);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+
+        .btn-winamp.btn-toggle {
+            width: 36px;
+            height: 36px;
+        }
+        .btn-winamp.btn-toggle svg {
+            width: 15px;
+            height: 15px;
+        }
+        .btn-winamp.btn-toggle.active {
+            background: var(--btn-active-bg);
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        .btn-winamp.btn-toggle.active svg {
+            fill: #fff;
+        }
+
+
+        .sliders {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+
+        .slider-label {
+            font-size: 11px;
+            color: var(--text-main);
+            opacity: 0.7;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--slider-track);
+            height: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--chassis-border);
+            cursor: pointer;
+            transition: height 0.2s;
+            flex: 1;
+        }
+
+
+        input[type=range]:hover {
+            height: 10px;
+        }
+
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 20px;
+            background: var(--accent);
+            border: 2px solid #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s;
+        }
+
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+
+        input[type=range]::-moz-range-thumb {
+            width: 18px;
+            height: 20px;
+            background: var(--accent);
+            border: 2px solid #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+
+        .mute-btn {
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            border-radius: 5px;
+            padding: 4px 6px;
+            cursor: pointer;
+            color: var(--btn-text);
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            min-width: 30px;
+            height: 24px;
+        }
+        .mute-btn:hover {
+            background: var(--btn-active-bg);
+        }
+        .mute-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--btn-text);
+        }
+
+
+        /* --- Recherche --- */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--panel-bg);
+            border: 2px inset var(--chassis-border);
+            border-radius: 6px;
+            padding: 4px 8px;
+            transition: border-color 0.3s;
+        }
+        .search-bar:focus-within {
+            border-color: var(--accent);
+        }
+        .search-bar svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-main);
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 14px;
+            padding: 6px 0;
+            width: 100%;
+            outline: none;
+            user-select: text;
+        }
+        .search-bar input::placeholder {
+            color: var(--text-main);
+            opacity: 0.45;
+        }
+
+
+        /* --- Playlist --- */
+        .playlist-window {
+            background: var(--panel-bg);
+            border: 2px inset var(--chassis-border);
+            height: 135px;
+            overflow-y: auto;
+            font-size: 14px;
+            border-radius: 7px;
+            scroll-behavior: smooth;
+            transition: height 0.3s;
+        }
+
+
+        .playlist-item {
+            padding: 8px 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+            transition: all 0.2s;
+            gap: 8px;
+        }
+
+
+        .playlist-item:hover,
+        .playlist-item:focus {
+            background: var(--item-hover);
+        }
+
+
+        .playlist-item.active {
+            background: var(--item-active-bg);
+            color: var(--item-active-text);
+            font-weight: bold;
+            box-shadow: inset 3px 0 0 var(--accent);
+        }
+
+
+        .playlist-item .surah-name {
+            font-weight: 500;
+        }
+        .playlist-item .surah-meta {
+            font-size: 12px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+
+
+        /* --- Texte coranique --- */
+        .quran-text-container {
+            background: var(--panel-bg);
+            border: 2px inset var(--chassis-border);
+            padding: 12px;
+            height: 140px;
+            overflow-y: auto;
+            text-align: center;
+            border-radius: 7px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+
+
+        .quran-text-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gold-gradient);
+            border-radius: 2px;
+        }
+
+
+        .ar-text {
+            font-family: 'Amiri', serif;
+            font-size: clamp(18px, 2.6vw, 26px);
+            color: var(--accent);
+            direction: rtl;
+            line-height: 1.7;
+            font-weight: bold;
+            white-space: pre-line;
+            width: 100%;
+            transition: font-size 0.3s;
+            text-shadow: 0 0 4px rgba(212, 175, 55, 0.2);
+        }
+
+
+        .ayah-marker {
+            color: var(--lcd-text);
+            font-size: 0.7em;
+            font-weight: normal;
+            display: inline-block;
+            margin: 0 4px;
+            text-shadow: 0 0 6px var(--lcd-glow);
+        }
+
+
+        /* --- Modales --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--modal-overlay);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease-in-out;
+            backdrop-filter: blur(4px);
+        }
+
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+
+        .modal-card {
+            background: var(--panel-bg);
+            border: 3px solid var(--chassis-border);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            transform: scale(0.95);
+            transition: transform 0.25s;
+        }
+
+
+        .modal-overlay.open .modal-card {
+            transform: scale(1);
+        }
+
+
+        .modal-header {
+            background: var(--gold-gradient);
+            background-size: 200% 100%;
+            color: #120e0b;
+            padding: 10px 14px;
+            font-weight: bold;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            animation: shimmer 4s linear infinite;
+        }
+
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            font-weight: bold;
+            color: #120e0b;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .modal-close-btn:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+
+        .modal-body {
+            overflow-y: auto;
+            padding: 10px 0;
+            max-height: 70vh;
+        }
+
+
+        .modal-section {
+            padding: 6px 16px;
+            margin-bottom: 4px;
+        }
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 4px;
+        }
+
+
+        .reciter-option {
+            padding: 10px 16px;
+            font-size: 15px;
+            color: var(--text-main);
+            cursor: pointer;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+
+        .reciter-option:hover,
+        .reciter-option:focus {
+            background: var(--item-hover);
+        }
+
+
+        .reciter-option.selected {
+            background: var(--item-active-bg);
+            color: var(--item-active-text);
+            font-weight: bold;
+        }
+
+
+        /* --- Paramètres --- */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            gap: 8px;
+        }
+        .setting-label {
+            font-size: 14px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+
+        .color-swatches {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .color-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .color-swatch:hover {
+            transform: scale(1.2);
+        }
+        .color-swatch.selected {
+            border-color: #fff;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+
+        .mode-btns {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .mode-btn {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid var(--btn-border);
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .mode-btn:hover {
+            background: var(--btn-active-bg);
+        }
+        .mode-btn.active {
+            background: var(--btn-active-bg);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        }
+
+
+        .speed-btns {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+        .speed-btn {
+            padding: 5px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--btn-border);
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-family: 'VT323', monospace;
+            min-width: 36px;
+            text-align: center;
+        }
+        .speed-btn:hover {
+            background: var(--btn-active-bg);
+        }
+        .speed-btn.active {
+            background: var(--btn-active-bg);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        }
+
+
+        .toggle-switch {
+            position: relative;
+            width: 42px;
+            height: 22px;
+            background: var(--slider-track);
+            border-radius: 11px;
+            cursor: pointer;
+            border: 1px solid var(--btn-border);
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .toggle-switch.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+        .toggle-switch.active::after {
+            transform: translateX(-20px);
+        }
+
+
+        .kbd-shortcuts {
+            font-family: 'VT323', monospace;
+            font-size: 13px;
+            color: var(--text-main);
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+        .kbd-key {
+            display: inline-block;
+            padding: 1px 6px;
+            border: 1px solid var(--btn-border);
+            border-radius: 4px;
+            background: var(--btn-bg);
+            font-size: 12px;
+            margin: 1px 2px;
+            font-family: 'VT323', monospace;
+        }
+
+
+        /* --- Toast notifications --- */
+        .toast-container {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            pointer-events: none;
+            width: 90%;
+            max-width: 380px;
+        }
+
+
+        .toast {
+            background: var(--toast-bg);
+            border: 2px solid var(--toast-border);
+            color: var(--toast-text);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            animation: toast-in 0.35s ease-out, toast-out 0.35s ease-in 2.6s forwards;
+            pointer-events: auto;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+
+        @keyframes toast-in {
+            from {
+                opacity: 0;
+                transform: translateY(-25px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes toast-out {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+        }
+
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--panel-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--chassis-border);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+
+        /* ==== TV PERFORMANCE MODE ==== */
+        [data-perf="true"] body { padding: 2vmin; }
+        [data-perf="true"] .winamp-container { max-width: 95vw; padding: 1.5vmin; gap: 1vmin; }
+        [data-perf="true"] .win-btn, [data-perf="true"] .btn-winamp { min-width: 48px; min-height: 48px; font-size: 1.2rem; }
+        [data-perf="true"] .btn-winamp.btn-main { width: 64px; height: 64px; }
+        [data-perf="true"] .title-bar,
+        [data-perf="true"] .modal-header { animation: none !important; background: var(--btn-active-bg) !important; }
+        [data-perf="true"] .winamp-container,
+        [data-perf="true"] .lcd-screen,
+        [data-perf="true"] .btn-winamp { box-shadow: none !important; }
+        [data-perf="true"] .win-btn { box-shadow: none !important; text-shadow: none !important; }
+        [data-perf="true"] .reciter-trigger-btn,
+        [data-perf="true"] .mode-btn,
+        [data-perf="true"] .speed-btn { background: #3d2b1a !important; border: 1px solid #8a6b3a; }
+        [data-perf="true"] canvas#spectrum { width: 80px; height: 32px; }
+        [data-perf="true"] .lcd-screen { border: 1px solid #8a6b3a; }
+        [data-perf="true"] .playlist-window { height: 140px; }
+        [data-perf="true"] .quran-text-container { height: 140px; }
+        [data-perf="true"] .ar-text { font-size: 1.5rem !important; }
+        [data-perf="true"] :focus { outline: 4px solid var(--focus-ring) !important; outline-offset: 4px !important; }
+        [data-perf="true"] .modal-overlay { backdrop-filter: none !important; }
+        [data-perf="true"] * { transition: none !important; }
+    </style>
+</head>
+<body>
+
+
+    <div class="winamp-container" id="app-container">
+        <div class="title-bar">
+            <span class="title-bar-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="fill:#120e0b;">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="#120e0b"/>
+                </svg>
+                مشغل القرآن الكريم
+            </span>
+            <div class="title-bar-controls">
+                <button class="win-btn" id="btn-theme" tabindex="0" title="تغيير السمة (T)">
+                    <span id="theme-icon">☀</span>
+                </button>
+                <button class="win-btn" id="btn-settings" tabindex="0" title="الإعدادات (O)">
+                    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.41h-3.84a.5.5 0 0 0-.5.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L2.5 9.87a.5.5 0 0 0 .12.61l2.03 1.58c-.04.3-.06.61-.06.94s.02.64.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.13.23.37.32.6.22l2.39-.96c.49.38 1.03.7 1.62.94l.36 2.54c.04.24.23.41.5.41h3.84c.27 0 .46-.17.5-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.23.1.47.01.6-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="lcd-screen">
+            <canvas id="spectrum" width="110" height="46" tabindex="0" title="انقر لتغيير نمط العرض"></canvas>
+            <div class="lcd-info">
+                <div class="lcd-ticker" id="lcd-title">اضغط تشغيل للبدء</div>
+                <div class="lcd-timer" id="lcd-time">00:00</div>
+                <div class="lcd-ayah-count" id="lcd-ayah-count"></div>
+            </div>
+            <span class="viz-mode-indicator" id="viz-indicator">وضع: أشرطة</span>
+        </div>
+
+
+        <div class="controls-panel">
+            <button class="reciter-trigger-btn" id="reciter-btn" tabindex="0">
+                <span id="reciter-label">محمود خليل الحصري</span>
+            </button>
+
+
+            <div class="transport-buttons">
+                <button class="btn-winamp btn-toggle" id="btn-shuffle" tabindex="0" title="عشوائي (R)">
+                    <svg viewBox="0 0 24 24"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+                </button>
+                <button class="btn-winamp" id="btn-prev" tabindex="0" title="السابقة (N)">
+                    <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button class="btn-winamp" id="btn-stop" tabindex="0" title="إيقاف (S)">
+                    <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+                </button>
+                <button class="btn-winamp btn-main" id="btn-play" tabindex="0" title="تشغيل (Space)">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <button class="btn-winamp" id="btn-pause" tabindex="0" title="إيقاف مؤقت (Space)">
+                    <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <button class="btn-winamp" id="btn-next" tabindex="0" title="التالية (P)">
+                    <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+                <button class="btn-winamp btn-toggle" id="btn-repeat" tabindex="0" title="وضع التكرار (M)">
+                    <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+                </button>
+            </div>
+
+
+            <div class="sliders">
+                <div class="slider-group">
+                    <span class="slider-label">⏱</span>
+                    <input type="range" id="seek-bar" class="seek-bar" value="0" min="0" max="100" step="0.1" tabindex="0" title="التقدم">
+                </div>
+                <div class="slider-group">
+                    <span class="slider-label">🔊</span>
+                    <input type="range" id="volume-bar" class="volume-bar" value="80" min="0" max="100" tabindex="0" title="الصوت">
+                    <button class="mute-btn" id="btn-mute" tabindex="0" title="كتم الصوت">
+                        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="search-bar">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="search-input" placeholder="ابحث عن سورة..." tabindex="0" autocomplete="off">
+        </div>
+
+
+        <div class="playlist-window" id="playlist"></div>
+
+
+        <div class="quran-text-container" id="text-container" tabindex="0">
+            <div class="ar-text" id="ar-text">اخْتَر سُورَة لِلْبَدْء</div>
+        </div>
+    </div>
+
+
+    <!-- Modale du lecteur -->
+    <div class="modal-overlay" id="reciter-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span>اختر القارئ</span>
+                <button class="modal-close-btn" id="modal-close">✕</button>
+            </div>
+            <div class="modal-body" id="reciter-list"></div>
+        </div>
+    </div>
+
+
+    <!-- Modale des paramètres -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span>الإعدادات</span>
+                <button class="modal-close-btn" id="settings-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <div class="modal-section-title">التشغيل</div>
+                    <div class="setting-row">
+                        <span class="setting-label">سرعة التشغيل</span>
+                        <div class="speed-btns" id="speed-btns">
+                            <button class="speed-btn" data-speed="0.5">0.5x</button>
+                            <button class="speed-btn" data-speed="0.75">0.75x</button>
+                            <button class="speed-btn active" data-speed="1">1x</button>
+                            <button class="speed-btn" data-speed="1.25">1.25x</button>
+                            <button class="speed-btn" data-speed="1.5">1.5x</button>
+                            <button class="speed-btn" data-speed="2">2x</button>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">وضع التكرار</span>
+                        <div class="mode-btns" id="repeat-btns">
+                            <button class="mode-btn active" data-repeat="off">إيقاف</button>
+                            <button class="mode-btn" data-repeat="one">واحد</button>
+                            <button class="mode-btn" data-repeat="all">الكل</button>
+                            <button class="mode-btn" data-repeat="shuffle">عشوائي</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title">العرض</div>
+                    <div class="setting-row">
+                        <span class="setting-label">لون العرض المرئي</span>
+                        <div class="color-swatches" id="color-swatches">
+                            <button class="color-swatch selected" data-color="#ffd700" data-alt="#ffaa00" style="background:#ffd700;" title="ذهبي"></button>
+                            <button class="color-swatch" data-color="#00ff88" data-alt="#00cc66" style="background:#00ff88;" title="زمردي"></button>
+                            <button class="color-swatch" data-color="#00ccff" data-alt="#0099ff" style="background:#00ccff;" title="سماوي"></button>
+                            <button class="color-swatch" data-color="#ff5555" data-alt="#cc2222" style="background:#ff5555;" title="أحمر"></button>
+                            <button class="color-swatch" data-color="#cc66ff" data-alt="#9944cc" style="background:#cc66ff;" title="بنفسجي"></button>
+                            <button class="color-swatch" data-color="#ffffff" data-alt="#cccccc" style="background:#ffffff;" title="أبيض"></button>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">نمط العرض المرئي</span>
+                        <div class="mode-btns" id="viz-mode-btns">
+                            <button class="mode-btn active" data-viz="0">أشرطة</button>
+                            <button class="mode-btn" data-viz="1">منحنى</button>
+                            <button class="mode-btn" data-viz="2">تعبئة</button>
+                            <button class="mode-btn" data-viz="3">دوائر</button>
+                            <button class="mode-btn" data-viz="4">موجات</button>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">حجم الخط</span>
+                        <div class="mode-btns" id="font-size-btns">
+                            <button class="mode-btn" data-font="0.85">صغير</button>
+                            <button class="mode-btn active" data-font="1">متوسط</button>
+                            <button class="mode-btn" data-font="1.2">كبير</button>
+                            <button class="mode-btn" data-font="1.4">أكبر</button>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">تمرير تلقائي</span>
+                        <div class="toggle-switch" id="auto-scroll-toggle" tabindex="0" role="switch" aria-checked="false"></div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">وضع الأداء الخفيف (TV)</span>
+                        <div class="toggle-switch" id="perf-toggle" tabindex="0" role="switch" aria-checked="false"></div>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title">اختصارات لوحة المفاتيح</div>
+                    <div class="kbd-shortcuts">
+                        <span class="kbd-key">Space</span> تشغيل/إيقاف مؤقت &nbsp;
+                        <span class="kbd-key">←</span><span class="kbd-key">→</span> تقدم &nbsp;
+                        <span class="kbd-key">↑</span><span class="kbd-key">↓</span> صوت &nbsp;
+                        <span class="kbd-key">N</span><span class="kbd-key">P</span> التالي/السابق &nbsp;
+                        <span class="kbd-key">S</span> إيقاف &nbsp;
+                        <span class="kbd-key">M</span> تكرار &nbsp;
+                        <span class="kbd-key">R</span> عشوائي &nbsp;
+                        <span class="kbd-key">T</span> سمة &nbsp;
+                        <span class="kbd-key">O</span> إعدادات &nbsp;
+                        <span class="kbd-key">Esc</span> إغلاق
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="toast-container" id="toast-container"></div>
+
+
+    <audio id="audio-player" playsinline></audio>
+
+
+    <script>
+        const RECITERS = [
+            { id: "Husary_128kbps", name: "محمود خليل الحصري" },
+            { id: "Husary_Mujawwad_128kbps", name: "الحصري - مجوّد" },
+            { id: "Alafasy_128kbps", name: "مشاري راشد العفاسي" },
+            { id: "Abdul_Basit_Murattal_192kbps", name: "عبد الباسط - مرتل" },
+            { id: "Abdul_Basit_Mujawwad_128kbps", name: "عبد الباسط - مجوّد" },
+            { id: "Abdurrahmaan_As-Sudais_192kbps", name: "عبد الرحمن السديس" },
+            { id: "Ghamadi_40kbps", name: "سعد الغامدي" },
+            { id: "MaherAlMuaiqly128kbps", name: "ماهر المعيقلي" },
+            { id: "Minshawy_Murattal_128kbps", name: "المنشاوي - مرتل" },
+            { id: "Minshawy_Mujawwad_128kbps", name: "المنشاوي - مجوّد" },
+            { id: "Muhammad_Jibreel_128kbps", name: "محمد جبريل" },
+            { id: "Nasser_Alqatami_128kbps", name: "ناصر القطامي" },
+            { id: "Yasser_Ad-Dussary_128kbps", name: "ياسر الدوسري" },
+            { id: "Abu_Bakr_Ash-Shaatree_128kbps", name: "أبو بكر الشاطري" },
+            { id: "Saood bin Ibraaheem Ash-Shuraym_128kbps", name: "سعود الشريم" },
+            { id: "Khaalid_Abdullaah_al-Qahtaanee_192kbps", name: "خالد القحطاني" },
+            { id: "Abdullah-Basfar_128kbps", name: "عبد الله بصفر" },
+            { id: "Abdul-Muhsin-al-Qasim_128kbps", name: "عبد المحسن القاسم" },
+            { id: "Ali-al-Huthayfi_128kbps", name: "علي الحذيفي" },
+            { id: "Ibrahim-Akhdar_128kbps", name: "إبراهيم الأخضر" },
+            { id: "Muhammad-Ayyoub_128kbps", name: "محمد أيوب" },
+            { id: "Ahmad-al-Ajmy_128kbps", name: "أحمد العجمي" },
+            { id: "Fares-Abbad_128kbps", name: "فارس عباد" },
+            { id: "Hani-Rifai_128kbps", name: "هاني الرفاعي" }
+        ];
+
+
+        const VIZ_MODE_NAMES = ['أشرطة', 'منحنى', 'تعبئة', 'دوائر', 'موجات'];
+        const SPEED_PRESETS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        const FONT_SIZES = [0.85, 1, 1.2, 1.4];
+
+
+        // État global
+        let settings = {
+            theme: 'dark',
+            reciterId: 'Husary_128kbps',
+            visualizerMode: 0,
+            visualizerColor: '#ffd700',
+            visualizerColorAlt: '#ffaa00',
+            playbackSpeed: 1.0,
+            repeatMode: 'off',
+            fontSize: 1,
+            autoScroll: false,
+            muted: false,
+            shuffleEnabled: false,
+            perf: false
+        };
+
+
+        let surahs = [];
+        let currentSurahIndex = 0;
+        let currentAyahIndex = 0;
+        let currentAyahsAr = [];
+        let audioCtx, analyser, source, canvasCtx;
+        let isAudioInitialized = false;
+        let isBasmalahPlaying = false;
+        let idlePhase = 0;
+        let vizMode = 0;
+        let totalElapsedBeforeCurrentAyah = 0;
+        let searchQuery = '';
+        let toastTimeout = null;
+
+
+        const audio = document.getElementById('audio-player');
+        const playBtn = document.getElementById('btn-play');
+        const pauseBtn = document.getElementById('btn-pause');
+        const stopBtn = document.getElementById('btn-stop');
+        const prevBtn = document.getElementById('btn-prev');
+        const nextBtn = document.getElementById('btn-next');
+        const seekBar = document.getElementById('seek-bar');
+        const volumeBar = document.getElementById('volume-bar');
+        const muteBtn = document.getElementById('btn-mute');
+        const lcdTitle = document.getElementById('lcd-title');
+        const lcdTime = document.getElementById('lcd-time');
+        const lcdAyahCount = document.getElementById('lcd-ayah-count');
+        const playlistEl = document.getElementById('playlist');
+        const themeBtn = document.getElementById('btn-theme');
+        const settingsBtn = document.getElementById('btn-settings');
+        const arTextEl = document.getElementById('ar-text');
+        const textContainer = document.getElementById('text-container');
+        const canvas = document.getElementById('spectrum');
+        const reciterBtn = document.getElementById('reciter-btn');
+        const reciterLabel = document.getElementById('reciter-label');
+        const reciterModal = document.getElementById('reciter-modal');
+        const reciterList = document.getElementById('reciter-list');
+        const modalCloseBtn = document.getElementById('modal-close');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsClose = document.getElementById('settings-close');
+        const searchInput = document.getElementById('search-input');
+        const shuffleBtn = document.getElementById('btn-shuffle');
+        const repeatBtn = document.getElementById('btn-repeat');
+        const toastContainer = document.getElementById('toast-container');
+        const vizIndicator = document.getElementById('viz-indicator');
+
+
+        canvasCtx = canvas.getContext('2d');
+
+
+        // --- Toast notifications ---
+        function showToast(message, duration = 3000) {
+            if (toastTimeout) clearTimeout(toastTimeout);
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+            toastTimeout = setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+                toastTimeout = null;
+            }, duration);
+        }
+
+
+        // --- Canvas : changement de mode ---
+        canvas.addEventListener('click', () => {
+            vizMode = (vizMode + 1) % VIZ_MODE_NAMES.length;
+            settings.visualizerMode = vizMode;
+            updateVizModeButtons();
+            updateVizIndicator();
+            showToast('نمط العرض: ' + VIZ_MODE_NAMES[vizMode], 1500);
+        });
+
+
+        function updateVizIndicator() {
+            vizIndicator.textContent = 'وضع: ' + VIZ_MODE_NAMES[vizMode];
+            vizIndicator.style.opacity = '1';
+            clearTimeout(vizIndicator._timeout);
+            vizIndicator._timeout = setTimeout(() => {
+                vizIndicator.style.opacity = '0.7';
+            }, 1500);
+        }
+
+
+        function updateVizModeButtons() {
+            document.querySelectorAll('#viz-mode-btns .mode-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.viz) === vizMode);
+            });
+        }
+
+
+        // --- Performance mode ---
+        function autoDetectPerf() {
+            try {
+                const mem = navigator.deviceMemory;
+                const cores = navigator.hardwareConcurrency;
+                const ua = (navigator.userAgent || '').toLowerCase();
+                const isTV = /(webos|tizen|netcast|smart-tv|googletv|startappbundle)/.test(ua);
+                if (isTV && ((mem && mem < 2) || (cores && cores <= 2) || !mem || !cores)) return true;
+                if (mem && mem < 2) return true;
+            } catch (e) {}
+            return false;
+        }
+
+        function applyPerformanceMode() {
+            document.documentElement.setAttribute('data-perf', settings.perf ? 'true' : 'false');
+            if (analyser) analyser.fftSize = settings.perf ? 32 : 64;
+        }
+
+
+        // --- Initialisation ---
+        async function init() {
+            if (autoDetectPerf()) settings.perf = true;
+            applyPerformanceMode();
+            setupTouchUnlock();
+            drawSpectrum();
+            renderReciterList();
+            setupSettingsUI();
+            await fetchSurahs();
+            setupEventListeners();
+            setupTVNavigation();
+            applySettingsToUI();
+            updateVizIndicator();
+            playBtn.focus();
+        }
+
+
+        function setupTouchUnlock() {
+            const unlockHandler = () => {
+                initAudioContext();
+                if (!audio.src || audio.paused) {
+                    loadSurah(0, true);
+                }
+                window.removeEventListener('touchstart', unlockHandler);
+                window.removeEventListener('click', unlockHandler);
+                window.removeEventListener('keydown', unlockHandler);
+            };
+            window.addEventListener('touchstart', unlockHandler, { once: true });
+            window.addEventListener('click', unlockHandler, { once: true });
+            window.addEventListener('keydown', unlockHandler, { once: true });
+        }
+
+
+        function initAudioContext() {
+            if (isAudioInitialized) {
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                return;
+            }
+            if (window.location.protocol !== 'file:') {
+                audio.setAttribute('crossorigin', 'anonymous');
+            }
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                    analyser = audioCtx.createAnalyser();
+                    analyser.fftSize = settings.perf ? 32 : 64;
+                    source = audioCtx.createMediaElementSource(audio);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                }
+            } catch (e) {
+                console.warn("AudioContext init warning.");
+            }
+            isAudioInitialized = true;
+        }
+
+
+        // --- Dessin du spectre ---
+        let _lastDraw = 0;
+        function drawSpectrum() {
+            const now = performance.now();
+            const interval = settings.perf ? 80 : 0;
+            if (interval && (now - _lastDraw < interval)) {
+                requestAnimationFrame(drawSpectrum);
+                return;
+            }
+            _lastDraw = now;
+            requestAnimationFrame(drawSpectrum);
+            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+            const isActive = analyser && audio.src && !audio.paused;
+            if (isActive) {
+                drawActiveSpectrum();
+            } else {
+                drawIdleWave();
+            }
+        }
+
+
+        function drawActiveSpectrum() {
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteFrequencyData(dataArray);
+            const accent = settings.visualizerColor;
+            const lcdText = settings.visualizerColorAlt;
+            switch (settings.visualizerMode) {
+                case 0:
+                    drawBars(dataArray, accent, lcdText);
+                    break;
+                case 1:
+                    drawCurve(dataArray, lcdText);
+                    break;
+                case 2:
+                    drawFill(dataArray, accent, lcdText);
+                    break;
+                case 3:
+                    drawCircles(dataArray, accent, lcdText);
+                    break;
+                case 4:
+                    drawWaveform(dataArray, lcdText);
+                    break;
+                default:
+                    drawBars(dataArray, accent, lcdText);
+            }
+        }
+
+
+        function drawBars(dataArray, accent, lcdText) {
+            const bufferLength = dataArray.length;
+            const barWidth = (canvas.width / bufferLength) * 1.5;
+            let x = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                const barHeight = Math.max(2, (dataArray[i] / 255) * canvas.height);
+                const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
+                gradient.addColorStop(0, accent);
+                gradient.addColorStop(1, lcdText);
+                canvasCtx.save();
+                canvasCtx.shadowColor = lcdText;
+                canvasCtx.shadowBlur = 7;
+                canvasCtx.fillStyle = gradient;
+                canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+                canvasCtx.restore();
+                canvasCtx.save();
+                canvasCtx.shadowColor = '#ffffff';
+                canvasCtx.shadowBlur = 5;
+                canvasCtx.fillStyle = '#fff8dc';
+                canvasCtx.fillRect(x, Math.max(0, canvas.height - barHeight - 2), barWidth - 1, 2);
+                canvasCtx.restore();
+                x += barWidth;
+            }
+        }
+
+
+        function drawCurve(dataArray, lcdText) {
+            canvasCtx.beginPath();
+            canvasCtx.strokeStyle = lcdText;
+            canvasCtx.lineWidth = 2;
+            canvasCtx.shadowColor = lcdText;
+            canvasCtx.shadowBlur = 9;
+            const sliceWidth = canvas.width / dataArray.length;
+            let x = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                const v = dataArray[i] / 255.0;
+                const y = canvas.height - (v * canvas.height);
+                if (i === 0) canvasCtx.moveTo(x, y);
+                else canvasCtx.lineTo(x, y);
+                x += sliceWidth;
+            }
+            canvasCtx.stroke();
+        }
+
+
+        function drawFill(dataArray, accent, lcdText) {
+            const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+            const h = (avg / 255) * canvas.height;
+            const gradient = canvasCtx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, lcdText);
+            gradient.addColorStop(1, accent);
+            canvasCtx.save();
+            canvasCtx.shadowColor = lcdText;
+            canvasCtx.shadowBlur = 12;
+            canvasCtx.fillStyle = gradient;
+            const rectHeight = Math.max(2, h);
+            canvasCtx.fillRect(0, (canvas.height - rectHeight) / 2, canvas.width, rectHeight);
+            canvasCtx.restore();
+        }
+
+
+        function drawCircles(dataArray, accent, lcdText) {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.min(canvas.width, canvas.height) / 2 - 2;
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+            const avg = sum / dataArray.length;
+            const ratio = avg / 255;
+            const radius = 2 + ratio * maxRadius;
+            canvasCtx.save();
+            canvasCtx.shadowColor = lcdText;
+            canvasCtx.shadowBlur = 9;
+            canvasCtx.strokeStyle = accent;
+            canvasCtx.lineWidth = 1.8;
+            canvasCtx.beginPath();
+            canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            canvasCtx.stroke();
+            const innerRadius = radius * 0.6;
+            canvasCtx.strokeStyle = lcdText;
+            canvasCtx.lineWidth = 1.2;
+            canvasCtx.beginPath();
+            canvasCtx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+            canvasCtx.stroke();
+            canvasCtx.shadowBlur = 5;
+            canvasCtx.fillStyle = lcdText;
+            canvasCtx.beginPath();
+            canvasCtx.arc(centerX, centerY, 2.5, 0, Math.PI * 2);
+            canvasCtx.fill();
+            canvasCtx.restore();
+        }
+
+
+        function drawWaveform(dataArray, lcdText) {
+            const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+            const amplitude = (avg / 255) * (canvas.height / 2 - 4);
+            canvasCtx.save();
+            canvasCtx.shadowColor = lcdText;
+            canvasCtx.shadowBlur = 8;
+            canvasCtx.strokeStyle = lcdText;
+            canvasCtx.lineWidth = 2.2;
+            canvasCtx.globalAlpha = 0.9;
+            canvasCtx.beginPath();
+            const midY = canvas.height / 2;
+            const speed = 0.14;
+            const frequency = 0.22;
+            for (let x = 0; x <= canvas.width; x += 2) {
+                const phase = (x * frequency) + (performance.now() / 1000 * speed);
+                const envelope = 0.5 + 0.5 * Math.sin(phase);
+                const y = midY + Math.sin(phase * 1.6) * amplitude * envelope;
+                if (x === 0) canvasCtx.moveTo(x, y);
+                else canvasCtx.lineTo(x, y);
+            }
+            canvasCtx.stroke();
+            canvasCtx.restore();
+        }
+
+
+        function drawIdleWave() {
+            idlePhase += 0.08;
+            const lcdText = settings.visualizerColor;
+            const midY = canvas.height / 2;
+            canvasCtx.save();
+            canvasCtx.shadowColor = lcdText;
+            canvasCtx.shadowBlur = 7;
+            canvasCtx.strokeStyle = lcdText;
+            canvasCtx.lineWidth = 2;
+            canvasCtx.globalAlpha = 0.7;
+            canvasCtx.beginPath();
+            for (let x = 0; x <= canvas.width; x += 2) {
+                const envelope = 0.35 + 0.65 * Math.abs(Math.sin(idlePhase * 0.32));
+                const y = midY + Math.sin((x * 0.15) + idlePhase) * (midY * 0.7) * envelope;
+                if (x === 0) canvasCtx.moveTo(x, y);
+                else canvasCtx.lineTo(x, y);
+            }
+            canvasCtx.stroke();
+            canvasCtx.restore();
+        }
+
+
+        // --- Liste des récitateurs ---
+        function renderReciterList() {
+            reciterList.innerHTML = '';
+            RECITERS.forEach((r) => {
+                const item = document.createElement('div');
+                item.className = \`reciter-option \${r.id === settings.reciterId ? 'selected' : ''}\`;
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('data-id', r.id);
+                item.innerHTML = \`<span>\${r.name}</span>\${r.id === settings.reciterId ? '<span>✓</span>' : ''}\`;
+                const selectHandler = () => {
+                    settings.reciterId = r.id;
+                    reciterLabel.textContent = r.name;
+                    closeReciterModal();
+                    playAyah(currentAyahIndex, true);
+                    showToast('تم تغيير القارئ إلى: ' + r.name);
+                };
+                item.addEventListener('click', selectHandler);
+                item.addEventListener('focus', () => item.scrollIntoView({ block: 'nearest' }));
+                reciterList.appendChild(item);
+            });
+        }
+
+
+        function openReciterModal() {
+            reciterModal.classList.add('open');
+            const selectedItem = reciterList.querySelector('.reciter-option.selected') || reciterList.firstElementChild;
+            if (selectedItem) selectedItem.focus();
+        }
+
+
+        function closeReciterModal() {
+            reciterModal.classList.remove('open');
+            reciterBtn.focus();
+        }
+
+
+        // --- Modale des paramètres ---
+        function openSettingsModal() {
+            settingsModal.classList.add('open');
+            applySettingsToUI();
+            const firstBtn = settingsModal.querySelector('.mode-btn, .color-swatch, .speed-btn, .toggle-switch');
+            if (firstBtn) firstBtn.focus();
+        }
+
+
+        function closeSettingsModal() {
+            settingsModal.classList.remove('open');
+            settingsBtn.focus();
+        }
+
+
+        function setupSettingsUI() {
+            // Vitesse
+            document.querySelectorAll('#speed-btns .speed-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const spd = parseFloat(btn.dataset.speed);
+                    settings.playbackSpeed = spd;
+                    audio.playbackRate = spd;
+                    applySettingsToUI();
+                    showToast('سرعة التشغيل: ' + spd + 'x');
+                });
+            });
+            // Répétition
+            document.querySelectorAll('#repeat-btns .mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    settings.repeatMode = btn.dataset.repeat;
+                    applySettingsToUI();
+                    const labels = { off: 'إيقاف', one: 'تكرار واحد', all: 'تكرار الكل', shuffle: 'عشوائي' };
+                    showToast('وضع التكرار: ' + labels[settings.repeatMode]);
+                });
+            });
+            // Couleur du visualiseur
+            document.querySelectorAll('#color-swatches .color-swatch').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    settings.visualizerColor = btn.dataset.color;
+                    settings.visualizerColorAlt = btn.dataset.alt;
+                    applySettingsToUI();
+                    showToast('تم تغيير لون العرض المرئي');
+                });
+            });
+            // Mode visualiseur
+            document.querySelectorAll('#viz-mode-btns .mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    vizMode = parseInt(btn.dataset.viz);
+                    settings.visualizerMode = vizMode;
+                    applySettingsToUI();
+                    updateVizIndicator();
+                    showToast('نمط العرض: ' + VIZ_MODE_NAMES[vizMode], 1500);
+                });
+            });
+            // Taille de police
+            document.querySelectorAll('#font-size-btns .mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    settings.fontSize = parseFloat(btn.dataset.font);
+                    applySettingsToUI();
+                    showToast('حجم الخط: ' + btn.textContent);
+                });
+            });
+            // Auto-scroll
+            document.getElementById('auto-scroll-toggle').addEventListener('click', () => {
+                settings.autoScroll = !settings.autoScroll;
+                applySettingsToUI();
+                showToast(settings.autoScroll ? 'تم تفعيل التمرير التلقائي' : 'تم إيقاف التمرير التلقائي');
+            });
+            // Mode performance
+            document.getElementById('perf-toggle').addEventListener('click', () => {
+                settings.perf = !settings.perf;
+                applyPerformanceMode();
+                applySettingsToUI();
+                showToast(settings.perf ? 'تم تفعيل وضع الأداء الخفيف' : 'تم إيقاف وضع الأداء الخفيف');
+            });
+        }
+
+
+        function applySettingsToUI() {
+            document.querySelectorAll('#speed-btns .speed-btn').forEach(btn => {
+                btn.classList.toggle('active', parseFloat(btn.dataset.speed) === settings.playbackSpeed);
+            });
+            document.querySelectorAll('#repeat-btns .mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.repeat === settings.repeatMode);
+            });
+            document.querySelectorAll('#color-swatches .color-swatch').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.color === settings.visualizerColor);
+            });
+            document.querySelectorAll('#viz-mode-btns .mode-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.viz) === settings.visualizerMode);
+            });
+            document.querySelectorAll('#font-size-btns .mode-btn').forEach(btn => {
+                btn.classList.toggle('active', parseFloat(btn.dataset.font) === settings.fontSize);
+            });
+            document.getElementById('auto-scroll-toggle').classList.toggle('active', settings.autoScroll);
+            document.getElementById('auto-scroll-toggle').setAttribute('aria-checked', settings.autoScroll);
+            document.getElementById('perf-toggle').classList.toggle('active', settings.perf);
+            document.getElementById('perf-toggle').setAttribute('aria-checked', settings.perf);
+            shuffleBtn.classList.toggle('active', settings.shuffleEnabled);
+            updateRepeatBtnIcon();
+            arTextEl.style.fontSize = (settings.fontSize * 100) + '%';
+            audio.playbackRate = settings.playbackSpeed;
+            audio.volume = settings.muted ? 0 : volumeBar.value / 100;
+        }
+
+
+        function updateRepeatBtnIcon() {
+            const mode = settings.repeatMode;
+            if (mode === 'off') {
+                repeatBtn.classList.remove('active');
+                repeatBtn.title = 'وضع التكرار: إيقاف';
+            } else if (mode === 'one') {
+                repeatBtn.classList.add('active');
+                repeatBtn.title = 'وضع التكرار: واحد';
+            } else if (mode === 'all') {
+                repeatBtn.classList.add('active');
+                repeatBtn.title = 'وضع التكرار: الكل';
+            } else if (mode === 'shuffle') {
+                repeatBtn.classList.add('active');
+                repeatBtn.title = 'وضع التكرار: عشوائي';
+            }
+        }
+
+
+        // --- Récupération des sourates ---
+        async function fetchSurahs() {
+            try {
+                const res = await fetch('https://api.alquran.cloud/v1/surah');
+                const data = await res.json();
+                surahs = data.data;
+                renderPlaylist();
+                await loadSurah(0, true);
+            } catch (err) {
+                lcdTitle.textContent = "خطأ في الاتصال";
+                showToast('خطأ في الاتصال بالخادم');
+            }
+        }
+
+
+        function renderPlaylist() {
+            playlistEl.innerHTML = '';
+            const filtered = surahs.filter((s, i) => {
+                const q = searchQuery.toLowerCase().trim();
+                if (!q) return true;
+                return s.name.toLowerCase().includes(q) ||
+                    s.englishName.toLowerCase().includes(q) ||
+                    String(s.number).includes(q);
+            });
+            filtered.forEach((s) => {
+                const i = surahs.indexOf(s);
+                const item = document.createElement('div');
+                item.className = \`playlist-item \${i === currentSurahIndex ? 'active' : ''}\`;
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('data-index', i);
+                item.innerHTML = \`
+              <span class="surah-name">\${s.number}. \${s.name}</span>
+              <span class="surah-meta">\${s.numberOfAyahs} آية</span>
+            \`;
+                item.addEventListener('click', () => loadSurah(i, true));
+                item.addEventListener('focus', () => {
+                    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                });
+                playlistEl.appendChild(item);
+            });
+            if (filtered.length === 0) {
+                const empty = document.createElement('div');
+                empty.style.padding = '15px';
+                empty.style.textAlign = 'center';
+                empty.style.opacity = '0.6';
+                empty.textContent = 'لا توجد نتائج';
+                playlistEl.appendChild(empty);
+            }
+        }
+
+
+        function scrollPlaylistToActive() {
+            const activeItem = playlistEl.querySelector('.playlist-item.active');
+            if (activeItem) {
+                activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+        }
+
+
+        // --- Chargement des sourates ---
+        function pad3(num) {
+            return String(num).padStart(3, '0');
+        }
+
+
+        async function loadSurah(index, autoPlay = true) {
+            currentSurahIndex = index;
+            const surah = surahs[index];
+            document.querySelectorAll('.playlist-item').forEach((el, i) => {
+                el.classList.toggle('active', parseInt(el.dataset.index) === index);
+            });
+            scrollPlaylistToActive();
+            lcdTitle.textContent = \`جاري التحميل... \${surah.name}\`;
+            totalElapsedBeforeCurrentAyah = 0;
+            seekBar.value = 0;
+            try {
+                const res = await fetch(\`https://api.alquran.cloud/v1/surah/\${surah.number}/editions/quran-uthmani\`);
+                const data = await res.json();
+                currentAyahsAr = data.data[0].ayahs;
+                playAyah(0, autoPlay);
+                showToast('تم تحميل سورة ' + surah.name);
+            } catch (err) {
+                lcdTitle.textContent = "خطأ في الاتصال";
+                showToast('خطأ في تحميل السورة');
+            }
+        }
+
+
+        function playAyah(index, autoPlay = true) {
+            if (!currentAyahsAr || index >= currentAyahsAr.length) return;
+            currentAyahIndex = index;
+            const surahNum = surahs[currentSurahIndex].number;
+            const ayahAr = currentAyahsAr[index];
+            arTextEl.innerHTML = \`\${ayahAr.text} <span class="ayah-marker">﴿\${ayahAr.numberInSurah}﴾</span>\`;
+            textContainer.scrollTop = 0;
+            lcdAyahCount.textContent = \`آية \${ayahAr.numberInSurah} / \${currentAyahsAr.length}\`;
+            seekBar.value = 0;
+            const reciter = settings.reciterId;
+            const formattedSurah = pad3(surahNum);
+            const formattedAyah = pad3(index + 1);
+            if (index === 0 && surahNum !== 1 && surahNum !== 9) {
+                isBasmalahPlaying = true;
+                audio.src = encodeURI(\`https://everyayah.com/data/\${reciter}/001001.mp3\`);
+            } else {
+                isBasmalahPlaying = false;
+                audio.src = encodeURI(\`https://everyayah.com/data/\${reciter}/\${formattedSurah}\${formattedAyah}.mp3\`);
+            }
+            audio.load();
+            audio.playbackRate = settings.playbackSpeed;
+            lcdTitle.textContent = \`\${surahs[currentSurahIndex].name}\`;
+            if (autoPlay) {
+                initAudioContext();
+                audio.play().catch(e => {
+                    console.log("التشغيل التلقائي يحتاج تفاعل المستخدم.");
+                });
+            }
+        }
+
+
+        function formatTime(totalSeconds) {
+            if (isNaN(totalSeconds) || totalSeconds < 0) totalSeconds = 0;
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = Math.floor(totalSeconds % 60);
+            if (h > 0) {
+                return \`\${h}:\${String(m).padStart(2, '0')}:\${String(s).padStart(2, '0')}\`;
+            }
+            return \`\${m}:\${String(s).padStart(2, '0')}\`;
+        }
+
+
+        // --- Navigation TV ---
+        function setupTVNavigation() {
+            window.addEventListener('keydown', (e) => {
+                const key = e.key;
+                const active = document.activeElement;
+
+                switch (key) {
+                    case ' ': case 'Space':
+                        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+                        e.preventDefault();
+                        if (audio.paused) audio.play(); else audio.pause();
+                        return;
+                    case 'MediaPlayPause':
+                        e.preventDefault();
+                        if (audio.paused) audio.play(); else audio.pause();
+                        return;
+                    case 'MediaStop':
+                        e.preventDefault();
+                        stopBtn.click();
+                        return;
+                    case 'MediaNextTrack': case 'PageDown':
+                        e.preventDefault();
+                        nextBtn.click();
+                        return;
+                    case 'MediaPreviousTrack': case 'PageUp':
+                        e.preventDefault();
+                        prevBtn.click();
+                        return;
+                    case 'Backspace': case 'BrowserBack':
+                    case 'Escape':
+                        e.preventDefault();
+                        if (settingsModal.classList.contains('open')) closeSettingsModal();
+                        else if (reciterModal.classList.contains('open')) closeReciterModal();
+                        return;
+                    case 'Enter': case 'OK': case 'Select':
+                        if (active && active !== document.body) {
+                            e.preventDefault();
+                            active.click();
+                        }
+                        return;
+                    case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':
+                        e.preventDefault();
+                        if (reciterModal.classList.contains('open')) {
+                            const opts = Array.from(reciterList.querySelectorAll('.reciter-option'));
+                            const cur = opts.indexOf(active);
+                            if (key === 'ArrowUp' && cur > 0) { opts[cur - 1].focus(); opts[cur - 1].scrollIntoView({ block: 'nearest' }); }
+                            if (key === 'ArrowDown' && cur < opts.length - 1) { opts[cur + 1].focus(); opts[cur + 1].scrollIntoView({ block: 'nearest' }); }
+                            return;
+                        }
+                        if (settingsModal.classList.contains('open')) {
+                            const focusables = Array.from(settingsModal.querySelectorAll(
+                                '.mode-btn, .color-swatch, .speed-btn, .toggle-switch, .modal-close-btn'));
+                            const cur = focusables.indexOf(active);
+                            if (key === 'ArrowUp' && cur > 0) focusables[cur - 1].focus();
+                            if (key === 'ArrowDown' && cur < focusables.length - 1) focusables[cur + 1].focus();
+                            return;
+                        }
+                        if (active && active.classList.contains('playlist-item')) {
+                            const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
+                            const cur = items.indexOf(active);
+                            if (key === 'ArrowUp' && cur > 0) { items[cur - 1].focus(); items[cur - 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+                            else if (key === 'ArrowDown' && cur < items.length - 1) { items[cur + 1].focus(); items[cur + 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+                            else if (key === 'ArrowUp' && cur === 0) searchInput.focus();
+                            else if (key === 'ArrowDown' && cur === items.length - 1) textContainer.focus();
+                            return;
+                        }
+                        if (active && active.tagName === 'INPUT' && active.type === 'range') {
+                            if (key === 'ArrowLeft') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }
+                            else if (key === 'ArrowRight') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }
+                            else if (key === 'ArrowUp') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }
+                            else if (key === 'ArrowDown') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }
+                            return;
+                        }
+                        if (key === 'ArrowUp') reciterBtn.focus();
+                        if (key === 'ArrowDown') searchInput.focus();
+                        if (key === 'ArrowLeft' || key === 'ArrowRight') playBtn.focus();
+                        return;
+                }
+
+                switch (key) {
+                    case 's': case 'S': stopBtn.click(); break;
+                    case 'n': case 'N': nextBtn.click(); break;
+                    case 'p': case 'P': prevBtn.click(); break;
+                    case 'm': case 'M': cycleRepeatMode(); break;
+                    case 'r': case 'R': toggleShuffle(); break;
+                    case 't': case 'T': toggleTheme(); break;
+                    case 'o': case 'O':
+                        if (settingsModal.classList.contains('open')) closeSettingsModal();
+                        else openSettingsModal();
+                        break;
+                }
+            });
+            textContainer.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp') { textContainer.scrollTop -= 50; e.preventDefault(); }
+                if (e.key === 'ArrowDown') { textContainer.scrollTop += 50; e.preventDefault(); }
+            });
+        }
+
+
+        // --- Actions ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            settings.theme = newTheme;
+            document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '☀' : '🌙';
+            showToast(newTheme === 'dark' ? 'الوضع الداكن' : 'الوضع الفاتح');
+        }
+
+
+        function toggleShuffle() {
+            settings.shuffleEnabled = !settings.shuffleEnabled;
+            if (settings.shuffleEnabled) {
+                settings.repeatMode = 'shuffle';
+                showToast('تم تفعيل الوضع العشوائي');
+            } else {
+                if (settings.repeatMode === 'shuffle') settings.repeatMode = 'off';
+                showToast('تم إيقاف الوضع العشوائي');
+            }
+            applySettingsToUI();
+        }
+
+
+        function cycleRepeatMode() {
+            const modes = ['off', 'one', 'all'];
+            const currentIdx = modes.indexOf(settings.repeatMode);
+            settings.repeatMode = modes[(currentIdx + 1) % modes.length];
+            settings.shuffleEnabled = false;
+            applySettingsToUI();
+            const labels = { off: 'إيقاف التكرار', one: 'تكرار واحد', all: 'تكرار الكل' };
+            showToast(labels[settings.repeatMode]);
+        }
+
+
+        function toggleMute() {
+            settings.muted = !settings.muted;
+            audio.volume = settings.muted ? 0 : volumeBar.value / 100;
+            applySettingsToUI();
+            showToast(settings.muted ? 'تم كتم الصوت' : 'تم إلغاء كتم الصوت');
+        }
+
+
+        function handleAudioEnded() {
+            if (isBasmalahPlaying) {
+                isBasmalahPlaying = false;
+                if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
+                const reciter = settings.reciterId;
+                const formattedSurah = pad3(surahs[currentSurahIndex].number);
+                audio.src = encodeURI(\`https://everyayah.com/data/\${reciter}/\${formattedSurah}001.mp3\`);
+                audio.load();
+                audio.play();
+                return;
+            }
+            if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
+
+
+            if (settings.repeatMode === 'one') {
+                playAyah(currentAyahIndex, true);
+                return;
+            }
+
+
+            if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {
+                const randomSurahIdx = Math.floor(Math.random() * surahs.length);
+                loadSurah(randomSurahIdx, true);
+                return;
+            }
+
+
+            if (currentAyahIndex < currentAyahsAr.length - 1) {
+                playAyah(currentAyahIndex + 1, true);
+            } else if (currentSurahIndex < surahs.length - 1) {
+                loadSurah(currentSurahIndex + 1, true);
+            } else if (settings.repeatMode === 'all') {
+                loadSurah(0, true);
+                showToast('عودة إلى البداية');
+            }
+        }
+
+
+        // --- Écouteurs d'événements ---
+        function setupEventListeners() {
+            reciterBtn.addEventListener('click', openReciterModal);
+            modalCloseBtn.addEventListener('click', closeReciterModal);
+            reciterModal.addEventListener('click', (e) => { if (e.target === reciterModal) closeReciterModal(); });
+
+
+            settingsBtn.addEventListener('click', openSettingsModal);
+            settingsClose.addEventListener('click', closeSettingsModal);
+            settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeSettingsModal(); });
+
+
+            playBtn.addEventListener('click', () => { initAudioContext();
+                audio.play(); });
+            pauseBtn.addEventListener('click', () => audio.pause());
+            stopBtn.addEventListener('click', () => { audio.pause();
+                audio.currentTime = 0;
+                showToast('تم الإيقاف'); });
+
+
+            prevBtn.addEventListener('click', () => {
+                if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1, true);
+                else if (currentSurahIndex > 0) loadSurah(currentSurahIndex - 1, true);
+            });
+            nextBtn.addEventListener('click', () => {
+                if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {
+                    const randomSurahIdx = Math.floor(Math.random() * surahs.length);
+                    loadSurah(randomSurahIdx, true);
+                    return;
+                }
+                if (currentAyahIndex < currentAyahsAr.length - 1) playAyah(currentAyahIndex + 1, true);
+                else if (currentSurahIndex < surahs.length - 1) loadSurah(currentSurahIndex + 1, true);
+                else if (settings.repeatMode === 'all') { loadSurah(0, true);
+                    showToast('عودة إلى البداية'); }
+            });
+
+
+            shuffleBtn.addEventListener('click', toggleShuffle);
+            repeatBtn.addEventListener('click', cycleRepeatMode);
+            muteBtn.addEventListener('click', toggleMute);
+
+
+            audio.addEventListener('ended', handleAudioEnded);
+            audio.addEventListener('timeupdate', () => {
+                const current = audio.currentTime || 0;
+                const duration = audio.duration || 0;
+                const totalElapsed = totalElapsedBeforeCurrentAyah + (isBasmalahPlaying ? 0 : current);
+                const elapsedStr = formatTime(totalElapsed);
+                const remaining = Math.max(0, duration - current);
+                const remainingStr = formatTime(remaining);
+                lcdTime.textContent = \`\${elapsedStr} / \${remainingStr}\`;
+                if (!isBasmalahPlaying && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
+                    seekBar.value = Math.min(100, (current / audio.duration) * 100);
+                }
+                // Auto-scroll
+                if (settings.autoScroll && !isBasmalahPlaying && duration > 0) {
+                    const progress = current / duration;
+                    const maxScroll = textContainer.scrollHeight - textContainer.clientHeight;
+                    if (maxScroll > 0) {
+                        textContainer.scrollTop = progress * maxScroll;
+                    }
+                }
+            });
+
+
+            seekBar.addEventListener('input', () => {
+                if (isBasmalahPlaying) return;
+                if (!isNaN(audio.duration) && audio.duration > 0) {
+                    audio.currentTime = (parseFloat(seekBar.value) / 100) * audio.duration;
+                }
+            });
+
+
+            volumeBar.addEventListener('input', () => {
+                if (!settings.muted) audio.volume = volumeBar.value / 100;
+                else if (parseFloat(volumeBar.value) > 0) { settings.muted = false;
+                    audio.volume = volumeBar.value / 100;
+                    applySettingsToUI(); }
+            });
+
+
+            searchInput.addEventListener('input', () => {
+                searchQuery = searchInput.value;
+                renderPlaylist();
+            });
+
+
+            themeBtn.addEventListener('click', toggleTheme);
+            themeBtn.addEventListener('focus', () => themeBtn.scrollIntoView({ block: 'nearest' }));
+        }
+
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>`, {
         headers: { "Content-Type": "text/html; charset=utf-8" },
       });
     }
