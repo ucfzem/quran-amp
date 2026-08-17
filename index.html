@@ -1027,6 +1027,30 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--accent);
         }
+
+
+        /* ==== TV PERFORMANCE MODE ==== */
+        [data-perf="true"] body { padding: 2vmin; }
+        [data-perf="true"] .winamp-container { max-width: 95vw; padding: 1.5vmin; gap: 1vmin; }
+        [data-perf="true"] .win-btn, [data-perf="true"] .btn-winamp { min-width: 48px; min-height: 48px; font-size: 1.2rem; }
+        [data-perf="true"] .btn-winamp.btn-main { width: 64px; height: 64px; }
+        [data-perf="true"] .title-bar,
+        [data-perf="true"] .modal-header { animation: none !important; background: var(--btn-active-bg) !important; }
+        [data-perf="true"] .winamp-container,
+        [data-perf="true"] .lcd-screen,
+        [data-perf="true"] .btn-winamp { box-shadow: none !important; }
+        [data-perf="true"] .win-btn { box-shadow: none !important; text-shadow: none !important; }
+        [data-perf="true"] .reciter-trigger-btn,
+        [data-perf="true"] .mode-btn,
+        [data-perf="true"] .speed-btn { background: #3d2b1a !important; border: 1px solid #8a6b3a; }
+        [data-perf="true"] canvas#spectrum { width: 80px; height: 32px; }
+        [data-perf="true"] .lcd-screen { border: 1px solid #8a6b3a; }
+        [data-perf="true"] .playlist-window { height: 140px; }
+        [data-perf="true"] .quran-text-container { height: 140px; }
+        [data-perf="true"] .ar-text { font-size: 1.5rem !important; }
+        [data-perf="true"] :focus { outline: 4px solid var(--focus-ring) !important; outline-offset: 4px !important; }
+        [data-perf="true"] .modal-overlay { backdrop-filter: none !important; }
+        [data-perf="true"] * { transition: none !important; }
     </style>
 </head>
 <body>
@@ -1203,6 +1227,10 @@
                         <span class="setting-label">تمرير تلقائي</span>
                         <div class="toggle-switch" id="auto-scroll-toggle" tabindex="0" role="switch" aria-checked="false"></div>
                     </div>
+                    <div class="setting-row">
+                        <span class="setting-label">وضع الأداء الخفيف (TV)</span>
+                        <div class="toggle-switch" id="perf-toggle" tabindex="0" role="switch" aria-checked="false"></div>
+                    </div>
                 </div>
                 <div class="modal-section">
                     <div class="modal-section-title">اختصارات لوحة المفاتيح</div>
@@ -1266,7 +1294,8 @@
             fontSize: 1,
             autoScroll: false,
             muted: false,
-            shuffleEnabled: false
+            shuffleEnabled: false,
+            perf: false
         };
 
 
@@ -1360,8 +1389,29 @@
         }
 
 
+        // --- Performance mode ---
+        function autoDetectPerf() {
+            try {
+                const mem = navigator.deviceMemory;
+                const cores = navigator.hardwareConcurrency;
+                const ua = (navigator.userAgent || '').toLowerCase();
+                const isTV = /(webos|tizen|netcast|smart-tv|googletv|startappbundle)/.test(ua);
+                if (isTV && ((mem && mem < 2) || (cores && cores <= 2) || !mem || !cores)) return true;
+                if (mem && mem < 2) return true;
+            } catch (e) {}
+            return false;
+        }
+
+        function applyPerformanceMode() {
+            document.documentElement.setAttribute('data-perf', settings.perf ? 'true' : 'false');
+            if (analyser) analyser.fftSize = settings.perf ? 32 : 64;
+        }
+
+
         // --- Initialisation ---
         async function init() {
+            if (autoDetectPerf()) settings.perf = true;
+            applyPerformanceMode();
             setupTouchUnlock();
             drawSpectrum();
             renderReciterList();
@@ -1371,6 +1421,7 @@
             setupTVNavigation();
             applySettingsToUI();
             updateVizIndicator();
+            playBtn.focus();
         }
 
 
@@ -1403,7 +1454,7 @@
                 if (AudioContextClass) {
                     audioCtx = new AudioContextClass();
                     analyser = audioCtx.createAnalyser();
-                    analyser.fftSize = 64;
+                    analyser.fftSize = settings.perf ? 32 : 64;
                     source = audioCtx.createMediaElementSource(audio);
                     source.connect(analyser);
                     analyser.connect(audioCtx.destination);
@@ -1416,7 +1467,15 @@
 
 
         // --- Dessin du spectre ---
+        let _lastDraw = 0;
         function drawSpectrum() {
+            const now = performance.now();
+            const interval = settings.perf ? 80 : 0;
+            if (interval && (now - _lastDraw < interval)) {
+                requestAnimationFrame(drawSpectrum);
+                return;
+            }
+            _lastDraw = now;
             requestAnimationFrame(drawSpectrum);
             canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
             const isActive = analyser && audio.src && !audio.paused;
@@ -1700,6 +1759,13 @@
                 applySettingsToUI();
                 showToast(settings.autoScroll ? 'تم تفعيل التمرير التلقائي' : 'تم إيقاف التمرير التلقائي');
             });
+            // Mode performance
+            document.getElementById('perf-toggle').addEventListener('click', () => {
+                settings.perf = !settings.perf;
+                applyPerformanceMode();
+                applySettingsToUI();
+                showToast(settings.perf ? 'تم تفعيل وضع الأداء الخفيف' : 'تم إيقاف وضع الأداء الخفيف');
+            });
         }
 
 
@@ -1721,6 +1787,8 @@
             });
             document.getElementById('auto-scroll-toggle').classList.toggle('active', settings.autoScroll);
             document.getElementById('auto-scroll-toggle').setAttribute('aria-checked', settings.autoScroll);
+            document.getElementById('perf-toggle').classList.toggle('active', settings.perf);
+            document.getElementById('perf-toggle').setAttribute('aria-checked', settings.perf);
             shuffleBtn.classList.toggle('active', settings.shuffleEnabled);
             updateRepeatBtnIcon();
             arTextEl.style.fontSize = (settings.fontSize * 100) + '%';
@@ -1881,137 +1949,98 @@
         // --- Navigation TV ---
         function setupTVNavigation() {
             window.addEventListener('keydown', (e) => {
-                const key = e.key || e.keyCode;
+                const key = e.key;
                 const active = document.activeElement;
 
+                switch (key) {
+                    case ' ': case 'Space':
+                        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+                        e.preventDefault();
+                        if (audio.paused) audio.play(); else audio.pause();
+                        return;
+                    case 'MediaPlayPause':
+                        e.preventDefault();
+                        if (audio.paused) audio.play(); else audio.pause();
+                        return;
+                    case 'MediaStop':
+                        e.preventDefault();
+                        stopBtn.click();
+                        return;
+                    case 'MediaNextTrack': case 'PageDown':
+                        e.preventDefault();
+                        nextBtn.click();
+                        return;
+                    case 'MediaPreviousTrack': case 'PageUp':
+                        e.preventDefault();
+                        prevBtn.click();
+                        return;
+                    case 'Backspace': case 'BrowserBack':
+                    case 'Escape':
+                        e.preventDefault();
+                        if (settingsModal.classList.contains('open')) closeSettingsModal();
+                        else if (reciterModal.classList.contains('open')) closeReciterModal();
+                        return;
+                    case 'Enter': case 'OK': case 'Select':
+                        if (active && active !== document.body) {
+                            e.preventDefault();
+                            active.click();
+                        }
+                        return;
+                    case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':
+                        e.preventDefault();
+                        if (reciterModal.classList.contains('open')) {
+                            const opts = Array.from(reciterList.querySelectorAll('.reciter-option'));
+                            const cur = opts.indexOf(active);
+                            if (key === 'ArrowUp' && cur > 0) { opts[cur - 1].focus(); opts[cur - 1].scrollIntoView({ block: 'nearest' }); }
+                            if (key === 'ArrowDown' && cur < opts.length - 1) { opts[cur + 1].focus(); opts[cur + 1].scrollIntoView({ block: 'nearest' }); }
+                            return;
+                        }
+                        if (settingsModal.classList.contains('open')) {
+                            const focusables = Array.from(settingsModal.querySelectorAll(
+                                '.mode-btn, .color-swatch, .speed-btn, .toggle-switch, .modal-close-btn'));
+                            const cur = focusables.indexOf(active);
+                            if (key === 'ArrowUp' && cur > 0) focusables[cur - 1].focus();
+                            if (key === 'ArrowDown' && cur < focusables.length - 1) focusables[cur + 1].focus();
+                            return;
+                        }
+                        if (active && active.classList.contains('playlist-item')) {
+                            const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
+                            const cur = items.indexOf(active);
+                            if (key === 'ArrowUp' && cur > 0) { items[cur - 1].focus(); items[cur - 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+                            else if (key === 'ArrowDown' && cur < items.length - 1) { items[cur + 1].focus(); items[cur + 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+                            else if (key === 'ArrowUp' && cur === 0) searchInput.focus();
+                            else if (key === 'ArrowDown' && cur === items.length - 1) textContainer.focus();
+                            return;
+                        }
+                        if (active && active.tagName === 'INPUT' && active.type === 'range') {
+                            if (key === 'ArrowLeft') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }
+                            else if (key === 'ArrowRight') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }
+                            else if (key === 'ArrowUp') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }
+                            else if (key === 'ArrowDown') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }
+                            return;
+                        }
+                        if (key === 'ArrowUp') reciterBtn.focus();
+                        if (key === 'ArrowDown') searchInput.focus();
+                        if (key === 'ArrowLeft' || key === 'ArrowRight') playBtn.focus();
+                        return;
+                }
 
-                // Touches globales
-                if (key === ' ' || key === 'Space' || key === 32) {
-                    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
-                    e.preventDefault();
-                    if (audio.paused) { audio.play(); } else { audio.pause(); }
-                    return;
-                }
-                if (key === 't' || key === 'T') {
-                    e.preventDefault();
-                    toggleTheme();
-                    return;
-                }
-                if (key === 'o' || key === 'O') {
-                    e.preventDefault();
-                    if (settingsModal.classList.contains('open')) closeSettingsModal();
-                    else openSettingsModal();
-                    return;
-                }
-                if (key === 'm' || key === 'M') {
-                    e.preventDefault();
-                    cycleRepeatMode();
-                    return;
-                }
-                if (key === 'r' || key === 'R') {
-                    e.preventDefault();
-                    toggleShuffle();
-                    return;
-                }
-                if (key === 's' || key === 'S') {
-                    e.preventDefault();
-                    stopBtn.click();
-                    return;
-                }
-                if (key === 'n' || key === 'N') {
-                    e.preventDefault();
-                    nextBtn.click();
-                    return;
-                }
-                if (key === 'p' || key === 'P') {
-                    e.preventDefault();
-                    prevBtn.click();
-                    return;
-                }
-                if (key === 'Escape' || key === 27) {
-                    if (settingsModal.classList.contains('open')) { closeSettingsModal(); return; }
-                    if (reciterModal.classList.contains('open')) { closeReciterModal(); return; }
-                    return;
-                }
-                if (key === 'Enter' || key === 13 || key === 'OK' || key === 'Select') {
-                    if (active && active !== document.body && !active.classList.contains('toggle-switch')) {
-                        e.preventDefault();
-                        active.click();
-                    }
-                    return;
-                }
-                if (reciterModal.classList.contains('open')) {
-                    const options = Array.from(reciterList.querySelectorAll('.reciter-option'));
-                    const curIndex = options.indexOf(active);
-                    if (key === 'ArrowUp' || key === 38) {
-                        e.preventDefault();
-                        if (curIndex > 0) { options[curIndex - 1].focus();
-                            options[curIndex - 1].scrollIntoView({ block: 'nearest' }); }
-                    } else if (key === 'ArrowDown' || key === 40) {
-                        e.preventDefault();
-                        if (curIndex < options.length - 1) { options[curIndex + 1].focus();
-                            options[curIndex + 1].scrollIntoView({ block: 'nearest' }); }
-                    }
-                    return;
-                }
-                if (settingsModal.classList.contains('open')) {
-                    const focusables = Array.from(settingsModal.querySelectorAll(
-                        '.mode-btn, .color-swatch, .speed-btn, .toggle-switch, .modal-close-btn'));
-                    const curIndex = focusables.indexOf(active);
-                    if (key === 'ArrowUp' || key === 38) {
-                        e.preventDefault();
-                        if (curIndex > 0) focusables[curIndex - 1].focus();
-                    } else if (key === 'ArrowDown' || key === 40) {
-                        e.preventDefault();
-                        if (curIndex < focusables.length - 1) focusables[curIndex + 1].focus();
-                    }
-                    return;
-                }
-                if (active && active.classList.contains('playlist-item')) {
-                    const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
-                    const curIndex = items.indexOf(active);
-                    if (key === 'ArrowUp' || key === 38) {
-                        e.preventDefault();
-                        if (curIndex > 0) { const prev = items[curIndex - 1];
-                            prev.focus();
-                            prev.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } else { searchInput
-                                .focus(); }
-                    } else if (key === 'ArrowDown' || key === 40) {
-                        e.preventDefault();
-                        if (curIndex < items.length - 1) { const next = items[curIndex + 1];
-                            next.focus();
-                            next.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } else { textContainer
-                                .focus(); }
-                    }
-                    return;
-                }
-                if (active && active.tagName === 'INPUT' && active.type === 'range') {
-                    if (key === 'ArrowLeft' || key === 37) {
-                        e.preventDefault();
-                        active.value = Math.max(0, parseFloat(active.value) - 5);
-                        active.dispatchEvent(new Event('input'));
-                    } else if (key === 'ArrowRight' || key === 39) {
-                        e.preventDefault();
-                        active.value = Math.min(100, parseFloat(active.value) + 5);
-                        active.dispatchEvent(new Event('input'));
-                    }
-                    if (key === 'ArrowUp' || key === 38) {
-                        e.preventDefault();
-                        active.value = Math.min(100, parseFloat(active.value) + 5);
-                        active.dispatchEvent(new Event('input'));
-                    } else if (key === 'ArrowDown' || key === 40) {
-                        e.preventDefault();
-                        active.value = Math.max(0, parseFloat(active.value) - 5);
-                        active.dispatchEvent(new Event('input'));
-                    }
+                switch (key) {
+                    case 's': case 'S': stopBtn.click(); break;
+                    case 'n': case 'N': nextBtn.click(); break;
+                    case 'p': case 'P': prevBtn.click(); break;
+                    case 'm': case 'M': cycleRepeatMode(); break;
+                    case 'r': case 'R': toggleShuffle(); break;
+                    case 't': case 'T': toggleTheme(); break;
+                    case 'o': case 'O':
+                        if (settingsModal.classList.contains('open')) closeSettingsModal();
+                        else openSettingsModal();
+                        break;
                 }
             });
             textContainer.addEventListener('keydown', (e) => {
-                const key = e.key || e.keyCode;
-                if (key === 'ArrowUp' || key === 38) { textContainer.scrollTop -= 40;
-                    e.preventDefault(); } else if (key === 'ArrowDown' || key === 40) { textContainer.scrollTop +=
-                    40;
-                    e.preventDefault(); }
+                if (e.key === 'ArrowUp') { textContainer.scrollTop -= 50; e.preventDefault(); }
+                if (e.key === 'ArrowDown') { textContainer.scrollTop += 50; e.preventDefault(); }
             });
         }
 
