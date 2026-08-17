@@ -494,3 +494,37 @@ Retranscription fidèle de l'échange entre l'utilisateur et l'assistant (début
 - Cloudflare : reconstruire `worker.js` si `index.html` change puis `wrangler deploy`.
 - Vérifier sur mobile/TV : défilement playlist, spectre, lecture enchaînée des versets, OK/Enter D-Pad sur webOS/Tizen, picker récitateur (Up/Down/Enter/Back dans les deux thèmes).
 - Android : si `index.html` change → `cd mobile && npm run build:web && npx cap sync android` (l'obfuscation se régénère) ; les builds automatiques arrivent dans GitHub Actions (onglet Actions).
+
+---
+
+## 11. Backup — fix du titre « ويناتمب » (17 août 2026)
+
+### Contexte
+L'utilisateur a demandé de retirer le mot « ويناتمب » (transcription de « Winamp ») du titre affiché en haut du player, pour ne conserver que **مشغل القرآن الكريم**. « C'est mieux » — décision utilisateur.
+
+### Changement appliqué
+`<span id="app-title">ويناتمب - مشغل القرآن الكريم</span>` → `<span id="app-title">مشغل القرآن الكريم</span>`
+
+Fichiers modifiés (3) :
+- `index.html` (ligne 445) — app web racine
+- `mobile/www/index.html` (ligne 445) — version mobile obfusquée
+- `worker.js` (ligne 5, HTML inline) — version Cloudflare Workers
+
+### Tokens fournis (jamais écrits sur disque ni commités)
+- GitHub PAT `ghp_…` (clone/push)
+- Vercel `vcp_…` (déploiement)
+- Cloudflare `cfut_…` (wrangler deploy)
+
+### Déploiement
+- **Commit :** `4002f73` « fix: remove Winamp branding from title, keep 'مشغل القرآن الكريم' » (après `7f071b9`).
+- **Cloudflare :** `wrangler deploy` (wrangler 4.123.0 installé globalement) → upload 37.35 KiB → **Version ID `8155284e-d633-413a-b109-19ff645fd419`**.
+- **Vercel :** auto-déploiement via le repo connecté (push suffit).
+- **GitHub Pages :** auto via push.
+
+### Vérifications post-déploiement
+Titre servi sur les 3 plateformes = **« مشغل القرآن الكريم »** (absent : « ويناتمب ») :
+- `https://ucfzem.github.io/quran-amp/` ✅
+- `https://quran-amp.vercel.app/` ✅
+- `https://quran-amp.azer-tyu199p.workers.dev/` ✅
+
+Note : `.wrangler/` (cache local wrangler) non commité — à ajouter au `.gitignore` si souhaité.
