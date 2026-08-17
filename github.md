@@ -607,3 +607,64 @@ Retranscription fidèle de l'échange de la session « v13 Pro » (début = suit
 ### Notes de fin
 - Récap de l'assistant fourni : liens 3 plateformes + portail (tous 200), commits `57e11e8` / `3e57ba5`.
 - Rappel sécurité réitéré : ne pas laisser les tokens (`ghp_…`, `vcp_…`, `cfut_…`) traîner dans la conversation ; ils n'ont jamais été écrits sur disque ni commités.
+
+---
+
+## 13. Backup — v14 : mode performance TV 1 Go + navigation télécommande renforcée (17 août 2026)
+
+L'utilisateur a fourni des optimisations ciblées pour Smart TV 2018 (1 Go RAM) : suppression des ombres/animations/dégradés, boutons agrandis, `MediaPlayPause`/`MediaStop`/`MediaNextTrack`/`MediaPreviousTrack`/`BrowserBack`/`PageUp`/`PageDown`, focus initial sur ▶, détection auto de l'appareil. Intégré et déployé.
+
+### Changements v14
+
+**CSS — TV performance mode** (`[data-perf="true"]`):
+- `animation: none` sur `.title-bar` et `.modal-header`, fond unie `var(--btn-active-bg)`.
+- `box-shadow: none` sur `.winamp-container`, `.lcd-screen`, `.btn-winamp`, `.win-btn`.
+- `backdrop-filter: none` sur `.modal-overlay`.
+- Boutons `min-width/min-height: 48px`, `.btn-main` 64×64 px.
+- `.ar-text` `font-size: 1.5rem`, `.playlist-window`/`.quran-text-container` `height: 140px`.
+- Focus `4px solid` + `outline-offset: 4px` (très visible pour télécommande).
+- `transition: none` sur `*`.
+- Canvas réduit à 80×32 px.
+
+**JS — Détection auto** :
+- `autoDetectPerf()` : `navigator.deviceMemory < 2`, `navigator.hardwareConcurrency <= 2`, UA contenant `webos|tizen|netcast|smart-tv|googletv|startappbundle` → `settings.perf = true` à l'init.
+- `applyPerformanceMode()` : met `data-perf="true"`/`"false"` sur `<html>`, ajuste `analyser.fftSize` (32 si perf, 64 sinon).
+
+**JS — `initAudioContext()`** : `analyser.fftSize = settings.perf ? 32 : 64`.
+
+**JS — `drawSpectrum()`** : throttle à 80 ms (≈12 fps) en mode perf via `_lastDraw` + `performance.now()`.
+
+**JS — `setupTVNavigation()`** remplaçée entièrement :
+- `switch(key)` au lieu de `if` chaînés.
+- Touches média : `MediaPlayPause`, `MediaStop`, `MediaNextTrack`/`PageDown`, `MediaPreviousTrack`/`PageUp`.
+- `Backspace`/`BrowserBack` ferme les modales (priorité à `settingsModal` > `reciterModal`).
+- `Enter`/`OK`/`Select` → `active.click()` sans conditions inutiles.
+- Flèches : navigation spatiale simple (haut = `reciterBtn.focus()`, bas = `searchInput.focus()`, gauche/droite = `playBtn.focus()`).
+- `textContainer` : scroll 50 px (au lieu de 40).
+
+**JS — `init()`** :
+- `if (autoDetectPerf()) settings.perf = true;` + `applyPerformanceMode()` appelés en premier.
+- `playBtn.focus()` à la fin (focus initial pour télécommande).
+
+**HTML — Toggle dans الإعدادات** : « وضع الأداء الخفيف (TV) » avec `id="perf-toggle"`, bascule `settings.perf` + `applyPerformanceMode()` + toast.
+
+### Vérifications
+- JS extrait 42 645 octets → `node --check` OK.
+- **14/14 récitateurs** inchangés et vérifiés.
+- Smoke test ESM worker : **11/11 PASS** (`/` 200, `404`, titre Pro, `data-perf`, `perf-toggle`, `applyPerformanceMode`, `autoDetectPerf`, `_lastDraw`, `MediaPlayPause`, `playBtn.focus()`, 14 récitateurs).
+
+### Déploiement
+- **Commit :** `c2459fd` « v14: TV performance mode (auto-detect 1GB RAM), lazy playlist, throttled visualizer, Media* remote keys, play focus » (3 fichiers, +179/−122).
+- **Cloudflare :** `wrangler deploy` → upload 89.26 KiB / gzip 15.99 → **Version ID `f88d7d54-501f-48a8-b9b0-c701beee205d`**.
+- **Vercel :** auto-déploiement via push (200 dès le 1er poll).
+- **GitHub Pages :** auto (pas de failure cette fois).
+- **Mobile :** `npm run build:web` (87 249 o obfusqué) + `npx cap sync android` OK (3 plugins). Android CI déclenché automatiquement.
+
+### Vérifications post-déploiement
+| Plateforme | HTTP | perf CSS | perf-toggle | MediaPlayPause |
+|---|---|---|---|---|
+| GitHub Pages | 200 | ✓ | ✓ | ✓ |
+| Vercel | 200 | ✓ | ✓ | ✓ |
+| Cloudflare | 200 | ✓ | ✓ | ✓ |
+
+Portail `works` 200, Quran Amp toujours 3ᵉ.
