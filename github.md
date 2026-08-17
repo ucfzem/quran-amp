@@ -904,3 +904,45 @@ audio error handler → playUrlChain(urls, _audioRetryIndex)
 
 ### Commit
 - `466c71e` — fix: Huthayfi via server9.mp3quran.net/hthfi, Minshawy_Mujawwad_192kbps
+
+---
+
+## §17 — Fallback audio robustifié : fetch HEAD probe (17 août 2026)
+
+### Problème
+Le fallback audio précédemment reposait sur l'événement `error` du `<audio>` pour passer à l'URL suivante (`playUrlChain`). Sur mobile, cet événement ne se déclenche pas de façon fiable quand un CDN renvoie un 404 → Huthayfi restait muet malgré le fallback configuré.
+
+### Solution
+Remplacement du mécanisme `error` par un **sondage `fetch HEAD`** avant lecture :
+
+```javascript
+async function playUrlChain(urls, idx) {
+    const pending = urls.slice(idx);
+    for (const url of pending) {
+        try {
+            const res = await fetch(url, { method: 'HEAD' });
+            if (res.ok) {
+                audio.src = url;
+                audio.load();
+                return;
+            }
+        } catch (e) {}
+    }
+    showToast("تعذر تحميل الصوت", 3000);
+}
+```
+
+- `fetch HEAD` vérifie chaque URL dans la chaîne (everyayah → server9)
+- Premier URL avec HTTP 200 → `audio.src` → lecture
+- Aucun 200 → toast "تعذر تحميل الصوت"
+- L'ancien handler `audio.addEventListener('error', ...)` supprimé (non fiable)
+
+### Déploiement
+| Plateforme | Huthayfi | Mécanisme |
+|---|---|---|
+| GitHub Pages | ✅ | fetch HEAD probe |
+| Vercel | ✅ | fetch HEAD probe |
+| Cloudflare | ✅ | Version `02720822-491c-44ef-9b64-c99c42cd3685` |
+
+### Commit
+- `67f55dc` — fix: robust fallback via fetch HEAD probe, remove unreliable audio error handler
