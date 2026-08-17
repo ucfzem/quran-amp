@@ -577,3 +577,33 @@ Quran Amp toujours 3ᵉ sur `https://ucfzem.github.io/works/`.
 | Portail (3ᵉ position) | https://ucfzem.github.io/works/ |
 | Repo + Actions | https://github.com/ucfzem/quran-amp |
 | Backup | github.md (même dépôt), section 12 |
+
+## 12bis. Backup de la conversation — session v13 (17 août 2026)
+
+Retranscription fidèle de l'échange de la session « v13 Pro » (début = suite de la session §12).
+
+### Message utilisateur — « Real tweaking in this new update. » (+ `index.html` complet)
+- L'utilisateur a fourni le `index.html` complet « TV Gold Edition Pro » : thème or revisité (shimmer, gradient 5 arrêts, fond radial), modale paramètres (vitesse, répétition, couleur visualiseur, mode visualiseur, taille de texte, auto-scroll), recherche, bouton mute, raccourcis clavier, UI tout-arabe.
+- Titre de la barre : **مشغل القرآن الكريم** (cohérent avec le fix de la session endurance le matin : « ويناتمب » supprimé).
+
+### Message utilisateur — « Once all fixes are completed, push and deploy the updates, save and back up this conversation to github md, and provide all updated links. »
+→ Process complet exécuté :
+
+1. `index.html` remplacé (nouvelle version).
+2. Vérifs : JS extrait `node --check` OK ; **14/14 récitateurs HTTP 200** (3 erreurs HEAD transitoires → re-test curl : MaherAlMuaiqly, Abdul_Basit_Murattal, Shuraym avec espaces = 200).
+3. `worker.js` régénéré (84 858 o) : `node --check` OK + smoke test ESM **10/10 PASS** (`/` 200, `/x` 404, titre Pro, fix barre de titre, 14 récitateurs, settings-modal, shimmer, `#f0d878`).
+4. **Mobile** : `npm ci` (patch-package appliqué, 0 vulnérabilité) → `npm run build:web` (83 707 o obfusqué, fonts locales, bridge injecté) → `npx cap sync android` (3 plugins OK).
+5. **Commit `57e11e8`** « v13 Pro: real tweaking - revamped gold theme, settings modal, search bar, muted button, keyboard shortcuts » → push.
+6. **Cloudflare** : `wrangler deploy` → **v13 `c0713d85-d4d6-457a-8ca7-628984715735`** (86.07 KiB upload / gzip 15.27).
+7. **GitHub Pages** : run initial « pages build and deployment » **FAILED à l'étape Deploy** (build Jekyll OK) → `rerun-failed-jobs` après 2 erreurs serveur GitHub (« No server is currently available ») → **SUCCESS** → v13 en ligne.
+8. **Vercel** : auto-déploiement via push, 200 dès le 1er poll.
+9. **Android CI** : run `32053595711` auto-déclenché → **SUCCESS**.
+10. Vérifs finales : 3 plateformes 200 + titre Pro + settings-modal + « ويناتمب » absent ; portail works 200.
+11. Backup §12 ajouté à `github.md`, commit `3e57ba5`, push.
+
+### Message utilisateur — « Conversation github md backup »
+→ Ce §12bis (retranscription de l'échange complet de la session v13), commité et poussé.
+
+### Notes de fin
+- Récap de l'assistant fourni : liens 3 plateformes + portail (tous 200), commits `57e11e8` / `3e57ba5`.
+- Rappel sécurité réitéré : ne pas laisser les tokens (`ghp_…`, `vcp_…`, `cfut_…`) traîner dans la conversation ; ils n'ont jamais été écrits sur disque ni commités.
