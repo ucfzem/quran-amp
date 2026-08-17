@@ -825,3 +825,51 @@ git push origin v1.0.0
 
 ### Commit
 - `ae935e8` — feat: 24 reciters (user-verified), encodeURI audio URLs, worker.js backtick fix
+
+---
+
+## §16 — Multi-CDN Fallback System (everyayah → mp3quran.net)
+
+**Date :** 2026-08-17
+
+### Problème
+8 récitateurs sur 24 retournaient 404 sur everyayah.com (IDs incorrects ou absents).
+
+### Solution : Système fallback multi-CDN
+Chaque réciteur a un champ `fb[]` contenant le slug mp3quran.net. Le player essaie everyayah d'abord, puis mp3quran.net en cas d'erreur 404.
+
+### Réconciliations everyayah (IDs corrigés)
+| ID original (404) | ID corrigé (200) |
+|---|---|
+| Abdullah-Basfar_128kbps | Abdullah_Basfar_192kbps |
+| Muhammad-Ayyoub_128kbps | Muhammad_Ayyoub_128kbps |
+| Ibrahim-Akhdar_128kbps | Ibrahim_Akhdar_32kbps |
+| Fares-Abbad_128kbps | Fares_Abbad_64kbps |
+| Hani-Rifai_128kbps | Hani_Rifai_192kbps |
+
+### Fallback mp3quran.net (3 récitateurs)
+| Réciteur | everyayah | mp3quran slug |
+|---|---|---|
+| عبد المحسن القاسم | 404 (tous slugs) | alqasim |
+| علي الحذيفي | 404 (tous slugs) | hudhaify |
+| أحمد العجمي | 404 (tous slugs) | ajmi |
+
+### Architecture technique
+```
+RECITERS[].fb[] → mp3quran.net slug
+AUDIO_SOURCES[] → [{name:"everyayah", url:fn}, {name:"mp3quran", url:fn}]
+buildAudioUrls(reciter, surah, ayah) → [everyayah_url, mp3quran_url]
+buildBasmalahUrls(reciter) → [everyayah_url, mp3quran_url]
+playUrlChain(urls, idx) → audio.src = urls[idx]
+audio error handler → playUrlChain(urls, _audioRetryIndex)
+```
+
+### Déploiement
+| Plateforme | Status |
+|---|---|
+| GitHub Pages | ✅ 24 récitateurs |
+| Vercel | ✅ AUDIO_SOURCES (5 occurrences) |
+| Cloudflare | ✅ Version `2245d127-7319-4caf-a96a-38da14dd0915`, 92.27 KiB |
+
+### Commit
+- `998017d` — feat: multi-CDN fallback system (everyayah → mp3quran.net)
