@@ -1273,7 +1273,7 @@ export default {
             { id: "Ghamadi_40kbps", name: "سعد الغامدي", fb: ["ghamadi"] },
             { id: "MaherAlMuaiqly128kbps", name: "ماهر المعيقلي", fb: ["maher"] },
             { id: "Minshawy_Murattal_128kbps", name: "المنشاوي - مرتل", fb: ["minshawi"] },
-            { id: "Minshawy_Mujawwad_128kbps", name: "المنشاوي - مجوّد", fb: ["minshawi_mj"] },
+            { id: "Minshawy_Mujawwad_192kbps", name: "المنشاوي - مجوّد", fb: ["minshawi_mj"] },
             { id: "Muhammad_Jibreel_128kbps", name: "محمد جبريل", fb: ["jibreel"] },
             { id: "Nasser_Alqatami_128kbps", name: "ناصر القطامي", fb: ["nasser"] },
             { id: "Yasser_Ad-Dussary_128kbps", name: "ياسر الدوسري", fb: ["yasser"] },
@@ -1282,7 +1282,7 @@ export default {
             { id: "Khaalid_Abdullaah_al-Qahtaanee_192kbps", name: "خالد القحطاني", fb: ["khalid"] },
             { id: "Abdullah_Basfar_192kbps", name: "عبد الله بصفر", fb: ["basfar"] },
             { id: "Abdul-Muhsin-al-Qasim_128kbps", name: "عبد المحسن القاسم", fb: ["alqasim"] },
-            { id: "Ali-al-Huthayfi_128kbps", name: "علي الحذيفي", fb: ["hudhaify"] },
+            { id: "Ali-al-Huthayfi_128kbps", name: "علي الحذيفي", fb: ["hthfi"] },
             { id: "Ibrahim_Akhdar_32kbps", name: "إبراهيم الأخضر", fb: ["akhdar"] },
             { id: "Muhammad_Ayyoub_128kbps", name: "محمد أيوب", fb: ["ayyub"] },
             { id: "Ahmad-al-Ajmy_128kbps", name: "أحمد العجمي", fb: ["ajmi"] },
@@ -1292,7 +1292,7 @@ export default {
 
         const AUDIO_SOURCES = [
             { name: "everyayah", url: (id, s, a) => encodeURI("https://everyayah.com/data/" + id + "/" + s + a + ".mp3") },
-            { name: "mp3quran",  url: (fb, s) => "https://server.mp3quran.net/" + fb + "/" + s + ".mp3" }
+            { name: "mp3quran",  url: (fb, s) => "https://server9.mp3quran.net/" + fb + "/" + s + ".mp3" }
         ];
 
         function buildAudioUrls(reciter, surahNum, ayahNum) {
