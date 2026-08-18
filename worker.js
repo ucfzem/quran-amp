@@ -1331,6 +1331,40 @@ export default {
         }
 
 
+        function getReciterBitrate(reciterId) {
+            const m = reciterId.match(/_(\d+)kbps/i);
+            return m ? parseInt(m[1]) * 1000 : 128000;
+        }
+
+        async function fetchSurahDurations(surahNumber, reciterId) {
+            const key = reciterId + '-' + surahNumber;
+            if (durationCache[key]) return durationCache[key];
+            const surah = surahs.find(s => s.number === surahNumber);
+            if (!surah) return null;
+            const count = surah.numberOfAyahs;
+            const bitrate = getReciterBitrate(reciterId);
+            const durs = [];
+            const BATCH = 10;
+            for (let i = 0; i < count; i += BATCH) {
+                const batch = [];
+                for (let j = i; j < Math.min(i + BATCH, count); j++) {
+                    const url = encodeURI('https://everyayah.com/data/' + reciterId + '/' + pad3(surahNumber) + pad3(j + 1) + '.mp3');
+                    batch.push(
+                        fetch(url, { method: 'HEAD' })
+                            .then(function(r) {
+                                var len = parseInt(r.headers.get('content-length') || '0', 10);
+                                durs[j] = len > 0 ? (len * 8) / bitrate : 0;
+                            })
+                            .catch(function() { durs[j] = 0; })
+                    );
+                }
+                await Promise.all(batch);
+            }
+            const total = durs.reduce(function(a, b) { return a + b; }, 0);
+            durationCache[key] = { total: total, durations: durs };
+            return durationCache[key];
+        }
+
         const VIZ_MODE_NAMES = ['أشرطة', 'منحنى', 'تعبئة', 'دوائر', 'موجات'];
         const SPEED_PRESETS = [0.5, 0.75, 1, 1.25, 1.5, 2];
         const FONT_SIZES = [0.85, 1, 1.2, 1.4];
@@ -1363,6 +1397,9 @@ export default {
         let idlePhase = 0;
         let vizMode = 0;
         let totalElapsedBeforeCurrentAyah = 0;
+        let durationCache = {};
+        let surahTotal = 0;
+        let surahElapsed = 0;
         let searchQuery = '';
         let toastTimeout = null;
 
@@ -1943,11 +1980,16 @@ export default {
             scrollPlaylistToActive();
             lcdTitle.textContent = \`جاري التحميل... \${surah.name}\`;
             totalElapsedBeforeCurrentAyah = 0;
+            surahTotal = 0;
+            surahElapsed = 0;
             seekBar.value = 0;
             try {
                 const res = await fetch(\`https://api.alquran.cloud/v1/surah/\${surah.number}/editions/quran-uthmani\`);
                 const data = await res.json();
                 currentAyahsAr = data.data[0].ayahs;
+                fetchSurahDurations(surah.number, settings.reciterId).then(function(r) {
+                    if (r && r.total > 0) surahTotal = r.total;
+                });
                 playAyah(0, autoPlay);
                 showToast('تم تحميل سورة ' + surah.name);
             } catch (err) {
@@ -2148,7 +2190,10 @@ export default {
                 playUrlChain(buildAudioUrls(reciterObj, surahNum, 1), 0, true);
                 return;
             }
-            if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
+            if (!isNaN(audio.duration)) {
+                totalElapsedBeforeCurrentAyah += audio.duration;
+                surahElapsed += audio.duration;
+            }
 
 
             if (settings.repeatMode === 'one') {
@@ -2221,8 +2266,11 @@ export default {
             audio.addEventListener('timeupdate', () => {
                 const current = audio.currentTime || 0;
                 const duration = audio.duration || 0;
-                const remaining = Math.max(0, duration - current);
-                lcdTime.textContent = formatCountdown(remaining);
+                if (surahTotal > 0) {
+                    lcdTime.textContent = formatCountdown(Math.max(0, surahTotal - surahElapsed - current));
+                } else {
+                    lcdTime.textContent = formatCountdown(Math.max(0, duration - current));
+                }
                 if (!isBasmalahPlaying && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
                     seekBar.value = Math.min(100, (current / audio.duration) * 100);
                 }
