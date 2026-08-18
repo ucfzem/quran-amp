@@ -983,3 +983,33 @@ async function playUrlChain(urls, idx) {
 ### Commit
 - `9abb02f` — fix: auto-advance to next ayah (playUrlChain now calls audio.play())
 - *(commits suivants pour IDs récitateurs 404 → 200)*
+
+---
+
+## §19 — Timer LCD en compte à rebours `-MM:SS` (18 août 2026)
+
+L'utilisateur a demandé de remplacer l'affichage `élapsed / restant` (`0:09 / 2:14`) par un **compte à rebours** : temps restant précédé d'un signe `-`, qui diminue pendant la lecture.
+
+### Implémentation
+- `formatTime()` simplifié : `H:MM` si `h > 0`, sinon `MM:SS` (suppression du second `:SS` en mode heures).
+- Nouvelle fonction `formatCountdown(totalSeconds)` → `'-' + formatTime(...)` (valeur < 0 ou NaN → `-0:00`).
+- Dans `timeupdate` (index.html + worker.js) : `lcdTime.textContent = formatCountdown(remaining)` avec `remaining = Math.max(0, duration - current)` — l'ancien `elapsedStr / remainingStr` est **supprimé**.
+- HTML initial : `<div class="lcd-timer" id="lcd-time">-0:00</div>`.
+- Le style doré/VT323 existant (`.lcd-timer`) est conservé inchangé.
+
+### Unit tests `formatCountdown` : 6/6 OK
+`45 → -0:45`, `8 → -0:08`, `94 → -1:34`, `8040 → -2:14`, `0 → -0:00`, `-5 → -0:00`.
+
+### Note d'architecture
+- Le lecteur lit un fichier **par verset** (pas de fichier sourate entière sur everyayah) → le compte à rebours couvre le **fichier en cours** et se réinitialise à `-0:00` à chaque changement de verset. Un compte à rebours sur la sourate entière (ex. `-2:14` pour Al-Baqarah) nécessiterait une source de durée globale, non disponible ; le format `formatTime` gère déjà les heures si un tel total est fourni.
+- Une suggestion externe (`#ayahCountdown` + police Amiri + Web Worker média) a été **rejetée** : elle ne correspond pas à l'architecture (worker Cloudflare sert la page HTML, l'audio vit dans `index.html`) et casserait le style LCD doré existant.
+
+### Déploiement
+| Plateforme | Status |
+|---|---|
+| GitHub Pages | ✅ auto (push `main`) |
+| Vercel | ✅ auto (repo connecté) |
+| Cloudflare | ✅ `wrangler deploy` |
+
+### Commit
+- `4bbe9be` — feat: LCD countdown timer (-remaining) replacing elapsed/remaining display
