@@ -1149,3 +1149,51 @@ Après : `if (h > 0) return \`${h}:${String(m).padStart(2, '0')}:${String(s).pad
 | Portail | https://ucfzem.github.io/works/ |
 | Repo | https://github.com/ucfzem/quran-amp |
 | MEMORY.md | https://github.com/ucfzem/quran-amp/blob/main/MEMORY.md |
+
+---
+
+## 23. Hardened state machine: Token Sync + Basmalah Fail-Safe + Error Guard
+
+### Problème
+Le `ended` event listener n'avait pas de garde token — un `ended` tardif après un switch de réciteur pouvait déclencher une avance d'ayah sur le mauvais récitre. La Basmalah n'avait aucun fallback : si le mp3 échouait, la lecture restait bloquée. Pas de listener `error` pour informer l'utilisateur.
+
+### Correctifs appliqués (6 changements)
+
+1. **`currentRequestId`** — variable ajoutée après `activePlayRequestId`, synchronisée dans `playAyah` (`currentRequestId = requestId || activePlayRequestId`) pour que les event listeners puissent vérifier contre le token actuel.
+
+2. **`playUrlChain` retourne `true`/`false`** — au lieu de `return` implicite `undefined` au succès, retourne explicitement `true` (succès) ou `false` (échec), permettant le fail-safe Basmalah.
+
+3. **`playAyah` : paramètre `skipBasmalah` + fail-safe** — 
+   - Nouveau paramètre `skipBasmalah = false`
+   - Si Basmalah (`playUrlChain` sur `buildBasmalahUrls`) échoue (retourne `false`), bypass automatique vers ayah 1 (`buildAudioUrls`)
+   - Empêche la boucle infinie : le fail-safe ne se déclenche qu'une fois par requête
+
+4. **`ended` listener : garde token + séquentiel propre** — 
+   - `if (currentRequestId !== activePlayRequestId) return;` en première ligne
+   - Avance explicite : `currentAyahIndex++; playAyah(currentAyahIndex, true, activePlayRequestId, true)`
+   - Pas de `skipBasmalah` au sein d'une même sourate (déjà joué au premier appel)
+   - `onSurahCompleted()` à la fin de la sourate
+
+5. **`error` listener ajouté** — 
+   - Garde token identique au `ended`
+   - Affiche un toast informatif + met à jour le UI play/pause
+
+6. **`loadSurah` : reset complet** — 
+   - `isBasmalahPlaying = false` en début de fonction
+   - `currentRequestId = reqId` pour synchroniser les listeners
+   - `lcdAyahCount` avec fallback `'0 / --'` si `numberOfAyahs` non disponible
+   - `lcdTime` reset à `'00:00'`
+
+### Fonctions ajoutées
+- **`setPlayPauseUI(isPlaying)`** — affiche/masque les boutons play/pause
+- **`onSurahCompleted()`** — gère repeat one/all/shuffle après la dernière ayah
+
+#### Tests
+- JS syntaxe `node --check` OK ✅
+- Tous les `playAyah` appels dans les listeners passent `activePlayRequestId` explicitement ✅
+- `onSurahCompleted` reprend le logic repeatMode depuis l'ancien `ended` listener ✅
+
+#### Déploiement
+- **Commit §23 :** TBD
+- Cloudflare : TBD
+- Vercel + GitHub Pages : auto-deploy on push

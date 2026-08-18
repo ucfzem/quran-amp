@@ -120,7 +120,6 @@
         }
 
 
-        /* --- Barre de titre --- */
         .title-bar {
             background: var(--gold-gradient);
             background-size: 200% 100%;
@@ -138,12 +137,8 @@
 
 
         @keyframes shimmer {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
 
@@ -156,10 +151,7 @@
         }
 
 
-        .title-bar-controls {
-            display: flex;
-            gap: 5px;
-        }
+        .title-bar-controls { display: flex; gap: 5px; }
 
 
         .win-btn {
@@ -204,7 +196,6 @@
         }
 
 
-        /* --- Écran LCD --- */
         .lcd-screen {
             background-color: var(--lcd-bg);
             border: 3px inset var(--chassis-border);
@@ -223,10 +214,7 @@
         .lcd-screen::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px);
             pointer-events: none;
             border-radius: 5px;
@@ -254,12 +242,8 @@
 
 
         @keyframes ticker-rtl {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
 
@@ -311,12 +295,9 @@
         }
 
 
-        canvas#spectrum:hover {
-            box-shadow: 0 0 12px var(--lcd-glow);
-        }
+        canvas#spectrum:hover { box-shadow: 0 0 12px var(--lcd-glow); }
 
 
-        /* --- Panneau de contrôle --- */
         .controls-panel {
             display: flex;
             flex-direction: column;
@@ -350,16 +331,14 @@
 
 
         .reciter-trigger-btn::after {
-            content: '▼';
+            content: '\25BC';
             font-size: 11px;
             color: var(--accent);
             transition: transform 0.3s;
         }
 
 
-        .reciter-trigger-btn:hover::after {
-            transform: translateY(2px);
-        }
+        .reciter-trigger-btn:hover::after { transform: translateY(2px); }
 
 
         .transport-buttons {
@@ -424,22 +403,14 @@
         }
 
 
-        .btn-winamp.btn-toggle {
-            width: 36px;
-            height: 36px;
-        }
-        .btn-winamp.btn-toggle svg {
-            width: 15px;
-            height: 15px;
-        }
+        .btn-winamp.btn-toggle { width: 36px; height: 36px; }
+        .btn-winamp.btn-toggle svg { width: 15px; height: 15px; }
         .btn-winamp.btn-toggle.active {
             background: var(--btn-active-bg);
             border-color: var(--accent);
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
-        .btn-winamp.btn-toggle.active svg {
-            fill: #fff;
-        }
+        .btn-winamp.btn-toggle.active svg { fill: #fff; }
 
 
         .sliders {
@@ -481,9 +452,7 @@
         }
 
 
-        input[type=range]:hover {
-            height: 10px;
-        }
+        input[type=range]:hover { height: 10px; }
 
 
         input[type=range]::-webkit-slider-thumb {
@@ -499,9 +468,7 @@
         }
 
 
-        input[type=range]::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
 
         input[type=range]::-moz-range-thumb {
@@ -530,17 +497,10 @@
             min-width: 30px;
             height: 24px;
         }
-        .mute-btn:hover {
-            background: var(--btn-active-bg);
-        }
-        .mute-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: var(--btn-text);
-        }
+        .mute-btn:hover { background: var(--btn-active-bg); }
+        .mute-btn svg { width: 14px; height: 14px; fill: var(--btn-text); }
 
 
-        /* --- Recherche --- */
         .search-bar {
             display: flex;
             align-items: center;
@@ -551,9 +511,7 @@
             padding: 4px 8px;
             transition: border-color 0.3s;
         }
-        .search-bar:focus-within {
-            border-color: var(--accent);
-        }
+        .search-bar:focus-within { border-color: var(--accent); }
         .search-bar svg {
             width: 16px;
             height: 16px;
@@ -578,7 +536,6 @@
         }
 
 
-        /* --- Playlist --- */
         .playlist-window {
             background: var(--panel-bg);
             border: 2px inset var(--chassis-border);
@@ -604,9 +561,7 @@
 
 
         .playlist-item:hover,
-        .playlist-item:focus {
-            background: var(--item-hover);
-        }
+        .playlist-item:focus { background: var(--item-hover); }
 
 
         .playlist-item.active {
@@ -617,9 +572,7 @@
         }
 
 
-        .playlist-item .surah-name {
-            font-weight: 500;
-        }
+        .playlist-item .surah-name { font-weight: 500; }
         .playlist-item .surah-meta {
             font-size: 12px;
             opacity: 0.7;
@@ -627,7 +580,6 @@
         }
 
 
-        /* --- Texte coranique --- */
         .quran-text-container {
             background: var(--panel-bg);
             border: 2px inset var(--chassis-border);
@@ -648,9 +600,7 @@
         .quran-text-container::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 2px;
             background: var(--gold-gradient);
             border-radius: 2px;
@@ -681,13 +631,9 @@
         }
 
 
-        /* --- Modales --- */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: var(--modal-overlay);
             display: flex;
             justify-content: center;
@@ -723,9 +669,7 @@
         }
 
 
-        .modal-overlay.open .modal-card {
-            transform: scale(1);
-        }
+        .modal-overlay.open .modal-card { transform: scale(1); }
 
 
         .modal-header {
@@ -758,9 +702,7 @@
             border-radius: 50%;
             transition: all 0.2s;
         }
-        .modal-close-btn:hover {
-            background: rgba(0, 0, 0, 0.15);
-        }
+        .modal-close-btn:hover { background: rgba(0, 0, 0, 0.15); }
 
 
         .modal-body {
@@ -800,9 +742,7 @@
 
 
         .reciter-option:hover,
-        .reciter-option:focus {
-            background: var(--item-hover);
-        }
+        .reciter-option:focus { background: var(--item-hover); }
 
 
         .reciter-option.selected {
@@ -812,7 +752,6 @@
         }
 
 
-        /* --- Paramètres --- */
         .setting-row {
             display: flex;
             justify-content: space-between;
@@ -827,11 +766,7 @@
         }
 
 
-        .color-swatches {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .color-swatches { display: flex; gap: 6px; flex-wrap: wrap; }
         .color-swatch {
             width: 28px;
             height: 28px;
@@ -841,20 +776,14 @@
             transition: all 0.2s;
             flex-shrink: 0;
         }
-        .color-swatch:hover {
-            transform: scale(1.2);
-        }
+        .color-swatch:hover { transform: scale(1.2); }
         .color-swatch.selected {
             border-color: #fff;
             box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
 
 
-        .mode-btns {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
+        .mode-btns { display: flex; gap: 4px; flex-wrap: wrap; }
         .mode-btn {
             padding: 6px 10px;
             border-radius: 5px;
@@ -867,9 +796,7 @@
             transition: all 0.2s;
             font-family: 'Tajawal', sans-serif;
         }
-        .mode-btn:hover {
-            background: var(--btn-active-bg);
-        }
+        .mode-btn:hover { background: var(--btn-active-bg); }
         .mode-btn.active {
             background: var(--btn-active-bg);
             border-color: var(--accent);
@@ -878,11 +805,7 @@
         }
 
 
-        .speed-btns {
-            display: flex;
-            gap: 3px;
-            flex-wrap: wrap;
-        }
+        .speed-btns { display: flex; gap: 3px; flex-wrap: wrap; }
         .speed-btn {
             padding: 5px 8px;
             border-radius: 4px;
@@ -897,9 +820,7 @@
             min-width: 36px;
             text-align: center;
         }
-        .speed-btn:hover {
-            background: var(--btn-active-bg);
-        }
+        .speed-btn:hover { background: var(--btn-active-bg); }
         .speed-btn.active {
             background: var(--btn-active-bg);
             border-color: var(--accent);
@@ -935,9 +856,7 @@
             transition: transform 0.3s;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
-        .toggle-switch.active::after {
-            transform: translateX(-20px);
-        }
+        .toggle-switch.active::after { transform: translateX(-20px); }
 
 
         .kbd-shortcuts {
@@ -959,7 +878,6 @@
         }
 
 
-        /* --- Toast notifications --- */
         .toast-container {
             position: fixed;
             top: 16px;
@@ -992,44 +910,24 @@
 
 
         @keyframes toast-in {
-            from {
-                opacity: 0;
-                transform: translateY(-25px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(-25px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes toast-out {
-            from {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-            }
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-20px) scale(0.95); }
         }
 
 
-        /* --- Scrollbar --- */
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--panel-bg);
-        }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--panel-bg); }
         ::-webkit-scrollbar-thumb {
             background: var(--chassis-border);
             border-radius: 3px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
-        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 
-        /* ==== TV PERFORMANCE MODE ==== */
         [data-perf="true"] body { padding: 2vmin; }
         [data-perf="true"] .winamp-container { max-width: 95vw; padding: 1.5vmin; gap: 1vmin; }
         [data-perf="true"] .win-btn, [data-perf="true"] .btn-winamp { min-width: 48px; min-height: 48px; font-size: 1.2rem; }
@@ -1148,24 +1046,22 @@
     </div>
 
 
-    <!-- Modale du lecteur -->
     <div class="modal-overlay" id="reciter-modal">
         <div class="modal-card">
             <div class="modal-header">
                 <span>اختر القارئ</span>
-                <button class="modal-close-btn" id="modal-close">✕</button>
+                <button class="modal-close-btn" id="modal-close">&#10005;</button>
             </div>
             <div class="modal-body" id="reciter-list"></div>
         </div>
     </div>
 
 
-    <!-- Modale des paramètres -->
     <div class="modal-overlay" id="settings-modal">
         <div class="modal-card">
             <div class="modal-header">
                 <span>الإعدادات</span>
-                <button class="modal-close-btn" id="settings-close">✕</button>
+                <button class="modal-close-btn" id="settings-close">&#10005;</button>
             </div>
             <div class="modal-body">
                 <div class="modal-section">
@@ -1253,8 +1149,6 @@
 
 
     <div class="toast-container" id="toast-container"></div>
-
-
     <audio id="audio-player" playsinline></audio>
 
 
@@ -1286,10 +1180,16 @@
             { id: "Hani_Rifai_192kbps", name: "هاني الرفاعي", fb: ["rifai"] }
         ];
 
+
         const AUDIO_SOURCES = [
             { name: "everyayah", url: (id, s, a) => encodeURI("https://everyayah.com/data/" + id + "/" + s + a + ".mp3") },
             { name: "mp3quran",  url: (fb, s) => "https://server9.mp3quran.net/" + fb + "/" + s + ".mp3" }
         ];
+
+
+        let activePlayRequestId = 0;
+        let currentRequestId = 0;
+
 
         function buildAudioUrls(reciter, surahNum, ayahNum) {
             const s3 = pad3(surahNum), a3 = pad3(ayahNum);
@@ -1301,6 +1201,7 @@
             return urls;
         }
 
+
         function buildBasmalahUrls(reciter) {
             const urls = [];
             urls.push(AUDIO_SOURCES[0].url(reciter.id, "001", "001"));
@@ -1310,20 +1211,26 @@
             return urls;
         }
 
-        async function playUrlChain(urls, idx, autoPlay = false) {
+
+        async function playUrlChain(urls, idx, autoPlay = false, requestId = 0) {
             const pending = urls.slice(idx);
             for (const url of pending) {
+                if (requestId !== activePlayRequestId) return false;
                 try {
                     const res = await fetch(url, { method: 'HEAD' });
+                    if (requestId !== activePlayRequestId) return false;
                     if (res.ok) {
                         audio.src = url;
                         audio.load();
                         if (autoPlay) audio.play().catch(() => {});
-                        return;
+                        return true;
                     }
                 } catch (e) {}
             }
-            showToast("تعذر تحميل الصوت", 3000);
+            if (requestId === activePlayRequestId) {
+                showToast("تعذر تحميل الصوت", 3000);
+            }
+            return false;
         }
 
 
@@ -1365,12 +1272,12 @@
             return durationCache[key];
         }
 
-        const VIZ_MODE_NAMES = ['أشرطة', 'منحنى', 'تعبئة', 'دوائر', 'موجات'];
+
+        const VIZ_MODE_NAMES = ['\u0623\u0634\u0631\u0637\u0629', '\u0645\u0646\u062D\u0646\u0649', '\u062A\u0639\u0628\u0626\u0629', '\u062F\u0648\u0627\u0626\u0631', '\u0645\u0648\u062C\u0627\u062A'];
         const SPEED_PRESETS = [0.5, 0.75, 1, 1.25, 1.5, 2];
         const FONT_SIZES = [0.85, 1, 1.2, 1.4];
 
 
-        // État global
         let settings = {
             theme: 'dark',
             reciterId: 'Husary_128kbps',
@@ -1391,6 +1298,7 @@
         let currentSurahIndex = 0;
         let currentAyahIndex = 0;
         let currentAyahsAr = [];
+        let currentSurahDurations = [];
         let audioCtx, analyser, source, canvasCtx;
         let isAudioInitialized = false;
         let isBasmalahPlaying = false;
@@ -1439,7 +1347,6 @@
         canvasCtx = canvas.getContext('2d');
 
 
-        // --- Toast notifications ---
         function showToast(message, duration = 3000) {
             if (toastTimeout) clearTimeout(toastTimeout);
             const toast = document.createElement('div');
@@ -1453,18 +1360,17 @@
         }
 
 
-        // --- Canvas : changement de mode ---
         canvas.addEventListener('click', () => {
             vizMode = (vizMode + 1) % VIZ_MODE_NAMES.length;
             settings.visualizerMode = vizMode;
             updateVizModeButtons();
             updateVizIndicator();
-            showToast('نمط العرض: ' + VIZ_MODE_NAMES[vizMode], 1500);
+            showToast('\u0646\u0645\u0637 \u0627\u0644\u0639\u0631\u0636: ' + VIZ_MODE_NAMES[vizMode], 1500);
         });
 
 
         function updateVizIndicator() {
-            vizIndicator.textContent = 'وضع: ' + VIZ_MODE_NAMES[vizMode];
+            vizIndicator.textContent = '\u0648\u0636\u0639: ' + VIZ_MODE_NAMES[vizMode];
             vizIndicator.style.opacity = '1';
             clearTimeout(vizIndicator._timeout);
             vizIndicator._timeout = setTimeout(() => {
@@ -1480,7 +1386,6 @@
         }
 
 
-        // --- Performance mode ---
         function autoDetectPerf() {
             try {
                 const mem = navigator.deviceMemory;
@@ -1493,13 +1398,13 @@
             return false;
         }
 
+
         function applyPerformanceMode() {
             document.documentElement.setAttribute('data-perf', settings.perf ? 'true' : 'false');
             if (analyser) analyser.fftSize = settings.perf ? 32 : 64;
         }
 
 
-        // --- Initialisation ---
         async function init() {
             if (autoDetectPerf()) settings.perf = true;
             applyPerformanceMode();
@@ -1557,7 +1462,6 @@
         }
 
 
-        // --- Dessin du spectre ---
         let _lastDraw = 0;
         function drawSpectrum() {
             const now = performance.now();
@@ -1585,23 +1489,12 @@
             const accent = settings.visualizerColor;
             const lcdText = settings.visualizerColorAlt;
             switch (settings.visualizerMode) {
-                case 0:
-                    drawBars(dataArray, accent, lcdText);
-                    break;
-                case 1:
-                    drawCurve(dataArray, lcdText);
-                    break;
-                case 2:
-                    drawFill(dataArray, accent, lcdText);
-                    break;
-                case 3:
-                    drawCircles(dataArray, accent, lcdText);
-                    break;
-                case 4:
-                    drawWaveform(dataArray, lcdText);
-                    break;
-                default:
-                    drawBars(dataArray, accent, lcdText);
+                case 0: drawBars(dataArray, accent, lcdText); break;
+                case 1: drawCurve(dataArray, lcdText); break;
+                case 2: drawFill(dataArray, accent, lcdText); break;
+                case 3: drawCircles(dataArray, accent, lcdText); break;
+                case 4: drawWaveform(dataArray, lcdText); break;
+                default: drawBars(dataArray, accent, lcdText);
             }
         }
 
@@ -1746,21 +1639,21 @@
         }
 
 
-        // --- Liste des récitateurs ---
         function renderReciterList() {
             reciterList.innerHTML = '';
             RECITERS.forEach((r) => {
                 const item = document.createElement('div');
-                item.className = `reciter-option ${r.id === settings.reciterId ? 'selected' : ''}`;
+                item.className = 'reciter-option' + (r.id === settings.reciterId ? ' selected' : '');
                 item.setAttribute('tabindex', '0');
                 item.setAttribute('data-id', r.id);
-                item.innerHTML = `<span>${r.name}</span>${r.id === settings.reciterId ? '<span>✓</span>' : ''}`;
+                item.innerHTML = '<span>' + r.name + '</span>' + (r.id === settings.reciterId ? '<span>\u2713</span>' : '');
                 const selectHandler = () => {
                     settings.reciterId = r.id;
                     reciterLabel.textContent = r.name;
+                    renderReciterList();
                     closeReciterModal();
-                    playAyah(currentAyahIndex, true);
-                    showToast('تم تغيير القارئ إلى: ' + r.name);
+                    loadSurah(currentSurahIndex, true);
+                    showToast('\u062A\u0645 \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0642\u0627\u0631\u0626 \u0625\u0644\u0649: ' + r.name);
                 };
                 item.addEventListener('click', selectHandler);
                 item.addEventListener('focus', () => item.scrollIntoView({ block: 'nearest' }));
@@ -1782,7 +1675,6 @@
         }
 
 
-        // --- Modale des paramètres ---
         function openSettingsModal() {
             settingsModal.classList.add('open');
             applySettingsToUI();
@@ -1798,64 +1690,57 @@
 
 
         function setupSettingsUI() {
-            // Vitesse
             document.querySelectorAll('#speed-btns .speed-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const spd = parseFloat(btn.dataset.speed);
                     settings.playbackSpeed = spd;
                     audio.playbackRate = spd;
                     applySettingsToUI();
-                    showToast('سرعة التشغيل: ' + spd + 'x');
+                    showToast('\u0633\u0631\u0639\u0629 \u0627\u0644\u062A\u0634\u063A\u064A\u0644: ' + spd + 'x');
                 });
             });
-            // Répétition
             document.querySelectorAll('#repeat-btns .mode-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     settings.repeatMode = btn.dataset.repeat;
                     applySettingsToUI();
-                    const labels = { off: 'إيقاف', one: 'تكرار واحد', all: 'تكرار الكل', shuffle: 'عشوائي' };
-                    showToast('وضع التكرار: ' + labels[settings.repeatMode]);
+                    const labels = { off: '\u0625\u064A\u0642\u0627\u0641', one: '\u062A\u0643\u0631\u0627\u0631 \u0648\u0627\u062D\u062F', all: '\u062A\u0643\u0631\u0627\u0631 \u0627\u0644\u0643\u0644', shuffle: '\u0639\u0634\u0648\u0627\u0626\u064A' };
+                    showToast('\u0648\u0636\u0639 \u0627\u0644\u062A\u0643\u0631\u0627\u0631: ' + labels[settings.repeatMode]);
                 });
             });
-            // Couleur du visualiseur
             document.querySelectorAll('#color-swatches .color-swatch').forEach(btn => {
                 btn.addEventListener('click', () => {
                     settings.visualizerColor = btn.dataset.color;
                     settings.visualizerColorAlt = btn.dataset.alt;
                     applySettingsToUI();
-                    showToast('تم تغيير لون العرض المرئي');
+                    showToast('\u062A\u0645 \u062A\u063A\u064A\u064A\u0631 \u0644\u0648\u0646 \u0627\u0644\u0639\u0631\u0636 \u0627\u0644\u0645\u0631\u0626\u064A');
                 });
             });
-            // Mode visualiseur
             document.querySelectorAll('#viz-mode-btns .mode-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     vizMode = parseInt(btn.dataset.viz);
                     settings.visualizerMode = vizMode;
                     applySettingsToUI();
                     updateVizIndicator();
-                    showToast('نمط العرض: ' + VIZ_MODE_NAMES[vizMode], 1500);
+                    showToast('\u0646\u0645\u0637 \u0627\u0644\u0639\u0631\u0636: ' + VIZ_MODE_NAMES[vizMode], 1500);
                 });
             });
-            // Taille de police
             document.querySelectorAll('#font-size-btns .mode-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     settings.fontSize = parseFloat(btn.dataset.font);
                     applySettingsToUI();
-                    showToast('حجم الخط: ' + btn.textContent);
+                    showToast('\u062D\u062C\u0645 \u0627\u0644\u062E\u0637: ' + btn.textContent);
                 });
             });
-            // Auto-scroll
             document.getElementById('auto-scroll-toggle').addEventListener('click', () => {
                 settings.autoScroll = !settings.autoScroll;
                 applySettingsToUI();
-                showToast(settings.autoScroll ? 'تم تفعيل التمرير التلقائي' : 'تم إيقاف التمرير التلقائي');
+                showToast(settings.autoScroll ? '\u062A\u0645 \u062A\u0641\u0639\u064A\u0644 \u0627\u0644\u062A\u0645\u0631\u064A\u0631 \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A' : '\u062A\u0645 \u0625\u064A\u0642\u0627\u0641 \u0627\u0644\u062A\u0645\u0631\u064A\u0631 \u0627\u0644\u062A\u0644\u0642\u0627\u0626\u064A');
             });
-            // Mode performance
             document.getElementById('perf-toggle').addEventListener('click', () => {
                 settings.perf = !settings.perf;
                 applyPerformanceMode();
                 applySettingsToUI();
-                showToast(settings.perf ? 'تم تفعيل وضع الأداء الخفيف' : 'تم إيقاف وضع الأداء الخفيف');
+                showToast(settings.perf ? '\u062A\u0645 \u062A\u0641\u0639\u064A\u0644 \u0648\u0636\u0639 \u0627\u0644\u0623\u062F\u0627\u0621 \u0627\u0644\u062E\u0641\u064A\u0641' : '\u062A\u0645 \u0625\u064A\u0642\u0627\u0641 \u0648\u0636\u0639 \u0627\u0644\u0623\u062F\u0627\u0621 \u0627\u0644\u062E\u0641\u064A\u0641');
             });
         }
 
@@ -1892,21 +1777,20 @@
             const mode = settings.repeatMode;
             if (mode === 'off') {
                 repeatBtn.classList.remove('active');
-                repeatBtn.title = 'وضع التكرار: إيقاف';
+                repeatBtn.title = '\u0648\u0636\u0639 \u0627\u0644\u062A\u0643\u0631\u0627\u0631: \u0625\u064A\u0642\u0627\u0641';
             } else if (mode === 'one') {
                 repeatBtn.classList.add('active');
-                repeatBtn.title = 'وضع التكرار: واحد';
+                repeatBtn.title = '\u0648\u0636\u0639 \u0627\u0644\u062A\u0643\u0631\u0627\u0631: \u0648\u0627\u062D\u062F';
             } else if (mode === 'all') {
                 repeatBtn.classList.add('active');
-                repeatBtn.title = 'وضع التكرار: الكل';
+                repeatBtn.title = '\u0648\u0636\u0639 \u0627\u0644\u062A\u0643\u0631\u0627\u0631: \u0627\u0644\u0643\u0644';
             } else if (mode === 'shuffle') {
                 repeatBtn.classList.add('active');
-                repeatBtn.title = 'وضع التكرار: عشوائي';
+                repeatBtn.title = '\u0648\u0636\u0639 \u0627\u0644\u062A\u0643\u0631\u0627\u0631: \u0639\u0634\u0648\u0627\u0626\u064A';
             }
         }
 
 
-        // --- Récupération des sourates ---
         async function fetchSurahs() {
             try {
                 const res = await fetch('https://api.alquran.cloud/v1/surah');
@@ -1915,8 +1799,8 @@
                 renderPlaylist();
                 await loadSurah(0, true);
             } catch (err) {
-                lcdTitle.textContent = "خطأ في الاتصال";
-                showToast('خطأ في الاتصال بالخادم');
+                lcdTitle.textContent = "\u062E\u0637\u0623 \u0641\u064A \u0627\u0644\u0627\u062A\u0635\u0627\u0644";
+                showToast('\u062E\u0637\u0623 \u0641\u064A \u0627\u0644\u0627\u062A\u0635\u0627\u0644 \u0628\u0627\u0644\u062E\u0627\u062F\u0645');
             }
         }
 
@@ -1933,13 +1817,10 @@
             filtered.forEach((s) => {
                 const i = surahs.indexOf(s);
                 const item = document.createElement('div');
-                item.className = `playlist-item ${i === currentSurahIndex ? 'active' : ''}`;
+                item.className = 'playlist-item' + (i === currentSurahIndex ? ' active' : '');
                 item.setAttribute('tabindex', '0');
                 item.setAttribute('data-index', i);
-                item.innerHTML = `
-              <span class="surah-name">${s.number}. ${s.name}</span>
-              <span class="surah-meta">${s.numberOfAyahs} آية</span>
-            `;
+                item.innerHTML = '<span class="surah-name">' + s.number + '. ' + s.name + '</span><span class="surah-meta">' + s.numberOfAyahs + ' \u0622\u064A\u0629</span>';
                 item.addEventListener('click', () => loadSurah(i, true));
                 item.addEventListener('focus', () => {
                     item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -1951,7 +1832,7 @@
                 empty.style.padding = '15px';
                 empty.style.textAlign = 'center';
                 empty.style.opacity = '0.6';
-                empty.textContent = 'لا توجد نتائج';
+                empty.textContent = '\u0644\u0627 \u062A\u0648\u062C\u062F \u0646\u062A\u0627\u0626\u062C';
                 playlistEl.appendChild(empty);
             }
         }
@@ -1965,69 +1846,104 @@
         }
 
 
-        // --- Chargement des sourates ---
         function pad3(num) {
             return String(num).padStart(3, '0');
         }
 
 
         async function loadSurah(index, autoPlay = true) {
+            activePlayRequestId++;
+            const reqId = activePlayRequestId;
+            currentRequestId = reqId;
+
+            audio.pause();
+            isBasmalahPlaying = false;
             currentSurahIndex = index;
             const surah = surahs[index];
-            document.querySelectorAll('.playlist-item').forEach((el, i) => {
+            document.querySelectorAll('.playlist-item').forEach((el) => {
                 el.classList.toggle('active', parseInt(el.dataset.index) === index);
             });
             scrollPlaylistToActive();
-            lcdTitle.textContent = `جاري التحميل... ${surah.name}`;
+            lcdTitle.textContent = '\u062C\u0627\u0631\u064A \u0627\u0644\u062A\u062D\u0645\u064A\u0644... ' + surah.name;
             totalElapsedBeforeCurrentAyah = 0;
             surahTotal = 0;
             surahElapsed = 0;
             seekBar.value = 0;
+            currentSurahDurations = [];
+            if (lcdTime) lcdTime.textContent = '00:00';
+
+            const surahMeta = surahs ? surahs.find(s => s.number === surahs[index].number) : null;
+            const totalAyahsCount = surahMeta ? surahMeta.numberOfAyahs : 0;
+            if (lcdAyahCount) lcdAyahCount.textContent = totalAyahsCount ? '0 / ' + totalAyahsCount : '0 / --';
+
             try {
-                const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani`);
+                const res = await fetch('https://api.alquran.cloud/v1/surah/' + surah.number + '/editions/quran-uthmani');
                 const data = await res.json();
+                if (reqId !== activePlayRequestId) return;
                 currentAyahsAr = data.data[0].ayahs;
-                var durData = await fetchSurahDurations(surah.number, settings.reciterId);
+
+                const currentReciter = settings.reciterId;
+                var durData = await fetchSurahDurations(surah.number, currentReciter);
+                if (reqId !== activePlayRequestId) return;
+
                 if (durData && durData.total > 0) {
                     surahTotal = durData.total;
-                    window.__surahDurations = durData.durations;
-                } else {
-                    showToast('تعذر حساب وقت السورة', 3000);
+                    currentSurahDurations = durData.durations;
                 }
-                playAyah(0, autoPlay);
-                showToast('تم تحميل سورة ' + surah.name);
+
+                playAyah(0, autoPlay, reqId);
+                showToast('\u062A\u0645 \u062A\u062D\u0645\u064A\u0644 \u0633\u0648\u0631\u0629 ' + surah.name);
             } catch (err) {
-                lcdTitle.textContent = "خطأ في الاتصال";
-                showToast('خطأ في تحميل السورة');
+                if (reqId === activePlayRequestId) {
+                    lcdTitle.textContent = "\u062E\u0637\u0623 \u0641\u064A \u0627\u0644\u0627\u062A\u0635\u0627\u0644";
+                    showToast('\u062E\u0637\u0623 \u0641\u064A \u062A\u062D\u0645\u064A\u0644 \u0627\u0644\u0633\u0648\u0631\u0629');
+                }
             }
         }
 
 
-        async function playAyah(index, autoPlay = true) {
+        async function playAyah(index, autoPlay = true, requestId = null, skipBasmalah = false) {
+            if (requestId === null) {
+                activePlayRequestId++;
+                requestId = activePlayRequestId;
+            }
             if (!currentAyahsAr || index >= currentAyahsAr.length) return;
+
+            currentRequestId = requestId || activePlayRequestId;
             currentAyahIndex = index;
-            if (window.__surahDurations && window.__surahDurations.length > index) {
+
+            if (currentSurahDurations && currentSurahDurations.length > index) {
                 var sum = 0;
-                for (var i = 0; i < index; i++) sum += window.__surahDurations[i] || 0;
+                for (var i = 0; i < index; i++) sum += currentSurahDurations[i] || 0;
                 surahElapsed = sum;
             }
+
             const surahNum = surahs[currentSurahIndex].number;
             const ayahAr = currentAyahsAr[index];
-            arTextEl.innerHTML = `${ayahAr.text} <span class="ayah-marker">﴿${ayahAr.numberInSurah}﴾</span>`;
+            arTextEl.innerHTML = ayahAr.text + ' <span class="ayah-marker">\uFDD5' + ayahAr.numberInSurah + '\uFDD6</span>';
             textContainer.scrollTop = 0;
-            lcdAyahCount.textContent = `آية ${ayahAr.numberInSurah} / ${currentAyahsAr.length}`;
+            lcdAyahCount.textContent = '\u0622\u064A\u0629 ' + ayahAr.numberInSurah + ' / ' + currentAyahsAr.length;
             seekBar.value = 0;
+
             const reciterObj = RECITERS.find(r => r.id === settings.reciterId) || RECITERS[0];
             if (autoPlay) initAudioContext();
-            if (index === 0 && surahNum !== 1 && surahNum !== 9) {
+
+            if (!skipBasmalah && index === 0 && surahNum !== 1 && surahNum !== 9) {
                 isBasmalahPlaying = true;
-                await playUrlChain(buildBasmalahUrls(reciterObj), 0, autoPlay);
+                var ok = await playUrlChain(buildBasmalahUrls(reciterObj), 0, autoPlay, currentRequestId);
+                if (!ok && currentRequestId === activePlayRequestId) {
+                    isBasmalahPlaying = false;
+                    await playUrlChain(buildAudioUrls(reciterObj, surahNum, 1), 0, autoPlay, currentRequestId);
+                }
             } else {
                 isBasmalahPlaying = false;
-                await playUrlChain(buildAudioUrls(reciterObj, surahNum, index + 1), 0, autoPlay);
+                await playUrlChain(buildAudioUrls(reciterObj, surahNum, index + 1), 0, autoPlay, currentRequestId);
             }
-            audio.playbackRate = settings.playbackSpeed;
-            lcdTitle.textContent = `${surahs[currentSurahIndex].name}`;
+
+            if (currentRequestId === activePlayRequestId) {
+                audio.playbackRate = settings.playbackSpeed;
+                lcdTitle.textContent = surahs[currentSurahIndex].name;
+            }
         }
 
 
@@ -2036,11 +1952,12 @@
             const h = Math.floor(totalSeconds / 3600);
             const m = Math.floor((totalSeconds % 3600) / 60);
             const s = Math.floor(totalSeconds % 60);
-    if (h > 0) {
-        return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    }
-            return `${m}:${String(s).padStart(2, '0')}`;
+            if (h > 0) {
+                return h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            }
+            return m + ':' + String(s).padStart(2, '0');
         }
+
 
         function formatCountdown(totalSeconds) {
             if (isNaN(totalSeconds) || totalSeconds < 0) totalSeconds = 0;
@@ -2048,7 +1965,145 @@
         }
 
 
-        // --- Navigation TV ---
+        function setPlayPauseUI(isPlaying) {
+            if (playBtn) playBtn.style.display = isPlaying ? 'none' : '';
+            if (pauseBtn) pauseBtn.style.display = isPlaying ? '' : 'none';
+        }
+
+
+        function onSurahCompleted() {
+            setPlayPauseUI(false);
+            if (settings.repeatMode === 'one') {
+                playAyah(currentAyahIndex, true, activePlayRequestId, true);
+            } else if (settings.repeatMode === 'all') {
+                loadSurah((currentSurahIndex + 1) % surahs.length, true);
+            } else if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {
+                const nextRand = Math.floor(Math.random() * surahs.length);
+                loadSurah(nextRand, true);
+            }
+        }
+
+
+        function setupEventListeners() {
+            audio.addEventListener('ended', () => {
+                if (currentRequestId !== activePlayRequestId) return;
+
+                if (isBasmalahPlaying) {
+                    isBasmalahPlaying = false;
+                    playAyah(0, true, activePlayRequestId, true);
+                    return;
+                }
+
+                if (currentAyahIndex + 1 < currentAyahsAr.length) {
+                    currentAyahIndex++;
+                    playAyah(currentAyahIndex, true, activePlayRequestId, true);
+                } else {
+                    onSurahCompleted();
+                }
+            });
+
+            audio.addEventListener('error', (e) => {
+                if (currentRequestId !== activePlayRequestId) return;
+                console.error('Audio playback error:', e);
+                showToast('تعذر تحميل هذا الآية. تحقق من الاتصال أو جرّب قارئاً آخر.');
+                setPlayPauseUI(false);
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if (!audio.duration) return;
+                const progress = (audio.currentTime / audio.duration) * 100;
+                seekBar.value = progress;
+
+                if (surahTotal > 0) {
+                    const currentTotalElapsed = surahElapsed + audio.currentTime;
+                    const remainingSeconds = Math.max(0, surahTotal - currentTotalElapsed);
+                    lcdTime.textContent = formatCountdown(remainingSeconds);
+                } else {
+                    const remaining = Math.max(0, audio.duration - audio.currentTime);
+                    lcdTime.textContent = formatCountdown(remaining);
+                }
+            });
+
+            seekBar.addEventListener('input', () => {
+                if (audio.duration) {
+                    audio.currentTime = (seekBar.value / 100) * audio.duration;
+                }
+            });
+
+            volumeBar.addEventListener('input', () => {
+                settings.muted = false;
+                audio.volume = volumeBar.value / 100;
+            });
+
+            muteBtn.addEventListener('click', () => {
+                settings.muted = !settings.muted;
+                audio.volume = settings.muted ? 0 : volumeBar.value / 100;
+                showToast(settings.muted ? '\u062A\u0645 \u0643\u062A\u0645 \u0627\u0644\u0635\u0648\u062A' : '\u062A\u0645 \u062A\u0634\u063A\u064A\u0644 \u0627\u0644\u0635\u0648\u062A');
+            });
+
+            playBtn.addEventListener('click', () => {
+                initAudioContext();
+                audio.play();
+            });
+
+            pauseBtn.addEventListener('click', () => audio.pause());
+
+            stopBtn.addEventListener('click', () => {
+                audio.pause();
+                audio.currentTime = 0;
+                seekBar.value = 0;
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentAyahIndex > 0) {
+                    playAyah(currentAyahIndex - 1, true);
+                } else if (currentSurahIndex > 0) {
+                    loadSurah(currentSurahIndex - 1, true);
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentAyahIndex < currentAyahsAr.length - 1) {
+                    playAyah(currentAyahIndex + 1, true);
+                } else if (currentSurahIndex < surahs.length - 1) {
+                    loadSurah(currentSurahIndex + 1, true);
+                }
+            });
+
+            shuffleBtn.addEventListener('click', () => {
+                settings.shuffleEnabled = !settings.shuffleEnabled;
+                shuffleBtn.classList.toggle('active', settings.shuffleEnabled);
+                showToast(settings.shuffleEnabled ? '\u062A\u0645 \u062A\u0641\u0639\u064A\u0644 \u0627\u0644\u062A\u0634\u063A\u064A\u0644 \u0627\u0644\u0639\u0634\u0648\u0627\u0626\u064A' : '\u062A\u0645 \u0625\u064A\u0642\u0627\u0641 \u0627\u0644\u062A\u0634\u063A\u064A\u0644 \u0627\u0644\u0639\u0634\u0648\u0627\u0626\u064A');
+            });
+
+            repeatBtn.addEventListener('click', () => {
+                const modes = ['off', 'one', 'all', 'shuffle'];
+                let nextIdx = (modes.indexOf(settings.repeatMode) + 1) % modes.length;
+                settings.repeatMode = modes[nextIdx];
+                applySettingsToUI();
+                const labels = { off: '\u0625\u064A\u0642\u0627\u0641', one: '\u062A\u0643\u0631\u0627\u0631 \u0648\u0627\u062D\u062F', all: '\u062A\u0643\u0631\u0627\u0631 \u0627\u0644\u0643\u0644', shuffle: '\u0639\u0634\u0648\u0627\u0626\u064A' };
+                showToast('\u0648\u0636\u0639 \u0627\u0644\u062A\u0643\u0631\u0627\u0631: ' + labels[settings.repeatMode]);
+            });
+
+            reciterBtn.addEventListener('click', openReciterModal);
+            modalCloseBtn.addEventListener('click', closeReciterModal);
+            settingsBtn.addEventListener('click', openSettingsModal);
+            settingsClose.addEventListener('click', closeSettingsModal);
+
+            themeBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', nextTheme);
+                document.getElementById('theme-icon').textContent = nextTheme === 'light' ? '\uD83C\uDF19' : '\u2600';
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderPlaylist();
+            });
+        }
+
+
         function setupTVNavigation() {
             window.addEventListener('keydown', (e) => {
                 const key = e.key;
@@ -2082,241 +2137,8 @@
                         if (settingsModal.classList.contains('open')) closeSettingsModal();
                         else if (reciterModal.classList.contains('open')) closeReciterModal();
                         return;
-                    case 'Enter': case 'OK': case 'Select':
-                        if (active && active !== document.body) {
-                            e.preventDefault();
-                            active.click();
-                        }
-                        return;
-                    case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':
-                        e.preventDefault();
-                        if (reciterModal.classList.contains('open')) {
-                            const opts = Array.from(reciterList.querySelectorAll('.reciter-option'));
-                            const cur = opts.indexOf(active);
-                            if (key === 'ArrowUp' && cur > 0) { opts[cur - 1].focus(); opts[cur - 1].scrollIntoView({ block: 'nearest' }); }
-                            if (key === 'ArrowDown' && cur < opts.length - 1) { opts[cur + 1].focus(); opts[cur + 1].scrollIntoView({ block: 'nearest' }); }
-                            return;
-                        }
-                        if (settingsModal.classList.contains('open')) {
-                            const focusables = Array.from(settingsModal.querySelectorAll(
-                                '.mode-btn, .color-swatch, .speed-btn, .toggle-switch, .modal-close-btn'));
-                            const cur = focusables.indexOf(active);
-                            if (key === 'ArrowUp' && cur > 0) focusables[cur - 1].focus();
-                            if (key === 'ArrowDown' && cur < focusables.length - 1) focusables[cur + 1].focus();
-                            return;
-                        }
-                        if (active && active.classList.contains('playlist-item')) {
-                            const items = Array.from(playlistEl.querySelectorAll('.playlist-item'));
-                            const cur = items.indexOf(active);
-                            if (key === 'ArrowUp' && cur > 0) { items[cur - 1].focus(); items[cur - 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
-                            else if (key === 'ArrowDown' && cur < items.length - 1) { items[cur + 1].focus(); items[cur + 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
-                            else if (key === 'ArrowUp' && cur === 0) searchInput.focus();
-                            else if (key === 'ArrowDown' && cur === items.length - 1) textContainer.focus();
-                            return;
-                        }
-                        if (active && active.tagName === 'INPUT' && active.type === 'range') {
-                            if (key === 'ArrowLeft') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }
-                            else if (key === 'ArrowRight') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }
-                            else if (key === 'ArrowUp') { active.value = Math.min(100, parseFloat(active.value) + 5); active.dispatchEvent(new Event('input')); }
-                            else if (key === 'ArrowDown') { active.value = Math.max(0, parseFloat(active.value) - 5); active.dispatchEvent(new Event('input')); }
-                            return;
-                        }
-                        if (key === 'ArrowUp') reciterBtn.focus();
-                        if (key === 'ArrowDown') searchInput.focus();
-                        if (key === 'ArrowLeft' || key === 'ArrowRight') playBtn.focus();
-                        return;
-                }
-
-                switch (key) {
-                    case 's': case 'S': stopBtn.click(); break;
-                    case 'n': case 'N': nextBtn.click(); break;
-                    case 'p': case 'P': prevBtn.click(); break;
-                    case 'm': case 'M': cycleRepeatMode(); break;
-                    case 'r': case 'R': toggleShuffle(); break;
-                    case 't': case 'T': toggleTheme(); break;
-                    case 'o': case 'O':
-                        if (settingsModal.classList.contains('open')) closeSettingsModal();
-                        else openSettingsModal();
-                        break;
                 }
             });
-            textContainer.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowUp') { textContainer.scrollTop -= 50; e.preventDefault(); }
-                if (e.key === 'ArrowDown') { textContainer.scrollTop += 50; e.preventDefault(); }
-            });
-        }
-
-
-        // --- Actions ---
-        function toggleTheme() {
-            const html = document.documentElement;
-            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            settings.theme = newTheme;
-            document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '☀' : '🌙';
-            showToast(newTheme === 'dark' ? 'الوضع الداكن' : 'الوضع الفاتح');
-        }
-
-
-        function toggleShuffle() {
-            settings.shuffleEnabled = !settings.shuffleEnabled;
-            if (settings.shuffleEnabled) {
-                settings.repeatMode = 'shuffle';
-                showToast('تم تفعيل الوضع العشوائي');
-            } else {
-                if (settings.repeatMode === 'shuffle') settings.repeatMode = 'off';
-                showToast('تم إيقاف الوضع العشوائي');
-            }
-            applySettingsToUI();
-        }
-
-
-        function cycleRepeatMode() {
-            const modes = ['off', 'one', 'all'];
-            const currentIdx = modes.indexOf(settings.repeatMode);
-            settings.repeatMode = modes[(currentIdx + 1) % modes.length];
-            settings.shuffleEnabled = false;
-            applySettingsToUI();
-            const labels = { off: 'إيقاف التكرار', one: 'تكرار واحد', all: 'تكرار الكل' };
-            showToast(labels[settings.repeatMode]);
-        }
-
-
-        function toggleMute() {
-            settings.muted = !settings.muted;
-            audio.volume = settings.muted ? 0 : volumeBar.value / 100;
-            applySettingsToUI();
-            showToast(settings.muted ? 'تم كتم الصوت' : 'تم إلغاء كتم الصوت');
-        }
-
-
-        function handleAudioEnded() {
-            if (isBasmalahPlaying) {
-                isBasmalahPlaying = false;
-                if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
-                const reciterObj = RECITERS.find(r => r.id === settings.reciterId) || RECITERS[0];
-                const surahNum = surahs[currentSurahIndex].number;
-                playUrlChain(buildAudioUrls(reciterObj, surahNum, 1), 0, true);
-                return;
-            }
-            if (!isNaN(audio.duration)) {
-                totalElapsedBeforeCurrentAyah += audio.duration;
-            }
-
-
-            if (settings.repeatMode === 'one') {
-                playAyah(currentAyahIndex, true);
-                return;
-            }
-
-
-            if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {
-                const randomSurahIdx = Math.floor(Math.random() * surahs.length);
-                loadSurah(randomSurahIdx, true);
-                return;
-            }
-
-
-            if (currentAyahIndex < currentAyahsAr.length - 1) {
-                playAyah(currentAyahIndex + 1, true);
-            } else if (currentSurahIndex < surahs.length - 1) {
-                loadSurah(currentSurahIndex + 1, true);
-            } else if (settings.repeatMode === 'all') {
-                loadSurah(0, true);
-                showToast('عودة إلى البداية');
-            }
-        }
-
-
-        // --- Écouteurs d'événements ---
-        function setupEventListeners() {
-            reciterBtn.addEventListener('click', openReciterModal);
-            modalCloseBtn.addEventListener('click', closeReciterModal);
-            reciterModal.addEventListener('click', (e) => { if (e.target === reciterModal) closeReciterModal(); });
-
-
-            settingsBtn.addEventListener('click', openSettingsModal);
-            settingsClose.addEventListener('click', closeSettingsModal);
-            settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeSettingsModal(); });
-
-
-            playBtn.addEventListener('click', () => { initAudioContext();
-                audio.play(); });
-            pauseBtn.addEventListener('click', () => audio.pause());
-            stopBtn.addEventListener('click', () => { audio.pause();
-                audio.currentTime = 0;
-                showToast('تم الإيقاف'); });
-
-
-            prevBtn.addEventListener('click', () => {
-                if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1, true);
-                else if (currentSurahIndex > 0) loadSurah(currentSurahIndex - 1, true);
-            });
-            nextBtn.addEventListener('click', () => {
-                if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {
-                    const randomSurahIdx = Math.floor(Math.random() * surahs.length);
-                    loadSurah(randomSurahIdx, true);
-                    return;
-                }
-                if (currentAyahIndex < currentAyahsAr.length - 1) playAyah(currentAyahIndex + 1, true);
-                else if (currentSurahIndex < surahs.length - 1) loadSurah(currentSurahIndex + 1, true);
-                else if (settings.repeatMode === 'all') { loadSurah(0, true);
-                    showToast('عودة إلى البداية'); }
-            });
-
-
-            shuffleBtn.addEventListener('click', toggleShuffle);
-            repeatBtn.addEventListener('click', cycleRepeatMode);
-            muteBtn.addEventListener('click', toggleMute);
-
-
-            audio.addEventListener('ended', handleAudioEnded);
-            audio.addEventListener('timeupdate', () => {
-                const current = audio.currentTime || 0;
-                const duration = audio.duration || 0;
-                if (surahTotal > 0) {
-                    lcdTime.textContent = formatCountdown(Math.max(0, surahTotal - surahElapsed - current));
-                } else {
-                    lcdTime.textContent = formatCountdown(Math.max(0, duration - current));
-                }
-                if (!isBasmalahPlaying && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
-                    seekBar.value = Math.min(100, (current / audio.duration) * 100);
-                }
-                // Auto-scroll
-                if (settings.autoScroll && !isBasmalahPlaying && duration > 0) {
-                    const progress = current / duration;
-                    const maxScroll = textContainer.scrollHeight - textContainer.clientHeight;
-                    if (maxScroll > 0) {
-                        textContainer.scrollTop = progress * maxScroll;
-                    }
-                }
-            });
-
-
-            seekBar.addEventListener('input', () => {
-                if (isBasmalahPlaying) return;
-                if (!isNaN(audio.duration) && audio.duration > 0) {
-                    audio.currentTime = (parseFloat(seekBar.value) / 100) * audio.duration;
-                }
-            });
-
-
-            volumeBar.addEventListener('input', () => {
-                if (!settings.muted) audio.volume = volumeBar.value / 100;
-                else if (parseFloat(volumeBar.value) > 0) { settings.muted = false;
-                    audio.volume = volumeBar.value / 100;
-                    applySettingsToUI(); }
-            });
-
-
-            searchInput.addEventListener('input', () => {
-                searchQuery = searchInput.value;
-                renderPlaylist();
-            });
-
-
-            themeBtn.addEventListener('click', toggleTheme);
-            themeBtn.addEventListener('focus', () => themeBtn.scrollIntoView({ block: 'nearest' }));
         }
 
 
