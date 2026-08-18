@@ -1194,6 +1194,7 @@ Le `ended` event listener n'avait pas de garde token — un `ended` tardif aprè
 - `onSurahCompleted` reprend le logic repeatMode depuis l'ancien `ended` listener ✅
 
 #### Déploiement
-- **Commit §23 :** TBD
-- Cloudflare : TBD
+- **Commit §23 :** `5f61acf` — feat: hardened state machine — token sync, Basmalah fail-safe, error guard, onSurahCompleted
+- **Commit §22 :** `bb31dcd` — feat: add seconds to countdown timer (H:MM:SS for long surahs)
+- Cloudflare : version `6a29522a-04f2-4491-8d2e-f4874c19a9fa`
 - Vercel + GitHub Pages : auto-deploy on push
