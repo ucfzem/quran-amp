@@ -1079,3 +1079,29 @@ async function fetchSurahDurations(surahNumber, reciterId) {
 
 ### Commits
 - `1663cae` — feat: whole-surah countdown timer using HEAD Content-Length duration calculation
+
+---
+
+## §21 — Fix CORS : countdown Audio-based (18 août 2026)
+
+### Problème identifié
+Le compteur sourate entière (§20) ne s'affichait pas — toujours le fallback verset par verset. Cause : `fetch(url, { method: 'HEAD' })` vers `everyayah.com` échoue silencieusement à cause du CORS (`access-control-allow-origin: *` présent mais le navigateur bloque le HEAD pour certaines configurations). Le compteur reste bloqué à `surahTotal === 0`.
+
+### Solution : Audio element metadata loading
+Remplacement du fetch HEAD par `new Audio()` + `preload: 'metadata'` — le navigateur charge les métadonnées sans restrictions CORS.
+
+#### 4 modifications (2 fichiers, même index.html)
+1. **`fetchSurahDurations`** — remplacement complet : `fetch HEAD` → `new Audio()` + `loadedmetadata`/`error`/`setTimeout(4s)` fallback, batch 5 en parallèle, nettoyage `a.src = ''; a.remove()`
+2. **`loadSurah`** — `await fetchSurahDurations(...)` (non plus fire-and-forget `.then()`), stocke `window.__surahDurations`
+3. **`playAyah`** — calcule `surahElapsed` depuis `window.__surahDurations` (pas de dérive au seek)
+4. **`handleAudioEnded`** — suppression de `surahElapsed += audio.duration` (redondant, risque de double-comptage)
+
+### Validation
+- JS syntaxe `node --check` ✅
+- `worker.js` régénéré (91 387 octets), syntaxe OK ✅
+- 24 récitateurs HEAD vérifiés HTTP 200 ✅
+- Test CBR math : Al-Fatiha total = 49.2s, 002255 (Ayat al-Kursi) = 60.7s ✅
+
+### Déploiement
+- Commit + push → GitHub Pages + Vercel auto
+- `wrangler deploy` → Cloudflare Workers

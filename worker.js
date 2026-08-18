@@ -1331,32 +1331,29 @@ export default {
         }
 
 
-        function getReciterBitrate(reciterId) {
-            const m = reciterId.match(/_(\d+)kbps/i);
-            return m ? parseInt(m[1]) * 1000 : 128000;
-        }
-
         async function fetchSurahDurations(surahNumber, reciterId) {
             const key = reciterId + '-' + surahNumber;
             if (durationCache[key]) return durationCache[key];
             const surah = surahs.find(s => s.number === surahNumber);
             if (!surah) return null;
             const count = surah.numberOfAyahs;
-            const bitrate = getReciterBitrate(reciterId);
-            const durs = [];
-            const BATCH = 10;
+            const durs = new Array(count).fill(0);
+            const BATCH = 5;
             for (let i = 0; i < count; i += BATCH) {
                 const batch = [];
                 for (let j = i; j < Math.min(i + BATCH, count); j++) {
                     const url = encodeURI('https://everyayah.com/data/' + reciterId + '/' + pad3(surahNumber) + pad3(j + 1) + '.mp3');
-                    batch.push(
-                        fetch(url, { method: 'HEAD' })
-                            .then(function(r) {
-                                var len = parseInt(r.headers.get('content-length') || '0', 10);
-                                durs[j] = len > 0 ? (len * 8) / bitrate : 0;
-                            })
-                            .catch(function() { durs[j] = 0; })
-                    );
+                    const p = new Promise(function(resolve) {
+                        var a = new Audio();
+                        a.preload = 'metadata';
+                        a.src = url;
+                        var done = false;
+                        var finish = function(dur) { if (done) return; done = true; durs[j] = dur || 0; a.src = ''; a.remove(); resolve(); };
+                        a.addEventListener('loadedmetadata', function() { finish(a.duration); });
+                        a.addEventListener('error', function() { finish(0); });
+                        setTimeout(function() { finish(0); }, 4000);
+                    });
+                    batch.push(p);
                 }
                 await Promise.all(batch);
             }
@@ -1987,9 +1984,13 @@ export default {
                 const res = await fetch(\`https://api.alquran.cloud/v1/surah/\${surah.number}/editions/quran-uthmani\`);
                 const data = await res.json();
                 currentAyahsAr = data.data[0].ayahs;
-                fetchSurahDurations(surah.number, settings.reciterId).then(function(r) {
-                    if (r && r.total > 0) surahTotal = r.total;
-                });
+                var durData = await fetchSurahDurations(surah.number, settings.reciterId);
+                if (durData && durData.total > 0) {
+                    surahTotal = durData.total;
+                    window.__surahDurations = durData.durations;
+                } else {
+                    showToast('تعذر حساب وقت السورة', 3000);
+                }
                 playAyah(0, autoPlay);
                 showToast('تم تحميل سورة ' + surah.name);
             } catch (err) {
@@ -2002,6 +2003,11 @@ export default {
         async function playAyah(index, autoPlay = true) {
             if (!currentAyahsAr || index >= currentAyahsAr.length) return;
             currentAyahIndex = index;
+            if (window.__surahDurations && window.__surahDurations.length > index) {
+                var sum = 0;
+                for (var i = 0; i < index; i++) sum += window.__surahDurations[i] || 0;
+                surahElapsed = sum;
+            }
             const surahNum = surahs[currentSurahIndex].number;
             const ayahAr = currentAyahsAr[index];
             arTextEl.innerHTML = \`\${ayahAr.text} <span class="ayah-marker">﴿\${ayahAr.numberInSurah}﴾</span>\`;
@@ -2192,7 +2198,6 @@ export default {
             }
             if (!isNaN(audio.duration)) {
                 totalElapsedBeforeCurrentAyah += audio.duration;
-                surahElapsed += audio.duration;
             }
 
 
@@ -2316,9 +2321,12 @@ export default {
     </script>
 </body>
 </html>`, {
-        headers: { "Content-Type": "text/html; charset=utf-8" },
+        headers: {
+          "content-type": "text/html;charset=UTF-8",
+          "cache-control": "no-cache"
+        }
       });
     }
     return new Response("Not Found", { status: 404 });
-  },
+  }
 };
