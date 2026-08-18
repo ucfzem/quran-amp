@@ -1314,7 +1314,7 @@ export default {
             return urls;
         }
 
-        async function playUrlChain(urls, idx) {
+        async function playUrlChain(urls, idx, autoPlay = false) {
             const pending = urls.slice(idx);
             for (const url of pending) {
                 try {
@@ -1322,6 +1322,7 @@ export default {
                     if (res.ok) {
                         audio.src = url;
                         audio.load();
+                        if (autoPlay) audio.play().catch(() => {});
                         return;
                     }
                 } catch (e) {}
@@ -1956,7 +1957,7 @@ export default {
         }
 
 
-        function playAyah(index, autoPlay = true) {
+        async function playAyah(index, autoPlay = true) {
             if (!currentAyahsAr || index >= currentAyahsAr.length) return;
             currentAyahIndex = index;
             const surahNum = surahs[currentSurahIndex].number;
@@ -1966,21 +1967,16 @@ export default {
             lcdAyahCount.textContent = \`آية \${ayahAr.numberInSurah} / \${currentAyahsAr.length}\`;
             seekBar.value = 0;
             const reciterObj = RECITERS.find(r => r.id === settings.reciterId) || RECITERS[0];
+            if (autoPlay) initAudioContext();
             if (index === 0 && surahNum !== 1 && surahNum !== 9) {
                 isBasmalahPlaying = true;
-                playUrlChain(buildBasmalahUrls(reciterObj), 0);
+                await playUrlChain(buildBasmalahUrls(reciterObj), 0, autoPlay);
             } else {
                 isBasmalahPlaying = false;
-                playUrlChain(buildAudioUrls(reciterObj, surahNum, index + 1), 0);
+                await playUrlChain(buildAudioUrls(reciterObj, surahNum, index + 1), 0, autoPlay);
             }
             audio.playbackRate = settings.playbackSpeed;
             lcdTitle.textContent = \`\${surahs[currentSurahIndex].name}\`;
-            if (autoPlay) {
-                initAudioContext();
-                audio.play().catch(e => {
-                    console.log("التشغيل التلقائي يحتاج تفاعل المستخدم.");
-                });
-            }
         }
 
 
@@ -2144,7 +2140,7 @@ export default {
                 if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
                 const reciterObj = RECITERS.find(r => r.id === settings.reciterId) || RECITERS[0];
                 const surahNum = surahs[currentSurahIndex].number;
-                playUrlChain(buildAudioUrls(reciterObj, surahNum, 1), 0);
+                playUrlChain(buildAudioUrls(reciterObj, surahNum, 1), 0, true);
                 return;
             }
             if (!isNaN(audio.duration)) totalElapsedBeforeCurrentAyah += audio.duration;
