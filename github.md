@@ -1013,3 +1013,69 @@ L'utilisateur a demandé de remplacer l'affichage `élapsed / restant` (`0:09 / 
 
 ### Commit
 - `4bbe9be` — feat: LCD countdown timer (-remaining) replacing elapsed/remaining display
+
+---
+
+## §20 — Compteur sourate entière via HEAD + Content-Length (18 août 2026)
+
+L'utilisateur a précisé : le `-MM:SS` doit afficher le **temps restant de la sourate entière** (ex. `-1:58:30` pour Al-Baqarah), pas le fichier verset par verset. Le compteur §19 ne couvrait qu'un seul fichier MP3 ; le compteur §20 couvre toute la sourate.
+
+### Problème identifié
+- `api.quran.com/api/v4/recitations/{id}/by_chapter/{ch}` retourne `verse_key` + `url` **sans champ `duration`** (confirmé par probe et docs).
+- `api.alquran.cloud/v1/surah/{n}/ar.{reciter}` retourne `audio` par verset, **sans durée**.
+- Aucun fichier sourate entière n'existe sur everyayah (404) ni sur quranicaudio mirror (404) pour les 24 récitateurs ; seul `server9.mp3quran.net/hthfi/{surah}.mp3` (Hudhaify) existe (206).
+- Les snippets suggérés (Audio metadata probe, fetch duration API) étaient lourds ou basés sur des champs inexistants.
+
+### Solution : HEAD + Content-Length + bitrate CBR
+Les fichiers everyayah sont **CBR** (Constant Bitrate). La durée se calcule sans télécharger le corps :
+
+```
+durée (s) = Content-Length (octets) × 8 / bitrate (bps)
+```
+
+Le bitrate est extrait du nom du réciteur : `Husary_128kbps` → `128 × 1000 = 128000 bps`.
+
+`fetch(url, { method: 'HEAD' })` ne télécharge **aucune donnée audio** (~300 octets d'en-têtes HTTP). 286 requêtes HEAD en parallèle (10 par lot) pour Al-Baqarah ≈ 2-3 secondes. Le navigateur gère la concurrence et CORS accepte `Content-Length` comme en-tête safelisted.
+
+### Implémentation
+
+```javascript
+function getReciterBitrate(reciterId) {
+    const m = reciterId.match(/_(\d+)kbps/i);
+    return m ? parseInt(m[1]) * 1000 : 128000;
+}
+
+async function fetchSurahDurations(surahNumber, reciterId) {
+    // Cache key = "reciterId-surahNumber"
+    // Construit toutes les URLs everyayah, fetch HEAD en lots de 10,
+    // calcule durée = content-length × 8 / bitrate
+    // Retourne { total, durations[] }
+}
+```
+
+### Intégration (5 points de modification, 2 fichiers)
+
+| Fichier | Modification |
+|---|---|
+| Globals | +3 : `durationCache`, `surahTotal`, `surahElapsed` |
+| `loadSurah` | Reset `surahTotal=0`, `surahElapsed=0` ; appel async `fetchSurahDurations(...).then(r => surahTotal = r.total)` (non-bloquant) |
+| `handleAudioEnded` | `surahElapsed += audio.duration` (uniquement versets, **pas basmalah**) |
+| `timeupdate` | Si `surahTotal > 0` : `remaining = surahTotal - surahElapsed - currentTime` ; sinon fallback verset par verset |
+| `fetchSurahDurations` | +`getReciterBitrate` (extrait du nom réciteur) |
+
+### Notes
+- **Non-bloquant** : la lecture commence immédiatement (compte à rebours verset pendant le chargement). Dès que les durées sont chargées (~2-3s), le LCD bascule sur le compteur sourate.
+- **Pas basmalah** : la basmalah (Al-Fatiha v.1) n'est pas comptée dans les durées sourate — elle est séparée dans `playUrlChain(buildBasmalahUrls(...))`.
+- **Fallback** : si un HEAD échoue (timeout 4s), la durée est 0 ; le total reste utilisable (somme partielle), sinon fallback verset par verset si `surahTotal == 0`.
+- **Cache** : `durationCache` en mémoire ; clé = `reciterId-surahNumber`. Changement de récitur = nouveau fetch. Rechargement = instantané (cache).
+- **Précision** : CBR → exact ; ID3 overhead ~0.1-2 KB → erreur < 0.1s par verset, < 2s par sourate (négligeable pour un countdown UI).
+
+### Déploiement
+| Plateforme | Status |
+|---|---|
+| GitHub Pages | ✅ auto (push `main`) |
+| Vercel | ✅ auto (repo connecté) |
+| Cloudflare | ✅ version `743e0f86-82b5-4eb2-90d2-356e96116f37` |
+
+### Commits
+- `1663cae` — feat: whole-surah countdown timer using HEAD Content-Length duration calculation
