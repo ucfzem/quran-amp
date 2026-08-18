@@ -1083,7 +1083,7 @@ export default {
             <canvas id="spectrum" width="110" height="46" tabindex="0" title="انقر لتغيير نمط العرض"></canvas>
             <div class="lcd-info">
                 <div class="lcd-ticker" id="lcd-title">اضغط تشغيل للبدء</div>
-                <div class="lcd-timer" id="lcd-time">00:00</div>
+                <div class="lcd-timer" id="lcd-time">-0:00</div>
                 <div class="lcd-ayah-count" id="lcd-ayah-count"></div>
             </div>
             <span class="viz-mode-indicator" id="viz-indicator">وضع: أشرطة</span>
@@ -1986,9 +1986,14 @@ export default {
             const m = Math.floor((totalSeconds % 3600) / 60);
             const s = Math.floor(totalSeconds % 60);
             if (h > 0) {
-                return \`\${h}:\${String(m).padStart(2, '0')}:\${String(s).padStart(2, '0')}\`;
+                return \`\${h}:\${String(m).padStart(2, '0')}\`;
             }
             return \`\${m}:\${String(s).padStart(2, '0')}\`;
+        }
+
+        function formatCountdown(totalSeconds) {
+            if (isNaN(totalSeconds) || totalSeconds < 0) totalSeconds = 0;
+            return '-' + formatTime(totalSeconds);
         }
 
 
@@ -2216,11 +2221,8 @@ export default {
             audio.addEventListener('timeupdate', () => {
                 const current = audio.currentTime || 0;
                 const duration = audio.duration || 0;
-                const totalElapsed = totalElapsedBeforeCurrentAyah + (isBasmalahPlaying ? 0 : current);
-                const elapsedStr = formatTime(totalElapsed);
                 const remaining = Math.max(0, duration - current);
-                const remainingStr = formatTime(remaining);
-                lcdTime.textContent = \`\${elapsedStr} / \${remainingStr}\`;
+                lcdTime.textContent = formatCountdown(remaining);
                 if (!isBasmalahPlaying && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
                     seekBar.value = Math.min(100, (current / audio.duration) * 100);
                 }
