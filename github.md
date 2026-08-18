@@ -1105,3 +1105,47 @@ Remplacement du fetch HEAD par `new Audio()` + `preload: 'metadata'` — le navi
 ### Déploiement
 - Commit + push → GitHub Pages + Vercel auto
 - `wrangler deploy` → Cloudflare Workers
+
+---
+
+## §22 — Backup conversation + fix seconds countdown (18 août 2026)
+
+### Contexte
+L'utilisateur a signalé que le compteur sourate entière (§20/§21) n'affiche que les heures et minutes. Demande d'ajouter les secondes pour les longues sourates.
+
+### Fix : `formatTime` — branche heures avec secondes
+Avant : `if (h > 0) return \`${h}:${String(m).padStart(2, '0')}\`` → affiche `1:58` pour Al-Baqarah.
+Après : `if (h > 0) return \`${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}\`` → affiche `1:58:30`.
+
+### Résumé de la session complète (18 août 2026)
+
+#### Fix CORS countdown (§21)
+- `fetchSurahDurations` : remplacement `fetch HEAD` → `new Audio()` + `preload: 'metadata'` (CORS-safe)
+- `loadSurah` : `await fetchSurahDurations(...)` (non plus fire-and-forget)
+- `playAyah` : calcule `surahElapsed` depuis `window.__surahDurations` (pas de dérive)
+- `handleAudioEnded` : suppression de `surahElapsed += audio.duration` (redondant)
+
+#### Fix secondes (§22)
+- `formatTime` : branche heures ajoute `:${String(s).padStart(2, '0')}` → format `H:MM:SS`
+
+#### Tests
+- 24 récitateurs HEAD HTTP 200 ✅
+- CBR math vérifiée (Al-Fatiha = 49.2s, 002255 = 60.7s) ✅
+- JS syntaxe `node --check` OK ✅
+- 3 plateformes servent le code corrigé ✅
+
+#### Déploiement
+- **Commit §21 :** `fafff83` — fix: CORS-safe countdown timer (Audio metadata instead of fetch HEAD)
+- **Commit §22 :** `bb31dcd` — feat: add seconds to countdown timer (H:MM:SS for long surahs)
+- Cloudflare : version `9b3f9d1c-4f64-4491-a3cc-282cdd52c12e`
+- Vercel + GitHub Pages : auto-deploy
+
+### Liens finaux
+| Élément | Lien |
+|---|---|
+| GitHub Pages | https://ucfzem.github.io/quran-amp/ |
+| Vercel | https://quran-amp.vercel.app/ |
+| Cloudflare | https://quran-amp.azer-tyu199p.workers.dev/ |
+| Portail | https://ucfzem.github.io/works/ |
+| Repo | https://github.com/ucfzem/quran-amp |
+| MEMORY.md | https://github.com/ucfzem/quran-amp/blob/main/MEMORY.md |
