@@ -946,3 +946,40 @@ async function playUrlChain(urls, idx) {
 
 ### Commit
 - `67f55dc` — fix: robust fallback via fetch HEAD probe, remove unreliable audio error handler
+
+---
+
+## §18 — Fix auto-avance + chemins everyayah des récitateurs (18 août 2026)
+
+**Contexte :** le dernier push jouait chaque verset puis s'arrêtait (il fallait recliquer Play) ; de plus, chez بعض récitateurs le texte ne suivait plus l'audio.
+
+### Bug 1 — L'audio ne s'enchaînait plus (stop après chaque verset)
+- **Cause :** `playUrlChain()` fixait `audio.src` + `audio.load()` mais **n'appelait jamais `audio.play()`** → le trait avançait de verset en verset mais la lecture s'arrêtait.
+- **Fix :** paramètre `autoPlay` ajouté (`playUrlChain(urls, idx, autoPlay)`) → `audio.play().catch(() => {})` après un HEAD 200.
+  - `playAyah()` devient `async` et `await playUrlChain(..., autoPlay)` (suppression de la course au moment où `audio.play()` était appelé avant le chargement du `src`).
+  - Le passage Basmalah → verset 1 dans `handleAudioEnded()` passe `true`.
+
+### Bug 2 — Récessions des chemins everyayah (4 IDs 404 → repli full-surah mp3quran)
+- **Cause :** quand everyayah renvoyait 404, le fallback `server9.mp3quran.net/<fb>/<surah>.mp3` sert un fichier **sourate entière** → l'audio ne correspond plus au verset affiché (ex. الحذيفي, où le texte restait sur le verset 1 alors que toute la sourate était jouée).
+- **Fix — IDs everyayah corrigés (tous tête `001001.mp3` → HTTP 200) :**
+
+| Reciter | Avant (404) | Après (200) |
+|---|---|---|
+| الحصري - مجوّد | `Husary_Mujawwad_128kbps` | `Husary_128kbps_Mujawwad` |
+| عبد المحسن القاسم | `Abdul-Muhsin-al-Qasim_128kbps` | `Muhsin_Al_Qasim_192kbps` |
+| علي الحذيفي | `Ali-al-Huthayfi_128kbps` | `Hudhaify_128kbps` |
+| أحمد العجمي | `Ahmad-al-Ajmy_128kbps` | `Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net` |
+
+- **Vérification :** les **24 IDs** de `RECITERS` re-vérifiés HTTP 200 sur `https://everyayah.com/data/<id>/001001.mp3` (re-stream `fetch HEAD`).
+- Le CDN `cdn.islamic.network/quran/audio/128/ar.hudhaify/<global>.mp3` a été testé (200) mais **non retenu** : everyayah fournit déjà des fichiers par-verset pour Al-Hudhaify une fois le dossier corrigé — pas besoin de timings/synchronisation CDN.
+
+### Déploiement
+| Plateforme | Status |
+|---|---|
+| GitHub Pages | ✅ auto (push `main`) |
+| Vercel | ✅ auto (repo connecté) |
+| Cloudflare | ✅ `wrangler deploy` (worker régénéré) |
+
+### Commit
+- `9abb02f` — fix: auto-advance to next ayah (playUrlChain now calls audio.play())
+- *(commits suivants pour IDs récitateurs 404 → 200)*

@@ -1265,7 +1265,7 @@ export default {
     <script>
         const RECITERS = [
             { id: "Husary_128kbps", name: "محمود خليل الحصري", fb: ["husary"] },
-            { id: "Husary_Mujawwad_128kbps", name: "الحصري - مجوّد", fb: ["husary_mj"] },
+            { id: "Husary_128kbps_Mujawwad", name: "الحصري - مجوّد", fb: ["husary_mj"] },
             { id: "Alafasy_128kbps", name: "مشاري راشد العفاسي", fb: ["afasy"] },
             { id: "Abdul_Basit_Murattal_192kbps", name: "عبد الباسط - مرتل", fb: ["abdulbasit"] },
             { id: "Abdul_Basit_Mujawwad_128kbps", name: "عبد الباسط - مجوّد", fb: ["abdulbasit_mj"] },
@@ -1281,11 +1281,11 @@ export default {
             { id: "Saood bin Ibraaheem Ash-Shuraym_128kbps", name: "سعود الشريم", fb: ["shuraym"] },
             { id: "Khaalid_Abdullaah_al-Qahtaanee_192kbps", name: "خالد القحطاني", fb: ["khalid"] },
             { id: "Abdullah_Basfar_192kbps", name: "عبد الله بصفر", fb: ["basfar"] },
-            { id: "Abdul-Muhsin-al-Qasim_128kbps", name: "عبد المحسن القاسم", fb: ["alqasim"] },
-            { id: "Ali-al-Huthayfi_128kbps", name: "علي الحذيفي", fb: ["hthfi"] },
+            { id: "Muhsin_Al_Qasim_192kbps", name: "عبد المحسن القاسم", fb: ["alqasim"] },
+            { id: "Hudhaify_128kbps", name: "علي الحذيفي", fb: ["hthfi"] },
             { id: "Ibrahim_Akhdar_32kbps", name: "إبراهيم الأخضر", fb: ["akhdar"] },
             { id: "Muhammad_Ayyoub_128kbps", name: "محمد أيوب", fb: ["ayyub"] },
-            { id: "Ahmad-al-Ajmy_128kbps", name: "أحمد العجمي", fb: ["ajmi"] },
+            { id: "Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net", name: "أحمد العجمي", fb: ["ajmi"] },
             { id: "Fares_Abbad_64kbps", name: "فارس عباد", fb: ["abbad"] },
             { id: "Hani_Rifai_192kbps", name: "هاني الرفاعي", fb: ["rifai"] }
         ];
