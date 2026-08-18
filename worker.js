@@ -1337,22 +1337,29 @@ export default {
             const surah = surahs.find(s => s.number === surahNumber);
             if (!surah) return null;
             const count = surah.numberOfAyahs;
+            const bitrate = (reciterId.match(/_(\\d+)kbps/i) || [,'128'])[1] * 1000;
             const durs = new Array(count).fill(0);
-            const BATCH = 5;
+            const BATCH = 10;
             for (let i = 0; i < count; i += BATCH) {
                 const batch = [];
                 for (let j = i; j < Math.min(i + BATCH, count); j++) {
                     const url = encodeURI('https://everyayah.com/data/' + reciterId + '/' + pad3(surahNumber) + pad3(j + 1) + '.mp3');
-                    const p = new Promise(function(resolve) {
-                        var a = new Audio();
-                        a.preload = 'metadata';
-                        a.src = url;
-                        var done = false;
-                        var finish = function(dur) { if (done) return; done = true; durs[j] = dur || 0; a.src = ''; a.remove(); resolve(); };
-                        a.addEventListener('loadedmetadata', function() { finish(a.duration); });
-                        a.addEventListener('error', function() { finish(0); });
-                        setTimeout(function() { finish(0); }, 4000);
-                    });
+                    const p = (async function(idx) {
+                        try {
+                            var r = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+                            if (!r.ok) throw new Error('not ok');
+                            var cl = parseInt(r.headers.get('content-length') || '0', 10);
+                            if (cl > 0) { durs[idx] = (cl * 8) / bitrate; return; }
+                        } catch(e) {}
+                        try {
+                            var a = new Audio(); a.preload = 'metadata'; a.src = url;
+                            await new Promise(function(res, rej) {
+                                var t = setTimeout(function() { a.src = ''; a.remove(); rej(); }, 6000);
+                                a.onloadedmetadata = function() { clearTimeout(t); res(a.duration); };
+                                a.onerror = function() { clearTimeout(t); rej(); };
+                            }).then(function(d) { durs[idx] = d || 0; });
+                        } catch(e2) { durs[idx] = 0; }
+                    })(j);
                     batch.push(p);
                 }
                 await Promise.all(batch);
