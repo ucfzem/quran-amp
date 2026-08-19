@@ -1920,7 +1920,7 @@
 
             const surahNum = surahs[currentSurahIndex].number;
             const ayahAr = currentAyahsAr[index];
-            arTextEl.innerHTML = ayahAr.text + ' <span class="ayah-marker">\uFDD5' + ayahAr.numberInSurah + '\uFDD6</span>';
+            arTextEl.innerHTML = ayahAr.text + ' <span class="ayah-marker">﴿' + ayahAr.numberInSurah + '﴾</span>';
             textContainer.scrollTop = 0;
             lcdAyahCount.textContent = '\u0622\u064A\u0629 ' + ayahAr.numberInSurah + ' / ' + currentAyahsAr.length;
             seekBar.value = 0;
