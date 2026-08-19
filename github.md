@@ -1198,3 +1198,61 @@ Le `ended` event listener n'avait pas de garde token — un `ended` tardif aprè
 - **Commit §22 :** `bb31dcd` — feat: add seconds to countdown timer (H:MM:SS for long surahs)
 - Cloudflare : version `6a29522a-04f2-4491-8d2e-f4874c19a9fa`
 - Vercel + GitHub Pages : auto-deploy on push
+
+---
+
+## 24. Backup — fix des marqueurs d'Ayah (`\uFDD5`/`\uFDD6`) manquants (19 août 2026)
+
+### Contexte
+L'utilisateur a signalé que les caractères spéciaux de fin de verset **`\uFDD5` et `\uFDD6`** (ligatures arabes) utilisés dans `playAyah()` ne se rendaient pas correctement sur les polices système et s'affichaient comme des **carrés de glyphe manquant** (`[ ]`) sur toutes les plateformes.
+
+### Correctif appliqué
+Remplacé les caractères `\uFDD5`/`\uFDD6` par les **parenthèses angulaires coraniques standard** `﴿`/`﴾` (U+FDD2/U+FDD3), identiques à celles déjà utilisées dans `worker.js` :
+
+```javascript
+const surahNum = surahs[currentSurahIndex].number;
+const ayahAr = currentAyahsAr[index];
+arTextEl.innerHTML = ayahAr.text + ' <span class="ayah-marker">﴿' + ayahAr.numberInSurah + '﴾</span>';
+textContainer.scrollTop = 0;
+lcdAyahCount.textContent = '\u0622\u064A\u0629 ' + ayahAr.numberInSurah + ' / ' + currentAyahsAr.length;
+seekBar.value = 0;
+```
+
+- **Seul `index.html` à la racine** contenait le bug (`ligne 1923`) ; `worker.js` utilisait déjà les bons caractères.
+- `worker.js` **régénéré** depuis le `index.html` corrigé (parser avec échappement `\\` + backtick) — servi **byte-identical** à `index.html` (vérifié).
+- **Mobile** : `mobile/www/index.html` reconstruit (`npm run build:web` → obfuscation) — marqueur `ayah-marker">﴿` vérifié présent dans les strings décodées de la string array base64.
+
+### Déploiement
+- **Commit :** `aa4585d` — fix: replace unsupported FDD5/FDD6 ayah markers with ﴿﴾ for cross-platform rendering
+- **Commit :** `16f04b1` — chore: regenerate worker.js from fixed index.html (ayah marker fix)
+- **Commit :** (mobile regen + backup) — rebuilt mobile www + github.md backup
+- **Cloudflare :** `wrangler deploy` (wrangler 4.124.0) → **Version ID `f1997bcd-9722-4115-bc42-2b3a4a04347e`** (upload 89.20 KiB)
+- **Vercel :** auto-déploiement via le repo connecté (push suffit) + déploiement explicite via `npx vercel` (token)
+- **GitHub Pages :** auto via push
+- **Android CI :** re-triggeré par le push dans `mobile/` (build web + APK/AAB régénérés depuis la source corrigée)
+
+### Vérifications post-déploiement
+Marqueur `﴿`/`﴾` présent et `FDD5` absent sur les 3 plateformes (HTTP 200) :
+- `https://ucfzem.github.io/quran-amp/` ✅
+- `https://quran-amp.vercel.app/` ✅
+- `https://quran-amp.azer-tyu199p.workers.dev/` ✅ (version `f1997bcd`)
+- Imprimé `byte-identical` de `worker.js` vs `index.html` : **true** ✅
+- Mobile obfusqué : string base64 décodées → `ayah-marker">﴿` présent ✅
+
+### Tokens (jamais écrits sur disque ni commités, utilisés uniquement en session)
+- GitHub PAT `ghp_…` (clone/push)
+- Vercel `vcp_…` (déploiement)
+- Cloudflare `cfut_…` (wrangler deploy)
+
+> ⚠️ **Sécurité :** l'utilisateur a partagé ses tokens dans la session. Il est **recommandé de les révoquer** puis d'en générer de nouveaux à usage restreint si besoin.
+
+## Liens mis à jour (19 août 2026)
+
+| Élément | Lien |
+|---|---|
+| Projet Quran Amp (GitHub Pages) | https://ucfzem.github.io/quran-amp/ |
+| Projet Quran Amp (Vercel) | https://quran-amp.vercel.app/ |
+| Projet Quran Amp (Cloudflare) | https://quran-amp.azer-tyu199p.workers.dev/ |
+| Portail Works (3ᵉ position) | https://ucfzem.github.io/works/ |
+| Repo quran-amp | https://github.com/ucfzem/quran-amp |
+| Release Android (APK debug) | https://github.com/ucfzem/quran-amp/actions |
