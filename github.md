@@ -1324,3 +1324,29 @@ stopBtn.addEventListener('click', () => {
 | Portail Works (3ᵉ position) | https://ucfzem.github.io/works/ |
 | Repo | https://github.com/ucfzem/quran-amp |
 | Actions / APK Android | https://github.com/ucfzem/quran-amp/actions |
+
+---
+
+## 26. Backup — RÉVERSION des 5 fixes (19 août 2026)
+
+### Contexte
+Après déploiement des 5 fixes §25 (fetch durée / timeout / stop / cache / ended token), l'utilisateur a signalé : **« Go back quickly to old version, it all bugs »** → les correctifs ont introduit des bugs de lecture. **Décision : réversion complète** des 3 fichiers de code, en **conservant le fix des marqueurs d'Ayah** (ancien correctif vétérant §24).
+
+### Actions
+- `git checkout a0ed67d -- index.html worker.js mobile/www/index.html` — restaure la dernière version fonctionnelle (**l'avant-§25, apex l'après-§24** : fetchSurahDurations/currentSurahDurations/surahTotal/surahElapsed/old stopBtn/handleNext absents…).
+- Vérifié : JS `node --check` OK, `worker.js` régénéré byte-identical (`new Function` OK, service 200), marqueur `﴿﴾` conservé (§24).
+- **Commit :** `628e90f` — revert: restore working version (a0ed67d) - 5 perf fixes caused playback bugs; kept ayah marker fix
+- Push → GitHub Pages + Vercel auto-reverts.
+
+### Déploiement
+- **Cloudflare :** `wrangler deploy` → **Version ID `484e8f1e-04a8-4351-a0e9-7a16db2ba8e7`** (upload 89.20 KiB — taille de la version a0ed67d).
+- Vercel + GitHub Pages : auto sur push.
+
+### Vérifications post-réversion (3 plateformes)
+`fetchDur=2` (fetchSurahDurations présent = ancienne version), `abort=0` (AbortController absent), `marker=1` (marqueur ﴿ conservé) — ✅ sur
+- `https://ucfzem.github.io/quran-amp/`
+- `https://quran-amp.vercel.app/`
+- `https://quran-amp.azer-tyu199p.workers.dev/`
+
+### Leçon retenue
+Les 5 fixes §25 ne sont **pas** conservés (brisaient la lecture). Le §25 reste archivé dans ce fichier à titre de trace ; la version **fonctionnelle actuelle = v24 + marqueurs corrigés** (commit `628e90f`, Cloudflare `484e8f1e`).
