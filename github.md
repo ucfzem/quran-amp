@@ -1256,3 +1256,71 @@ Marqueur `﴿`/`﴾` présent et `FDD5` absent sur les 3 plateformes (HTTP 200) 
 | Portail Works (3ᵉ position) | https://ucfzem.github.io/works/ |
 | Repo quran-amp | https://github.com/ucfzem/quran-amp |
 | Release Android (APK debug) | https://github.com/ucfzem/quran-amp/actions |
+
+---
+
+## 25. Backup — 5 fixes performance/robustesse (19 août 2026)
+
+L'utilisateur a fourni 5 correctifs précis, appliqués exactement tels que décrits.
+
+### Fix 1 — Suppression du fetch de durée en fond
+- **Supprimé :** le bloc `fetchSurahDurations(...).then(...)` dans `loadSurah`, la fonction `fetchSurahDurations()` entière, et les variables devenues inutiles `currentSurahDurations`, `durationCache`, `surahTotal`, `surahElapsed`.
+- Le compteur `timeupdate` utilisait `surahTotal`/`surahElapsed` pour la durée totale de la sourate → remplacé par la durée restante du verset courant (`audio.duration - audio.currentTime`).
+- Suppression du goulot d'étranglement réseau : plus d'environ 114 HEAD requests par sourate.
+
+### Fix 2 — Timeout 4 s sur les vérifications de sources audio
+- `playUrlChain()` refait avec **`AbortController`** + `setTimeout(4000)` → chaque HEAD request est abandonnée après 4 s.
+- `clearTimeout` dans `finally`. Toast « تعذر تحميل الصوت » conservé.
+
+### Fix 3 — Le bouton Stop annule les chargements en attente
+```javascript
+stopBtn.addEventListener('click', () => {
+    activePlayRequestId++;   // cancel any pending load/play
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    audio.currentTime = 0;
+    lcdTime.textContent = '-0:00';
+    seekBar.value = 0;
+});
+```
+
+### Fix 4 — Cache du texte de sourate (≠ refetch au changement de récitateur)
+- Nouvelles variables globales : `cachedSurahIndex = -1` et `cachedAyahsAr = []`.
+- `loadSurah()` réécrit : si `index === cachedSurahIndex` → réutilise `cachedAyahsAr` sans refetch ; sinon `fetch('https://api.alquran.cloud/v1/surah/' + surah.number)` et met en cache.
+- Appel API simplifié (plus de `/editions/quran-uthmani`), garde `thisRequestId !== activePlayRequestId`.
+- Helper ajouté : `renderSurahText()` (affiche l'ayah 1 + marqueur `﴿…﴾`, scrollTop = 0).
+- Basmalah jouée via `playUrlChain(buildBasmalahUrls(reciter), 0, autoPlay, thisRequestId)` pour Sourates ≠ 1 et 9.
+
+### Fix 5 — L'événement `ended` utilise le jeton de requête courant
+- `ended` réécrit : Basmalah → `playAyah(0, true, activePlayRequestId)` ; `repeatMode === 'one'` → rejoue l'ayah ; sinon avance d'une ayah ; fin de sourate → `repeatMode === 'all'` rejoue l'ayah 1, sinon `handleNext()`.
+- Helper ajouté : `handleNext()` (shuffle → sourate aléatoire, sinon sourate suivante ; sinon stop).
+- ⚠️ **Note :** l'appel Basmalah→`playAyah(0,…)` du Fix 5 ne passe plus `skipBasmalah = true` (contrairement à l'ancien `ended`). Risque potentiel de re-déclenchement de la Basmalah au tout début d'une Sourate ≠ 1/9. À surveiller en test réel.
+
+### Vérifications avant déploiement
+- `node --check` sur le script extrait : OK ✅
+- `worker.js` régénéré : servi **byte-identical** à `index.html` ✅ (échappement `\\`, backtick `` ` `` et `${` dans le template littéral du Worker)
+- Mobile reconstruit (`npm run build:web`) : `AbortController`, `0xfa0` (= 4000), `آياتها:`, `handleNext`, marqueurs vérifiés dans le code obfusqué + string array base64 décodée ✅
+
+### Déploiement
+- **Commit :** `43bcaab` — perf: remove heavy duration fetch, add 4s timeout, cancel-on-stop, surah text cache, token-guarded ended handler
+- **Cloudflare :** `wrangler deploy` → **Version ID `937aa469-0faf-455b-9223-b7a271de6283`** (upload 87.73 KiB)
+- **Vercel :** auto-déploiement via le repo connecté (push)
+- **GitHub Pages :** auto via push
+- **Android CI :** re-triggeré par le push (run en cours)
+
+### Vérifications post-déploiement (3 plateformes)
+`abort=1` (AbortController), `fetchDur=0` (fetchSurahDurations absent), `cacheIdx=1` (cachedSurahIndex), `marker=2` (﴿﴾), `handleNext=2` — ✅ sur
+- `https://ucfzem.github.io/quran-amp/`
+- `https://quran-amp.vercel.app/`
+- `https://quran-amp.azer-tyu199p.workers.dev/`
+
+### Liens (19 août 2026)
+| Élément | Lien |
+|---|---|
+| GitHub Pages | https://ucfzem.github.io/quran-amp/ |
+| Vercel | https://quran-amp.vercel.app/ |
+| Cloudflare Workers | https://quran-amp.azer-tyu199p.workers.dev/ |
+| Portail Works (3ᵉ position) | https://ucfzem.github.io/works/ |
+| Repo | https://github.com/ucfzem/quran-amp |
+| Actions / APK Android | https://github.com/ucfzem/quran-amp/actions |
