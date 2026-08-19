@@ -1220,8 +1220,12 @@ export default {
             const pending = urls.slice(idx);
             for (const url of pending) {
                 if (requestId !== activePlayRequestId) return false;
+
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+
                 try {
-                    const res = await fetch(url, { method: 'HEAD' });
+                    const res = await fetch(url, { method: 'HEAD', signal: controller.signal });
                     if (requestId !== activePlayRequestId) return false;
                     if (res.ok) {
                         audio.src = url;
@@ -1229,51 +1233,14 @@ export default {
                         if (autoPlay) audio.play().catch(() => {});
                         return true;
                     }
-                } catch (e) {}
-            }
-            if (requestId === activePlayRequestId) {
-                showToast("تعذر تحميل الصوت", 3000);
-            }
-            return false;
-        }
-
-
-        async function fetchSurahDurations(surahNumber, reciterId) {
-            const key = reciterId + '-' + surahNumber;
-            if (durationCache[key]) return durationCache[key];
-            const surah = surahs.find(s => s.number === surahNumber);
-            if (!surah) return null;
-            const count = surah.numberOfAyahs;
-            const bitrate = (reciterId.match(/_(\\d+)kbps/i) || [,'128'])[1] * 1000;
-            const durs = new Array(count).fill(0);
-            const BATCH = 10;
-            for (let i = 0; i < count; i += BATCH) {
-                const batch = [];
-                for (let j = i; j < Math.min(i + BATCH, count); j++) {
-                    const url = encodeURI('https://everyayah.com/data/' + reciterId + '/' + pad3(surahNumber) + pad3(j + 1) + '.mp3');
-                    const p = (async function(idx) {
-                        try {
-                            var r = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
-                            if (!r.ok) throw new Error('not ok');
-                            var cl = parseInt(r.headers.get('content-length') || '0', 10);
-                            if (cl > 0) { durs[idx] = (cl * 8) / bitrate; return; }
-                        } catch(e) {}
-                        try {
-                            var a = new Audio(); a.preload = 'metadata'; a.src = url;
-                            await new Promise(function(res, rej) {
-                                var t = setTimeout(function() { a.src = ''; a.remove(); rej(); }, 6000);
-                                a.onloadedmetadata = function() { clearTimeout(t); res(a.duration); };
-                                a.onerror = function() { clearTimeout(t); rej(); };
-                            }).then(function(d) { durs[idx] = d || 0; });
-                        } catch(e2) { durs[idx] = 0; }
-                    })(j);
-                    batch.push(p);
+                } catch (e) {
+                    // try next URL
+                } finally {
+                    clearTimeout(timeoutId);
                 }
-                await Promise.all(batch);
             }
-            const total = durs.reduce(function(a, b) { return a + b; }, 0);
-            durationCache[key] = { total: total, durations: durs };
-            return durationCache[key];
+            if (requestId === activePlayRequestId) showToast("تعذر تحميل الصوت", 3000);
+            return false;
         }
 
 
@@ -1302,18 +1269,16 @@ export default {
         let currentSurahIndex = 0;
         let currentAyahIndex = 0;
         let currentAyahsAr = [];
-        let currentSurahDurations = [];
         let audioCtx, analyser, source, canvasCtx;
         let isAudioInitialized = false;
         let isBasmalahPlaying = false;
         let idlePhase = 0;
         let vizMode = 0;
         let totalElapsedBeforeCurrentAyah = 0;
-        let durationCache = {};
-        let surahTotal = 0;
-        let surahElapsed = 0;
         let searchQuery = '';
         let toastTimeout = null;
+        let cachedSurahIndex = -1;
+        let cachedAyahsAr = [];
 
 
         const audio = document.getElementById('audio-player');
@@ -1855,54 +1820,60 @@ export default {
         }
 
 
-        async function loadSurah(index, autoPlay = true) {
+        async function loadSurah(index, autoPlay = false) {
+            if (!surahs.length || index < 0 || index >= surahs.length) return;
             activePlayRequestId++;
-            const reqId = activePlayRequestId;
-            currentRequestId = reqId;
+            const thisRequestId = activePlayRequestId;
 
-            audio.pause();
-            isBasmalahPlaying = false;
             currentSurahIndex = index;
+            currentAyahIndex = 0;
             const surah = surahs[index];
-            document.querySelectorAll('.playlist-item').forEach((el) => {
-                el.classList.toggle('active', parseInt(el.dataset.index) === index);
-            });
-            scrollPlaylistToActive();
-            lcdTitle.textContent = '\\u062C\\u0627\\u0631\\u064A \\u0627\\u0644\\u062A\\u062D\\u0645\\u064A\\u0644... ' + surah.name;
-            totalElapsedBeforeCurrentAyah = 0;
-            surahTotal = 0;
-            surahElapsed = 0;
-            seekBar.value = 0;
-            currentSurahDurations = [];
-            if (lcdTime) lcdTime.textContent = '00:00';
 
-            const surahMeta = surahs ? surahs.find(s => s.number === surahs[index].number) : null;
-            const totalAyahsCount = surahMeta ? surahMeta.numberOfAyahs : 0;
-            if (lcdAyahCount) lcdAyahCount.textContent = totalAyahsCount ? '0 / ' + totalAyahsCount : '0 / --';
+            renderPlaylist();
+            lcdTitle.textContent = \`\${surah.number}. سورة \${surah.name}\`;
+            lcdAyahCount.textContent = \`آياتها: \${surah.numberOfAyahs}\`;
+            arTextEl.textContent = 'جاري التحميل...';
 
-            try {
-                const res = await fetch('https://api.alquran.cloud/v1/surah/' + surah.number + '/editions/quran-uthmani');
-                const data = await res.json();
-                if (reqId !== activePlayRequestId) return;
-                currentAyahsAr = data.data[0].ayahs;
-
-                const currentReciter = settings.reciterId;
-                var durData = await fetchSurahDurations(surah.number, currentReciter);
-                if (reqId !== activePlayRequestId) return;
-
-                if (durData && durData.total > 0) {
-                    surahTotal = durData.total;
-                    currentSurahDurations = durData.durations;
-                }
-
-                playAyah(0, autoPlay, reqId);
-                showToast('\\u062A\\u0645 \\u062A\\u062D\\u0645\\u064A\\u0644 \\u0633\\u0648\\u0631\\u0629 ' + surah.name);
-            } catch (err) {
-                if (reqId === activePlayRequestId) {
-                    lcdTitle.textContent = "\\u062E\\u0637\\u0623 \\u0641\\u064A \\u0627\\u0644\\u0627\\u062A\\u0635\\u0627\\u0644";
-                    showToast('\\u062E\\u0637\\u0623 \\u0641\\u064A \\u062A\\u062D\\u0645\\u064A\\u0644 \\u0627\\u0644\\u0633\\u0648\\u0631\\u0629');
+            if (index === cachedSurahIndex && cachedAyahsAr.length > 0) {
+                currentAyahsAr = cachedAyahsAr;
+                renderSurahText();
+            } else {
+                try {
+                    const res = await fetch(\`https://api.alquran.cloud/v1/surah/\${surah.number}\`);
+                    const data = await res.json();
+                    if (thisRequestId !== activePlayRequestId) return;
+                    if (data.code === 200) {
+                        cachedSurahIndex = index;
+                        cachedAyahsAr = data.data.ayahs;
+                        currentAyahsAr = cachedAyahsAr;
+                        renderSurahText();
+                    } else {
+                        if (thisRequestId === activePlayRequestId) arTextEl.textContent = 'خطأ في تحميل السورة';
+                        return;
+                    }
+                } catch (e) {
+                    if (thisRequestId === activePlayRequestId) arTextEl.textContent = 'حدث خطأ في تحميل السورة';
+                    return;
                 }
             }
+
+            const reciter = RECITERS.find(r => r.id === settings.reciterId) || RECITERS[0];
+            if (surah.number !== 1 && surah.number !== 9) {
+                isBasmalahPlaying = true;
+                const basmalahUrls = buildBasmalahUrls(reciter);
+                await playUrlChain(basmalahUrls, 0, autoPlay, thisRequestId);
+            } else {
+                isBasmalahPlaying = false;
+                await playAyah(0, autoPlay, thisRequestId);
+            }
+        }
+
+        function renderSurahText() {
+            if (currentAyahsAr.length > 0) {
+                const ayahAr = currentAyahsAr[0];
+                arTextEl.innerHTML = ayahAr.text + ' <span class="ayah-marker">﴿' + ayahAr.numberInSurah + '﴾</span>';
+            }
+            textContainer.scrollTop = 0;
         }
 
 
@@ -1915,12 +1886,6 @@ export default {
 
             currentRequestId = requestId || activePlayRequestId;
             currentAyahIndex = index;
-
-            if (currentSurahDurations && currentSurahDurations.length > index) {
-                var sum = 0;
-                for (var i = 0; i < index; i++) sum += currentSurahDurations[i] || 0;
-                surahElapsed = sum;
-            }
 
             const surahNum = surahs[currentSurahIndex].number;
             const ayahAr = currentAyahsAr[index];
@@ -1988,21 +1953,35 @@ export default {
         }
 
 
+        function handleNext() {
+            setPlayPauseUI(false);
+            if (settings.repeatMode === 'shuffle' || settings.shuffleEnabled) {
+                const nextRand = Math.floor(Math.random() * surahs.length);
+                loadSurah(nextRand, true);
+            } else if (currentSurahIndex < surahs.length - 1) {
+                loadSurah(currentSurahIndex + 1, true);
+            }
+        }
+
+
         function setupEventListeners() {
             audio.addEventListener('ended', () => {
-                if (currentRequestId !== activePlayRequestId) return;
-
                 if (isBasmalahPlaying) {
                     isBasmalahPlaying = false;
-                    playAyah(0, true, activePlayRequestId, true);
+                    playAyah(0, true, activePlayRequestId);
                     return;
                 }
 
-                if (currentAyahIndex + 1 < currentAyahsAr.length) {
-                    currentAyahIndex++;
-                    playAyah(currentAyahIndex, true, activePlayRequestId, true);
+                if (settings.repeatMode === 'one') {
+                    playAyah(currentAyahIndex, true, activePlayRequestId);
+                } else if (currentAyahIndex < currentAyahsAr.length - 1) {
+                    playAyah(currentAyahIndex + 1, true, activePlayRequestId);
                 } else {
-                    onSurahCompleted();
+                    if (settings.repeatMode === 'all') {
+                        playAyah(0, true, activePlayRequestId);
+                    } else {
+                        handleNext();
+                    }
                 }
             });
 
@@ -2018,14 +1997,8 @@ export default {
                 const progress = (audio.currentTime / audio.duration) * 100;
                 seekBar.value = progress;
 
-                if (surahTotal > 0) {
-                    const currentTotalElapsed = surahElapsed + audio.currentTime;
-                    const remainingSeconds = Math.max(0, surahTotal - currentTotalElapsed);
-                    lcdTime.textContent = formatCountdown(remainingSeconds);
-                } else {
-                    const remaining = Math.max(0, audio.duration - audio.currentTime);
-                    lcdTime.textContent = formatCountdown(remaining);
-                }
+                const remaining = Math.max(0, audio.duration - audio.currentTime);
+                lcdTime.textContent = formatCountdown(remaining);
             });
 
             seekBar.addEventListener('input', () => {
@@ -2053,8 +2026,12 @@ export default {
             pauseBtn.addEventListener('click', () => audio.pause());
 
             stopBtn.addEventListener('click', () => {
+                activePlayRequestId++;   // cancel any pending load/play
                 audio.pause();
+                audio.removeAttribute('src');
+                audio.load();
                 audio.currentTime = 0;
+                lcdTime.textContent = '-0:00';
                 seekBar.value = 0;
             });
 
